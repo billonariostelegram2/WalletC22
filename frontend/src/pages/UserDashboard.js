@@ -352,16 +352,35 @@ const UserDashboard = () => {
                   <div className="flex items-center space-x-2">
                     <Shield className="h-5 w-5 text-blue-400" />
                     <div>
-                      <h3 className="font-bold text-blue-400 font-mono">&gt; VERIFICACION_REQUERIDA</h3>
+                      <h3 className="font-bold text-blue-400 font-mono">&gt; VERIFICACION REQUERIDA</h3>
                       <p className="text-sm text-blue-200 font-mono">Para usar el simulador, necesitas verificar tu cuenta mediante pago.</p>
-                      <Button
-                        onClick={() => setShowPayment(!showPayment)}
-                        className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-mono text-xs"
-                        size="sm"
-                      >
-                        &gt; VER_METODOS_PAGO
-                      </Button>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Purchase Program Section - Always visible but required for verification */}
+            {user.approved && !user.verified && (
+              <Card className="bg-slate-900/80 border-green-400/50 mb-6">
+                <CardHeader>
+                  <CardTitle className="text-green-400 font-mono text-sm">&gt; COMPRA EL PROGRAMA</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button 
+                      onClick={() => setShowPayment(true)}
+                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold py-3"
+                    >
+                      Comprar con CriptoMonedas
+                    </Button>
+                    <Button 
+                      onClick={() => setShowPayment(true)}
+                      variant="outline"
+                      className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-mono font-bold py-3"
+                    >
+                      Comprar con CryptoVoucher
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
