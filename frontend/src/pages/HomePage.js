@@ -147,8 +147,8 @@ const HomePage = () => {
           <section className="py-12 px-4 animate-fade-in">
             <div className="max-w-4xl mx-auto text-center">
               <div className="bg-gradient-to-r from-gray-900/90 via-gray-800/90 to-gray-900/90 backdrop-blur border border-green-400/50 rounded-2xl p-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-green-400 mb-4">
-                  ¿Listo para empezar a ganar?
+                <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4">
+                  ¿Listo para ganar dinero?
                 </h2>
                 <p className="text-lg text-gray-300 mb-8">
                   Únete a miles de usuarios que ya están generando ingresos con nuestra tecnología avanzada
