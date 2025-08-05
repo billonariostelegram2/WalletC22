@@ -39,17 +39,17 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-800 font-sans relative overflow-hidden">
       {/* Matrix effect - Binary numbers */}
-      <div className="absolute inset-0 opacity-15 pointer-events-none">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full">
-          {[...Array(40)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <div
-              key={i}
-              className="absolute animate-pulse text-green-500 text-base font-mono"
+              key={`matrix-${i}`}
+              className="absolute text-green-500 text-sm font-mono animate-pulse"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
+                animationDuration: `${3 + Math.random() * 2}s`
               }}
             >
               {Math.random() > 0.5 ? '1' : '0'}
@@ -59,15 +59,15 @@ const HomePage = () => {
       </div>
 
       {/* Falling money effect */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
+        {[...Array(10)].map((_, i) => (
           <div
             key={`money-${i}`}
-            className="absolute text-green-600 text-3xl money-fall"
+            className="absolute text-green-600 text-2xl money-fall"
             style={{
-              left: `${5 + Math.random() * 90}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${12 + Math.random() * 8}s`
+              left: `${10 + Math.random() * 80}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${10 + Math.random() * 5}s`
             }}
           >
             💵
