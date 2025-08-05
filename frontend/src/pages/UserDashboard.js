@@ -270,7 +270,7 @@ const UserDashboard = () => {
             
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <div className="text-xs text-slate-400 font-mono">&gt; GANANCIAS TOTALES:</div>
+                <div className="text-xs text-slate-400 font-mono">&gt; SALDO DISPONIBLE:</div>
                 <div className="text-lg font-bold text-green-400 font-mono">
                   €{getTotalBalance()}
                 </div>
