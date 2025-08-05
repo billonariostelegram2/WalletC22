@@ -28,7 +28,7 @@ function App() {
         const textNodes = [];
         let node;
         
-        while (node = walker.nextNode()) {
+        while ((node = walker.nextNode()) !== null) {
           if (node.textContent && 
               (node.textContent.includes('Made with Emergent') || 
                node.textContent.includes('made with emergent'))) {
