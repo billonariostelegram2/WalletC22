@@ -130,8 +130,8 @@ const HomePage = () => {
                   para acceder a billeteras abandonadas y sin dueño con saldo dentro.
                 </p>
                 
-                <div className="bg-white/5 backdrop-blur border border-blue-500/20 rounded-xl p-6 max-w-3xl mx-auto">
-                  <p className="text-gray-300 text-base leading-relaxed">
+                <div className="bg-slate-800/90 backdrop-blur border border-blue-500/30 rounded-xl p-6 max-w-3xl mx-auto">
+                  <p className="text-slate-200 text-base leading-relaxed">
                     Una vez lo consigue, te envía automáticamente las criptos encontradas a tu billetera... 
                     <span className="text-emerald-400 font-semibold"> siempre funciona</span>, pero si no estás satisfecho con tu compra 
                     <span className="text-blue-400"> te devolvemos el dinero</span>.
