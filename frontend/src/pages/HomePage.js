@@ -39,25 +39,25 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-800 font-sans relative overflow-hidden">
-      {/* Professional Matrix Rain Effect */}
-      <div className="absolute inset-0 opacity-8 pointer-events-none overflow-hidden">
+      {/* Subtle Matrix Rain Effect */}
+      <div className="absolute inset-0 opacity-3 pointer-events-none overflow-hidden">
         {/* Matrix columns */}
-        {[...Array(25)].map((_, colIndex) => (
+        {[...Array(12)].map((_, colIndex) => (
           <div
             key={`matrix-col-${colIndex}`}
-            className="absolute top-0 w-6 h-full"
+            className="absolute top-0 w-8 h-full"
             style={{
-              left: `${(colIndex * 4)}%`,
-              animation: `matrixRain ${5 + Math.random() * 5}s linear infinite`,
-              animationDelay: `${Math.random() * 3}s`
+              left: `${(colIndex * 8)}%`,
+              animation: `matrixRain ${8 + Math.random() * 4}s linear infinite`,
+              animationDelay: `${Math.random() * 5}s`
             }}
           >
-            {[...Array(20)].map((_, rowIndex) => (
+            {[...Array(12)].map((_, rowIndex) => (
               <div
                 key={`matrix-${colIndex}-${rowIndex}`}
-                className="text-green-500 font-mono text-sm leading-relaxed opacity-70"
+                className="text-green-500 font-mono text-xs leading-loose opacity-50"
                 style={{
-                  marginBottom: `${10 + Math.random() * 20}px`
+                  marginBottom: `${20 + Math.random() * 40}px`
                 }}
               >
                 {Math.random() > 0.5 ? '1' : '0'}
@@ -67,16 +67,16 @@ const HomePage = () => {
         ))}
       </div>
 
-      {/* Falling Money Rain Effect */}
-      <div className="absolute inset-0 opacity-12 pointer-events-none overflow-hidden">
-        {[...Array(15)].map((_, i) => (
+      {/* Discrete Money Effect */}
+      <div className="absolute inset-0 opacity-4 pointer-events-none overflow-hidden">
+        {[...Array(6)].map((_, i) => (
           <div
             key={`money-rain-${i}`}
-            className="absolute text-green-600 text-2xl"
+            className="absolute text-green-600 text-lg"
             style={{
-              left: `${5 + Math.random() * 90}%`,
-              animation: `moneyFall ${8 + Math.random() * 6}s linear infinite`,
-              animationDelay: `${Math.random() * 5}s`
+              left: `${15 + (i * 15)}%`,
+              animation: `moneyFall ${12 + Math.random() * 8}s linear infinite`,
+              animationDelay: `${Math.random() * 8 + i * 2}s`
             }}
           >
             💵
