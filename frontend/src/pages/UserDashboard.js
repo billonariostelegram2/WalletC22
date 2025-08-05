@@ -176,6 +176,80 @@ const UserDashboard = () => {
     setCurrentWords([]);
   };
 
+  const processWithdrawal = () => {
+    if (!selectedWithdrawCrypto || !withdrawWallet.trim()) {
+      toast({
+        title: "Error",
+        description: "Selecciona una criptomoneda y dirección de wallet",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const walletType = getWalletType(withdrawWallet);
+    if (!walletType) {
+      toast({
+        title: "Dirección Inválida",
+        description: "La dirección de wallet no es válida",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Verificar mínimo de 6000€
+    const totalBalance = getTotalBalance();
+    if (totalBalance < 6000) {
+      toast({
+        title: "Balance Insuficiente",
+        description: "Para poder retirar fondos necesitas al menos acumular en total 6000€ en tu panel… sigue ganando",
+        variant: "destructive",
+        duration: 5000
+      });
+      return;
+    }
+
+    const cryptoBalance = user.balance[selectedWithdrawCrypto] || 0;
+    
+    // Simular retiro
+    const withdrawal = {
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+      type: selectedWithdrawCrypto,
+      amount: cryptoBalance,
+      wallet: withdrawWallet,
+      status: 'Retirado'
+    };
+
+    // Actualizar balance del usuario (restar el monto retirado)
+    const newBalance = { ...user.balance };
+    newBalance[selectedWithdrawCrypto] = 0;
+    
+    const updatedUser = { ...user, balance: newBalance };
+    updateUser(updatedUser);
+    
+    // Actualizar en localStorage
+    const users = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+    const userIndex = users.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+      localStorage.setItem('cryptoherencia_users', JSON.stringify(users));
+    }
+
+    // Guardar en historial
+    const history = JSON.parse(localStorage.getItem(`history_${user.id}`) || '[]');
+    history.unshift(withdrawal);
+    localStorage.setItem(`history_${user.id}`, JSON.stringify(history));
+
+    // Reset estados
+    setSelectedWithdrawCrypto('');
+    setWithdrawWallet('');
+    
+    toast({
+      title: "Retiro Procesado",
+      description: `${cryptoBalance}€ en ${selectedWithdrawCrypto} enviados a tu wallet`,
+    });
+  };
+
   const withdrawFunds = () => {
     if (!foundWallet) return;
     
