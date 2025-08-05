@@ -58,7 +58,7 @@ const UserDashboard = () => {
   const [foundWallet, setFoundWallet] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [voucherCode, setVoucherCode] = useState('');
+  const [attackInProgress, setAttackInProgress] = useState(false);
 
   // Redirect if not authenticated
   useEffect(() => {
