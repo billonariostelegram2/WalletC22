@@ -63,17 +63,15 @@ const HomePage = () => {
       </div>
 
       {/* Falling money effect */}
-      <div className="absolute inset-0 opacity-3 pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        {[...Array(12)].map((_, i) => (
           <div
             key={`money-${i}`}
-            className="absolute text-green-500 text-xl animate-bounce"
+            className="absolute text-green-600 text-2xl money-fall"
             style={{
-              left: `${10 + Math.random() * 80}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${8 + Math.random() * 4}s`,
-              transform: 'rotate(15deg)'
+              left: `${5 + Math.random() * 90}%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${12 + Math.random() * 8}s`
             }}
           >
             💵
