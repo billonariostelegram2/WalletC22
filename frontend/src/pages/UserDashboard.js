@@ -263,16 +263,8 @@ const UserDashboard = () => {
         <header className="bg-slate-900/80 backdrop-blur border-b border-green-500/30 p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="text-green-400 hover:text-green-300 font-mono"
-              >
-                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
               <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400 font-mono">
-                &gt; CRIPTOHERENCIA_AI
+                &gt; CRIPTOHERENCIA AI
               </h1>
             </div>
             
@@ -290,6 +282,15 @@ const UserDashboard = () => {
                   ))}
                 </div>
               </div>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-green-400 hover:text-green-300 font-mono"
+              >
+                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
             </div>
           </div>
         </header>
