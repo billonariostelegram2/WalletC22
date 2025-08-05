@@ -154,6 +154,54 @@ frontend:
         -agent: "main"
         -comment: "Cambiado segundo botón de CryptoVoucher a TARJETA"
 
+  - task: "Implementar recuadro fijo para búsqueda de wallets"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Recuadro fijo implementado con estados: idle (buscando billetera con fondos), searching (con animación), found (wallet encontrada con botón seguir buscando)"
+
+  - task: "Agregar opción RETIRAR al menú principal"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Nueva opción RETIRAR agregada al menú lateral con icono Wallet"
+
+  - task: "Implementar sistema de retiro por criptomoneda"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Sistema de retiro implementado: muestra BTC/ETH/LTC con saldos individuales, permite seleccionar cripto, ingresar wallet destino y procesar retiro con validación de mínimo 6000€"
+
+  - task: "Modificar flujo de wallet encontrada"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Modificado para mostrar 'se han sumado x€ en tu panel' sin botón retirar inmediato, solo 'seguir buscando'"
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
