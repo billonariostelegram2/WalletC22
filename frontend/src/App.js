@@ -11,25 +11,59 @@ import { Toaster } from "./components/ui/toaster";
 
 function App() {
   useEffect(() => {
-    // Remove "Made with Emergent" notifications
+    // Safer method to remove Emergent notifications
     const removeEmergentNotifications = () => {
-      const allElements = document.querySelectorAll('*');
-      allElements.forEach(el => {
-        const text = el.textContent || '';
-        if (text.includes('Made with Emergent') || 
-            text.includes('made with emergent') ||
-            text.includes('Made with') && text.includes('Emergent')) {
-          el.remove();
+      // Wait for DOM to be fully loaded
+      if (!document.body) return;
+      
+      try {
+        // Find elements containing "Made with Emergent" text
+        const walker = document.createTreeWalker(
+          document.body,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+        
+        const textNodes = [];
+        let node;
+        
+        while (node = walker.nextNode()) {
+          if (node.textContent && 
+              (node.textContent.includes('Made with Emergent') || 
+               node.textContent.includes('made with emergent'))) {
+            textNodes.push(node);
+          }
         }
-      });
+        
+        // Remove parent elements of matching text nodes
+        textNodes.forEach(textNode => {
+          let parent = textNode.parentElement;
+          while (parent && parent !== document.body) {
+            if (parent.style && parent.style.position === 'fixed') {
+              parent.remove();
+              break;
+            }
+            parent = parent.parentElement;
+          }
+        });
+      } catch (error) {
+        // Silently ignore errors to prevent breaking the app
+        console.warn('Error removing emergent notifications:', error);
+      }
     };
 
-    // Run immediately and then periodically
-    removeEmergentNotifications();
+    // Run after a delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      removeEmergentNotifications();
+      
+      // Set up periodic cleanup
+      const intervalId = setInterval(removeEmergentNotifications, 3000);
+      
+      return () => clearInterval(intervalId);
+    }, 2000);
     
-    const interval = setInterval(removeEmergentNotifications, 1000);
-    
-    return () => clearInterval(interval);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
