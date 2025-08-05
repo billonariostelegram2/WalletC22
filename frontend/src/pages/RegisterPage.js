@@ -71,15 +71,16 @@ const RegisterPage = () => {
       const updatedUsers = [...existingUsers, newUser];
       localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
 
-      // Hacer login automático
-      login(newUser);
-
+      // Hacer login automático pero redirigir a login con mensaje
       toast({
-        title: "¡Registro Exitoso!",
-        description: "Tu cuenta está pendiente de aprobación por el administrador",
+        title: "¡Cuenta Creada!",
+        description: "Tu cuenta será aprobada por un administrador",
       });
 
-      navigate('/panel');
+      // Redirigir a login después de un breve delay
+      setTimeout(() => {
+        navigate('/login?pending=true');
+      }, 2000);
     } catch (error) {
       toast({
         title: "Error",
