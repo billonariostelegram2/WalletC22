@@ -669,66 +669,63 @@ const UserDashboard = () => {
                       </div>
                     ) : (
                       <>
-                        {/* Attack Progress */}
-                        {(isSimulating || currentWords.length > 0) && (
-                          <div className="bg-black border border-green-400/50 rounded p-4">
-                            <div className="text-center mb-4">
-                              <h3 className="text-green-400 font-bold font-mono text-sm">
-                                {isSimulating ? '&gt; ATACANDO FRASES SEMILLA...' : '&gt; ÚLTIMA BÚSQUEDA'}
-                              </h3>
-                              {isSimulating && (
-                                <div className="text-xs text-blue-400 font-mono mt-2">
+                        {/* Fixed Search Status Box */}
+                        <div className="bg-black border border-green-400/50 rounded p-6 min-h-[200px] flex flex-col justify-center">
+                          {searchStatus === 'idle' && (
+                            <div className="text-center">
+                              <div className="text-green-400 font-bold font-mono text-lg mb-2">
+                                &gt; BUSCANDO BILLETERA CON FONDOS
+                              </div>
+                              <div className="text-slate-400 font-mono text-sm">
+                                Presiona "EMPEZAR ATAQUE" para comenzar la búsqueda
+                              </div>
+                            </div>
+                          )}
+                          
+                          {searchStatus === 'searching' && (
+                            <div>
+                              <div className="text-center mb-4">
+                                <div className="text-green-400 font-bold font-mono text-lg animate-pulse">
+                                  &gt; BUSCANDO BILLETERA CON FONDOS
+                                </div>
+                                <div className="text-blue-400 font-mono text-sm mt-2">
                                   &gt; Tipo: {selectedCrypto} | Velocidad: {Math.floor(Math.random() * 5000 + 1000)}/seg
+                                </div>
+                              </div>
+                              
+                              {currentWords.length > 0 && (
+                                <div className="grid grid-cols-3 md:grid-cols-4 gap-2 text-xs">
+                                  {currentWords.map((word, index) => (
+                                    <div
+                                      key={index}
+                                      className="p-2 rounded border border-yellow-400 text-yellow-400 animate-pulse text-center font-mono"
+                                    >
+                                      [{String(index + 1).padStart(2, '0')}] {word}
+                                    </div>
+                                  ))}
                                 </div>
                               )}
                             </div>
-                            
-                            <div className="grid grid-cols-3 md:grid-cols-4 gap-2 text-xs">
-                              {currentWords.map((word, index) => (
-                                <div
-                                  key={index}
-                                  className={`p-2 rounded border text-center font-mono ${
-                                    isSimulating 
-                                      ? 'border-yellow-400 text-yellow-400 animate-pulse' 
-                                      : 'border-green-400 text-green-400'
-                                  }`}
-                                >
-                                  [{String(index + 1).padStart(2, '0')}] {word}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Found Wallet */}
-                        {foundWallet && (
-                          <Card className="bg-green-900/50 border-green-400">
-                            <CardContent className="p-6 text-center">
+                          )}
+                          
+                          {searchStatus === 'found' && foundWallet && (
+                            <div className="text-center">
                               <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4 animate-pulse" />
-                              <h3 className="text-2xl font-bold text-green-400 mb-2 font-mono">
-                                &gt; WALLET ENCONTRADA!
-                              </h3>
-                              <p className="text-xl text-white mb-4 font-mono">
-                                {cryptoIcons[foundWallet.type]} €{foundWallet.amount} en {foundWallet.type}
-                              </p>
-                              <div className="space-x-4">
-                                <Button
-                                  onClick={withdrawFunds}
-                                  className="bg-green-500 hover:bg-green-600 text-black font-bold font-mono"
-                                >
-                                  &gt; RETIRAR FONDOS
-                                </Button>
-                                <Button
-                                  onClick={() => {setFoundWallet(null); startSimulation();}}
-                                  variant="outline"
-                                  className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-mono"
-                                >
-                                  &gt; CONTINUAR ATACANDO
-                                </Button>
+                              <div className="text-green-400 font-bold font-mono text-lg mb-2">
+                                &gt; WALLET ENCONTRADA
                               </div>
-                            </CardContent>
-                          </Card>
-                        )}
+                              <div className="text-white font-mono text-lg mb-4">
+                                Se han sumado {cryptoIcons[foundWallet.type]} €{foundWallet.amount} en tu panel
+                              </div>
+                              <Button
+                                onClick={continueSearching}
+                                className="bg-green-500 hover:bg-green-600 text-black font-bold font-mono"
+                              >
+                                &gt; SEGUIR BUSCANDO
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </>
                     )}
                   </CardContent>
