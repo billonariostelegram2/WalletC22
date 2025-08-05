@@ -39,8 +39,8 @@ const UserDashboard = () => {
   const [isSimulating, setIsSimulating] = useState(false);
   const [currentWords, setCurrentWords] = useState([]);
   const [foundWallet, setFoundWallet] = useState(null);
-  const [showPayment, setShowPayment] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const [showCryptoPayment, setShowCryptoPayment] = useState(false);
+  const [showCardPayment, setShowCardPayment] = useState(false);
   const [voucherCode, setVoucherCode] = useState('');
   const [attackInProgress, setAttackInProgress] = useState(false);
 
