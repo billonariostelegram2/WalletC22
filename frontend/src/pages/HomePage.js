@@ -137,7 +137,7 @@ const HomePage = () => {
             </h1>
             
             {showText && (
-              <div className="animate-fade-in space-y-6">
+              <div className="space-y-6">
                 <p className="text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
                   Software de fuerza bruta con IA que prueba miles de contraseñas diferentes por segundo, 
                   para acceder a billeteras abandonadas y sin dueño con saldo dentro.
