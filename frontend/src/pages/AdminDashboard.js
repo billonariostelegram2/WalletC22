@@ -109,9 +109,14 @@ const AdminDashboard = () => {
       description: "El código ha sido marcado como inválido",
       variant: "destructive"
     });
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copiado",
+        description: "Código copiado al portapapeles",
+      });
+    });
   };
-
-  if (!user || !user.isAdmin) return null;
 
   const pendingUsers = users.filter(u => !u.approved);
   const pendingVouchers = vouchers.filter(v => v.status === 'pendiente');
