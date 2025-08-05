@@ -192,13 +192,7 @@ const LoginPage = () => {
               </Link>
             </div>
 
-            <div className="mt-8 p-4 bg-gray-800 border border-blue-400 rounded-lg">
-              <p className="text-sm text-blue-300 text-center">
-                <strong>Acceso Admin:</strong><br />
-                Email: criptoherencia@admin.com<br />
-                Contraseña: admin123
-              </p>
-            </div>
+
           </CardContent>
         </Card>
       </div>
