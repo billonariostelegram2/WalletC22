@@ -26,16 +26,6 @@ const RegisterPage = () => {
 
     try {
       // Validaciones
-      if (formData.password !== formData.confirmPassword) {
-        toast({
-          title: "Error de Validación",
-          description: "Las contraseñas no coinciden",
-          variant: "destructive"
-        });
-        setLoading(false);
-        return;
-      }
-
       if (formData.password.length < 6) {
         toast({
           title: "Error de Validación",
