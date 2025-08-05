@@ -93,17 +93,17 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-green-400 font-mono flex items-center justify-center relative overflow-hidden">
-      {/* Matrix background effect */}
-      <div className="absolute inset-0 opacity-10">
-        {[...Array(30)].map((_, i) => (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-green-400 font-mono flex items-center justify-center relative overflow-hidden">
+      {/* Subtle Matrix background */}
+      <div className="absolute inset-0 opacity-5">
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute animate-pulse text-green-400"
+            className="absolute animate-pulse text-green-500 text-xs font-mono"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
+              animationDelay: `${Math.random() * 3}s`,
               animationDuration: `${2 + Math.random() * 3}s`
             }}
           >
@@ -113,31 +113,34 @@ const LoginPage = () => {
       </div>
 
       <div className="w-full max-w-md mx-auto p-6 relative z-10">
-        <Card className="bg-gray-900 border-green-400 shadow-2xl shadow-green-400/20">
-          <CardHeader className="space-y-1">
+        <Card className="bg-slate-900/80 backdrop-blur border-green-500/30 shadow-2xl shadow-green-500/10">
+          <CardHeader className="space-y-4">
             <div className="flex items-center justify-between mb-4">
               <Button
                 variant="ghost"
                 onClick={() => navigate('/')}
-                className="text-green-400 hover:text-green-300 p-0"
+                className="text-green-400 hover:text-green-300 p-0 font-mono"
               >
-                <ArrowLeft className="h-5 w-5 mr-2" />
-                Volver
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                VOLVER
               </Button>
             </div>
             
-            <CardTitle className="text-3xl text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
-              Iniciar Sesión
-            </CardTitle>
-            <p className="text-center text-gray-400">
-              Accede a tu panel de control
-            </p>
+            <div className="text-center">
+              <Lock className="h-12 w-12 text-green-400 mx-auto mb-4" />
+              <CardTitle className="text-2xl text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400 font-mono">
+                ACCESO AL SISTEMA
+              </CardTitle>
+              <p className="text-slate-400 mt-2 font-mono text-sm">
+                &gt; Introduce tus credenciales_
+              </p>
+            </div>
           </CardHeader>
           
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-green-400">Email</Label>
+                <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; EMAIL:</Label>
                 <Input
                   id="email"
                   name="email"
@@ -145,13 +148,13 @@ const LoginPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="bg-gray-800 border-gray-700 text-white focus:border-green-400"
-                  placeholder="tu@email.com"
+                  className="bg-slate-800 border-green-500/30 text-green-300 focus:border-green-400 font-mono placeholder:text-slate-500"
+                  placeholder="usuario@email.com"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-green-400">Contraseña</Label>
+                <Label htmlFor="password" className="text-green-400 font-mono text-sm">&gt; PASSWORD:</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -160,14 +163,14 @@ const LoginPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="bg-gray-800 border-gray-700 text-white focus:border-green-400 pr-10"
-                    placeholder="Tu contraseña"
+                    className="bg-slate-800 border-green-500/30 text-green-300 focus:border-green-400 font-mono placeholder:text-slate-500 pr-10"
+                    placeholder="••••••••••"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-green-400"
+                    className="absolute right-0 top-0 h-full px-3 text-slate-400 hover:text-green-400"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -182,30 +185,28 @@ const LoginPage = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-black font-bold text-lg py-3"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold text-sm py-3 uppercase tracking-wider"
               >
                 {loading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
-                    Accediendo...
+                    VERIFICANDO...
                   </div>
                 ) : (
-                  'ACCEDER AL SISTEMA'
+                  '&gt; INICIAR SESIÓN'
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center space-y-2">
-              <p className="text-gray-400">¿No tienes cuenta?</p>
+              <p className="text-slate-400 font-mono text-xs">&gt; ¿Sin acceso?</p>
               <Link
                 to="/registro"
-                className="text-green-400 hover:text-green-300 underline font-medium"
+                className="text-green-400 hover:text-green-300 underline font-mono text-sm"
               >
-                Crear cuenta gratis aquí
+                CREAR_CUENTA.exe
               </Link>
             </div>
-
-
           </CardContent>
         </Card>
       </div>
