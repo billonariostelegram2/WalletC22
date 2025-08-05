@@ -270,16 +270,9 @@ const UserDashboard = () => {
             
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <div className="text-xs text-slate-400 font-mono">&gt; BALANCE:</div>
+                <div className="text-xs text-slate-400 font-mono">&gt; GANANCIAS TOTALES:</div>
                 <div className="text-lg font-bold text-green-400 font-mono">
                   €{getTotalBalance()}
-                </div>
-                <div className="text-xs space-x-2">
-                  {Object.entries(user.balance || {}).map(([crypto, amount]) => (
-                    <span key={crypto} className="text-blue-400 font-mono">
-                      {cryptoIcons[crypto]} {amount}€
-                    </span>
-                  ))}
                 </div>
               </div>
               
