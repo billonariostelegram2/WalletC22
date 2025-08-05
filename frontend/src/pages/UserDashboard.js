@@ -320,6 +320,14 @@ const UserDashboard = () => {
                   <History className="h-4 w-4 mr-2" />
                   &gt; HISTORIAL
                 </Button>
+                <Button
+                  variant={currentView === 'withdraw' ? 'default' : 'ghost'}
+                  onClick={() => {setCurrentView('withdraw'); setMenuOpen(false);}}
+                  className="w-full justify-start text-green-400 font-mono text-sm mb-1 hover:bg-green-500/20"
+                >
+                  <Wallet className="h-4 w-4 mr-2" />
+                  &gt; RETIRAR
+                </Button>
                 <Separator className="my-2 bg-green-500/30" />
                 <Button
                   variant="ghost"
