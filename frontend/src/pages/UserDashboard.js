@@ -769,6 +769,97 @@ const UserDashboard = () => {
                 </CardContent>
               </Card>
             )}
+
+            {/* Withdraw View */}
+            {currentView === 'withdraw' && (
+              <Card className="bg-slate-900/80 border-green-400/50">
+                <CardHeader>
+                  <CardTitle className="text-green-400 font-mono text-sm">&gt; RETIRAR FONDOS</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {!selectedWithdrawCrypto ? (
+                    <div>
+                      <div className="text-slate-300 font-mono text-sm mb-4">
+                        &gt; Selecciona la criptomoneda que deseas retirar:
+                      </div>
+                      
+                      <div className="space-y-3">
+                        {['BTC', 'ETH', 'LTC'].map((crypto) => {
+                          const balance = user.balance?.[crypto] || 0;
+                          return (
+                            <Button
+                              key={crypto}
+                              onClick={() => setSelectedWithdrawCrypto(crypto)}
+                              className="w-full justify-between bg-slate-800 hover:bg-slate-700 border border-green-400/50 text-green-400 font-mono p-4"
+                              disabled={balance === 0}
+                            >
+                              <span className="flex items-center">
+                                <Bitcoin className="h-4 w-4 mr-2" />
+                                {crypto}:
+                              </span>
+                              <span className="font-bold">
+                                €{balance.toFixed(2)}
+                              </span>
+                            </Button>
+                          );
+                        })}
+                      </div>
+                      
+                      <div className="bg-slate-800 p-4 rounded border-l-4 border-yellow-400 mt-6">
+                        <p className="text-yellow-300 font-mono text-sm">
+                          &gt; Para poder retirar fondos necesitas al menos acumular en total 6000€ en tu panel... sigue ganando
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="text-green-400 font-mono text-lg flex items-center">
+                          <Bitcoin className="h-5 w-5 mr-2" />
+                          Retirar {selectedWithdrawCrypto}: €{(user.balance?.[selectedWithdrawCrypto] || 0).toFixed(2)}
+                        </div>
+                        <Button
+                          onClick={() => {
+                            setSelectedWithdrawCrypto('');
+                            setWithdrawWallet('');
+                          }}
+                          variant="ghost"
+                          size="sm"
+                          className="text-slate-400 hover:text-white font-mono"
+                        >
+                          &gt; VOLVER
+                        </Button>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <Label className="text-blue-400 font-mono text-xs">&gt; WALLET DESTINO ({selectedWithdrawCrypto}):</Label>
+                          <Input
+                            value={withdrawWallet}
+                            onChange={(e) => setWithdrawWallet(e.target.value)}
+                            placeholder={`Introduce tu dirección ${selectedWithdrawCrypto}`}
+                            className="bg-slate-800 border-green-500/30 text-green-300 mt-2 font-mono"
+                          />
+                          <p className="text-xs text-slate-400 mt-1 font-mono">
+                            &gt; Los fondos se enviarán a esta dirección
+                          </p>
+                        </div>
+                        
+                        <div className="text-center pt-4">
+                          <Button
+                            onClick={processWithdrawal}
+                            disabled={!withdrawWallet.trim()}
+                            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold px-8 py-3"
+                          >
+                            &gt; PROCESAR RETIRO
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
