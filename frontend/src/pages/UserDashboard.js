@@ -477,11 +477,11 @@ const UserDashboard = () => {
                 {/* Crypto Selection */}
                 <Card className="bg-slate-900/80 border-green-400/50">
                   <CardHeader>
-                    <CardTitle className="text-green-400 font-mono text-sm">&gt; SELECCIONAR_OBJETIVO</CardTitle>
+                    <CardTitle className="text-green-400 font-mono text-sm">&gt; SELECCIONAR OBJETIVO</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label className="text-blue-400 font-mono text-xs">&gt; TIPO_BILLETERA:</Label>
+                      <Label className="text-blue-400 font-mono text-xs">&gt; TIPO BILLETERA:</Label>
                       <div className="grid grid-cols-3 gap-4 mt-2">
                         {['BTC', 'ETH', 'LTC'].map((crypto) => (
                           <Button
@@ -502,7 +502,7 @@ const UserDashboard = () => {
                     </div>
                     
                     <div>
-                      <Label className="text-blue-400 font-mono text-xs">&gt; TU_WALLET_DESTINO:</Label>
+                      <Label className="text-blue-400 font-mono text-xs">&gt; TU WALLET DESTINO:</Label>
                       <Input
                         value={userWallet}
                         onChange={(e) => setUserWallet(e.target.value)}
@@ -516,10 +516,31 @@ const UserDashboard = () => {
                   </CardContent>
                 </Card>
 
-                {/* Attack Button */}
+                {/* Start Attack Button */}
+                <div className="text-center">
+                  <Button
+                    onClick={() => {
+                      if (!user.verified) {
+                        toast({
+                          title: "Error de Acceso",
+                          description: "Debes comprar el programa primero para empezar a atacar y ganar dinero",
+                          variant: "destructive"
+                        });
+                        return;
+                      }
+                      startSimulation();
+                    }}
+                    disabled={!selectedCrypto || !userWallet.trim() || attackInProgress}
+                    className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-mono font-bold text-xl px-12 py-4 uppercase tracking-wider"
+                  >
+                    &gt; EMPEZAR ATAQUE
+                  </Button>
+                </div>
+
+                {/* Attack System */}
                 <Card className="bg-slate-900/80 border-green-400/50">
                   <CardHeader>
-                    <CardTitle className="text-green-400 font-mono text-sm">&gt; SISTEMA_ATAQUE</CardTitle>
+                    <CardTitle className="text-green-400 font-mono text-sm">&gt; ATACAR BILLETERAS</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {!user.verified ? (
