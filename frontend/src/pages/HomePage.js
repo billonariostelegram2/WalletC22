@@ -21,16 +21,12 @@ const HomePage = () => {
         setAnimatedText(prev => prev + title.charAt(index));
         index++;
         setTimeout(typeWriter, 100);
-      } else {
-        setShowText(true);
       }
     };
     
-    const timer = setTimeout(() => {
-      typeWriter();
-    }, 800);
-
-    return () => clearTimeout(timer);
+    // Start typing immediately and show content right away
+    setShowText(true);
+    typeWriter();
   }, []);
 
   const cryptoLogos = [
