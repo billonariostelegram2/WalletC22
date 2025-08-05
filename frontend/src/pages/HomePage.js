@@ -39,47 +39,20 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-800 font-sans relative overflow-hidden">
-      {/* Subtle Matrix Rain Effect */}
-      <div className="absolute inset-0 opacity-3 pointer-events-none overflow-hidden">
-        {/* Matrix columns */}
-        {[...Array(12)].map((_, colIndex) => (
+      {/* Subtle Matrix Numbers Only */}
+      <div className="absolute inset-0 opacity-2 pointer-events-none overflow-hidden">
+        {[...Array(15)].map((_, i) => (
           <div
-            key={`matrix-col-${colIndex}`}
-            className="absolute top-0 w-8 h-full"
+            key={`matrix-${i}`}
+            className="absolute text-green-500 text-xs font-mono animate-pulse"
             style={{
-              left: `${(colIndex * 8)}%`,
-              animation: `matrixRain ${8 + Math.random() * 4}s linear infinite`,
-              animationDelay: `${Math.random() * 5}s`
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 4}s`,
+              animationDuration: `${3 + Math.random() * 3}s`
             }}
           >
-            {[...Array(12)].map((_, rowIndex) => (
-              <div
-                key={`matrix-${colIndex}-${rowIndex}`}
-                className="text-green-500 font-mono text-xs leading-loose opacity-50"
-                style={{
-                  marginBottom: `${20 + Math.random() * 40}px`
-                }}
-              >
-                {Math.random() > 0.5 ? '1' : '0'}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      {/* Discrete Money Effect */}
-      <div className="absolute inset-0 opacity-4 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={`money-rain-${i}`}
-            className="absolute text-green-600 text-lg"
-            style={{
-              left: `${15 + (i * 15)}%`,
-              animation: `moneyFall ${12 + Math.random() * 8}s linear infinite`,
-              animationDelay: `${Math.random() * 8 + i * 2}s`
-            }}
-          >
-            💵
+            {Math.random() > 0.5 ? '1' : '0'}
           </div>
         ))}
       </div>
