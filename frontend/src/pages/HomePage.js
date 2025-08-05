@@ -39,36 +39,44 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-800 font-sans relative overflow-hidden">
-      {/* Matrix effect - Binary numbers */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={`matrix-${i}`}
-              className="absolute text-green-500 text-sm font-mono animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 2}s`
-              }}
-            >
-              {Math.random() > 0.5 ? '1' : '0'}
-            </div>
-          ))}
-        </div>
+      {/* Professional Matrix Rain Effect */}
+      <div className="absolute inset-0 opacity-8 pointer-events-none overflow-hidden">
+        {/* Matrix columns */}
+        {[...Array(25)].map((_, colIndex) => (
+          <div
+            key={`matrix-col-${colIndex}`}
+            className="absolute top-0 w-6 h-full"
+            style={{
+              left: `${(colIndex * 4)}%`,
+              animation: `matrixRain ${5 + Math.random() * 5}s linear infinite`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
+          >
+            {[...Array(20)].map((_, rowIndex) => (
+              <div
+                key={`matrix-${colIndex}-${rowIndex}`}
+                className="text-green-500 font-mono text-sm leading-relaxed opacity-70"
+                style={{
+                  marginBottom: `${10 + Math.random() * 20}px`
+                }}
+              >
+                {Math.random() > 0.5 ? '1' : '0'}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
 
-      {/* Falling money effect */}
-      <div className="absolute inset-0 opacity-15 pointer-events-none">
-        {[...Array(10)].map((_, i) => (
+      {/* Falling Money Rain Effect */}
+      <div className="absolute inset-0 opacity-12 pointer-events-none overflow-hidden">
+        {[...Array(15)].map((_, i) => (
           <div
-            key={`money-${i}`}
-            className="absolute text-green-600 text-2xl money-fall"
+            key={`money-rain-${i}`}
+            className="absolute text-green-600 text-2xl"
             style={{
-              left: `${10 + Math.random() * 80}%`,
-              animationDelay: `${Math.random() * 8}s`,
-              animationDuration: `${10 + Math.random() * 5}s`
+              left: `${5 + Math.random() * 90}%`,
+              animation: `moneyFall ${8 + Math.random() * 6}s linear infinite`,
+              animationDelay: `${Math.random() * 5}s`
             }}
           >
             💵
