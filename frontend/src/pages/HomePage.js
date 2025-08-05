@@ -43,12 +43,12 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-800 font-sans relative overflow-hidden">
       {/* Matrix effect - Binary numbers */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full">
-          {[...Array(30)].map((_, i) => (
+          {[...Array(40)].map((_, i) => (
             <div
               key={i}
-              className="absolute animate-pulse text-green-500 text-sm font-mono"
+              className="absolute animate-pulse text-green-500 text-base font-mono"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -63,11 +63,11 @@ const HomePage = () => {
       </div>
 
       {/* Falling money effect */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        {[...Array(12)].map((_, i) => (
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        {[...Array(15)].map((_, i) => (
           <div
             key={`money-${i}`}
-            className="absolute text-green-600 text-2xl money-fall"
+            className="absolute text-green-600 text-3xl money-fall"
             style={{
               left: `${5 + Math.random() * 90}%`,
               animationDelay: `${Math.random() * 10}s`,
