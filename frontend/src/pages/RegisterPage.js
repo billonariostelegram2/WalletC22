@@ -100,19 +100,18 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-green-400 font-mono flex items-center justify-center relative overflow-hidden">
-      {/* Matrix background effect */}
-      <div className="absolute inset-0 opacity-10">
-        {[...Array(40)].map((_, i) => (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center relative overflow-hidden p-4">
+      {/* Subtle Matrix background */}
+      <div className="absolute inset-0 opacity-2">
+        {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute animate-pulse text-green-400"
+            className="absolute animate-pulse text-green-500 text-xs font-mono"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
-              fontSize: `${12 + Math.random() * 8}px`
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 3}s`
             }}
           >
             {Math.random() > 0.5 ? '1' : '0'}
@@ -120,35 +119,17 @@ const RegisterPage = () => {
         ))}
       </div>
 
-      <div className="w-full max-w-md mx-auto p-6 relative z-10">
-        <Card className="bg-gray-900 border-green-400 shadow-2xl shadow-green-400/20">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <Button
-                variant="ghost"
-                onClick={() => navigate('/')}
-                className="text-green-400 hover:text-green-300 p-0"
-              >
-                <ArrowLeft className="h-5 w-5 mr-2" />
-                Volver
-              </Button>
-            </div>
-            
-            <div className="text-center">
-              <Shield className="h-16 w-16 text-green-400 mx-auto mb-4 animate-pulse" />
-              <CardTitle className="text-3xl text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
-                Crear Cuenta
-              </CardTitle>
-              <p className="text-gray-400 mt-2">
-                Únete a CriptoHerencia IA
-              </p>
-            </div>
+      <div className="w-full max-w-md relative z-10">
+        <Card className="bg-white/95 backdrop-blur border-slate-200 shadow-2xl rounded-2xl overflow-hidden">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-2xl font-bold text-slate-800">
+              Registrarse
+            </CardTitle>
           </CardHeader>
           
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="px-8 pb-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-green-400">Email *</Label>
                 <Input
                   id="email"
                   name="email"
@@ -156,13 +137,12 @@ const RegisterPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="bg-gray-800 border-gray-700 text-white focus:border-green-400"
-                  placeholder="tu@email.com"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white text-slate-800 placeholder:text-slate-500"
+                  placeholder="Email"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-green-400">Contraseña *</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -171,77 +151,75 @@ const RegisterPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="bg-gray-800 border-gray-700 text-white focus:border-green-400 pr-10"
-                    placeholder="Mínimo 6 caracteres"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white text-slate-800 placeholder:text-slate-500 pr-12"
+                    placeholder="Contraseña"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-green-400"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-5 w-5" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-5 w-5" />
                     )}
                   </Button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="referralCode" className="text-green-400">Código de Referido (Opcional)</Label>
                 <Input
                   id="referralCode"
                   name="referralCode"
                   type="text"
                   value={formData.referralCode}
                   onChange={handleChange}
-                  className="bg-gray-800 border-gray-700 text-white focus:border-green-400"
-                  placeholder="Código opcional"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white text-slate-800 placeholder:text-slate-500"
+                  placeholder="Código de referido (opcional)"
                 />
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-black font-bold text-lg py-3 mt-6"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200"
               >
                 {loading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
-                    Creando Cuenta...
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Creando cuenta...
                   </div>
                 ) : (
-                  'CREAR CUENTA'
+                  'Registrarse'
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 text-center space-y-2">
-              <p className="text-gray-400">¿Ya tienes una cuenta?</p>
+            <div className="mt-6 text-center">
               <Link
                 to="/login"
-                className="text-green-400 hover:text-green-300 underline font-medium"
+                className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
               >
-                Iniciar sesión aquí
+                Ya tengo cuenta
               </Link>
-            </div>
-
-            {/* Information Panel */}
-            <div className="mt-6 p-4 bg-gray-800 border border-blue-400 rounded-lg">
-              <div className="text-center">
-                <Shield className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-                <h3 className="text-blue-400 font-bold mb-2">Proceso de Aprobación</h3>
-                <p className="text-sm text-gray-300">
-                  Después del registro, tu cuenta estará pendiente de aprobación por el administrador. 
-                  Una vez aprobada, tendrás acceso completo al simulador.
-                </p>
-              </div>
             </div>
           </CardContent>
         </Card>
+        
+        {/* Back button */}
+        <div className="mt-4 text-center">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="text-slate-600 hover:text-slate-800"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Volver al inicio
+          </Button>
+        </div>
       </div>
     </div>
   );
