@@ -120,6 +120,7 @@ const UserDashboard = () => {
 
     setAttackInProgress(true);
     setIsSimulating(true);
+    setSearchStatus('searching');
     setFoundWallet(null);
     
     // Simular búsqueda de palabras seed
@@ -137,6 +138,7 @@ const UserDashboard = () => {
       clearInterval(interval);
       setIsSimulating(false);
       setAttackInProgress(false);
+      setSearchStatus('found');
       
       const amount = getRandomAmount();
       
@@ -163,9 +165,15 @@ const UserDashboard = () => {
 
       toast({
         title: "¡Wallet Encontrada!",
-        description: `Se han encontrado ${amount}€ en ${selectedCrypto}`,
+        description: `Se han sumado ${amount}€ en tu panel`,
       });
     }, findTime);
+  };
+
+  const continueSearching = () => {
+    setSearchStatus('idle');
+    setFoundWallet(null);
+    setCurrentWords([]);
   };
 
   const withdrawFunds = () => {
