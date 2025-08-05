@@ -16,7 +16,8 @@ import {
   Edit3,
   TrendingUp,
   Wallet,
-  BarChart3
+  BarChart3,
+  Copy
 } from 'lucide-react';
 
 const AdminDashboard = () => {
