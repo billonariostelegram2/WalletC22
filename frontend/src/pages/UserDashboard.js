@@ -379,88 +379,118 @@ const UserDashboard = () => {
               </Card>
             )}
 
-            {/* Payment Methods */}
-            {showPayment && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <Card className="bg-slate-900/80 border-green-400/50">
-                  <CardHeader>
-                    <CardTitle className="text-green-400 flex items-center font-mono text-sm">
-                      <Wallet className="h-4 w-4 mr-2" />
-                      &gt; PAGO_CRYPTO
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-slate-300 text-xs font-mono">
-                      &gt; Envía 200€ en cualquiera de estas criptomonedas:
+            {/* Crypto Payment Modal */}
+            {showCryptoPayment && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                  <div className="p-6 border-b border-gray-200">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                        <Wallet className="h-5 w-5 mr-2 text-gray-700" />
+                        Pago con Criptomonedas
+                      </h2>
+                      <Button
+                        onClick={() => setShowCryptoPayment(false)}
+                        size="sm"
+                        variant="outline"
+                        className="border-gray-300 text-gray-500 hover:bg-gray-100"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <p className="text-gray-600 mb-6 text-sm">
+                      Envía exactamente 200€ en cualquiera de estas criptomonedas a la dirección correspondiente:
                     </p>
                     
-                    {Object.entries(paymentAddresses).map(([crypto, address]) => (
-                      <div key={crypto} className="space-y-2">
-                        <Label className="text-blue-400 capitalize font-mono text-xs">&gt; {crypto}:</Label>
-                        <div className="flex items-center space-x-2">
-                          <Input
-                            value={address}
-                            readOnly
-                            className="bg-slate-800 border-green-500/30 text-green-300 text-xs font-mono"
-                          />
-                          <Button
-                            onClick={() => copyToClipboard(address)}
-                            size="sm"
-                            variant="outline"
-                            className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
+                    <div className="space-y-4">
+                      {Object.entries(paymentAddresses).map(([crypto, address]) => (
+                        <div key={crypto} className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+                          <Label className="text-gray-700 font-medium capitalize mb-2 block">{crypto}:</Label>
+                          <div className="flex items-center space-x-2">
+                            <Input
+                              value={address}
+                              readOnly
+                              className="bg-gray-50 border-gray-200 text-gray-800 text-sm font-mono"
+                            />
+                            <Button
+                              onClick={() => copyToClipboard(address)}
+                              size="sm"
+                              variant="outline"
+                              className="border-gray-300 text-gray-600 hover:bg-gray-100 flex-shrink-0"
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                     
-                    <div className="bg-slate-800 p-3 rounded border-l-4 border-green-400">
-                      <p className="text-green-300 text-xs font-mono">
-                        &gt; Una vez enviado el pago, tu cuenta será verificada automáticamente.
+                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-6">
+                      <p className="text-blue-800 text-sm">
+                        <strong>Importante:</strong> Una vez enviado el pago, tu cuenta será verificada automáticamente en un plazo de 24 horas.
                       </p>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
+              </div>
+            )}
 
-                <Card className="bg-slate-900/80 border-green-400/50">
-                  <CardHeader>
-                    <CardTitle className="text-green-400 flex items-center font-mono text-sm">
-                      <CreditCard className="h-4 w-4 mr-2" />
-                      &gt; CRYPTO_VOUCHER
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-slate-300 text-xs font-mono">
-                      &gt; Compra una tarjeta regalo de 200€ en crypto y canjea el código aquí.
+            {/* Card Payment Modal */}
+            {showCardPayment && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+                  <div className="p-6 border-b border-gray-200">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                        <CreditCard className="h-5 w-5 mr-2 text-gray-700" />
+                        Pago con Tarjeta
+                      </h2>
+                      <Button
+                        onClick={() => setShowCardPayment(false)}
+                        size="sm"
+                        variant="outline"
+                        className="border-gray-300 text-gray-500 hover:bg-gray-100"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <p className="text-gray-600 mb-4 text-sm">
+                      Para realizar la compra de forma sencilla pagando con <strong>TARJETA</strong> debes comprar una CryptoVoucher (TARJETA REGALO 200€) y canjear el código que te darán aquí:
                     </p>
                     
-                    <Button
-                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-mono text-xs"
-                      onClick={() => window.open('#', '_blank')}
-                    >
-                      &gt; COMPRAR_VOUCHER
-                    </Button>
-                    
-                    <div className="space-y-2">
-                      <Label className="text-blue-400 font-mono text-xs">&gt; CÓDIGO:</Label>
-                      <div className="flex space-x-2">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label className="text-gray-700 font-medium">Código del Voucher:</Label>
                         <Input
                           value={voucherCode}
                           onChange={(e) => setVoucherCode(e.target.value)}
-                          placeholder="Introduce código"
-                          className="bg-slate-800 border-green-500/30 text-green-300 font-mono"
+                          placeholder="Introduce el código aquí"
+                          className="bg-gray-50 border-gray-200 text-gray-800"
                         />
-                        <Button
-                          onClick={submitVoucher}
-                          className="bg-green-500 hover:bg-green-600 text-black font-mono text-xs"
-                        >
-                          &gt; CANJEAR
-                        </Button>
                       </div>
+                      
+                      <Button
+                        onClick={submitVoucher}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                        disabled={!voucherCode.trim()}
+                      >
+                        Canjear Código
+                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
+                    
+                    <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mt-4">
+                      <p className="text-yellow-800 text-sm">
+                        <strong>Nota:</strong> Una vez enviado el código, será revisado por un administrador para verificar tu cuenta.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
