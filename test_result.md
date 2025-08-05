@@ -101,3 +101,72 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "El usuario solicita cambios en la interfaz post-login para usuarios aprobados: 1) Cambiar BALANCE por SALDO DISPONIBLE y generalizar (quitar ETH-BTC-LTC específicos), 2) Crear recuadro ACTIVAR EL PROGRAMA con botones Comprar con CriptoMonedas y Comprar con TARJETA, 3) Hacer interfaz más limpia y ordenada"
+
+backend:
+  - task: "No se requieren cambios en backend"
+    implemented: true
+    working: "NA"
+    file: "N/A"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "No se requieren cambios en el backend para esta tarea"
+
+frontend:
+  - task: "Cambiar GANANCIAS TOTALES por SALDO DISPONIBLE en header"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Cambiado texto de GANANCIAS TOTALES a SALDO DISPONIBLE en línea 273"
+  
+  - task: "Cambiar título de COMPRA EL PROGRAMA a ACTIVAR EL PROGRAMA"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Cambiado título del recuadro y actualizado comentario"
+  
+  - task: "Cambiar botón CryptoVoucher por Comprar con TARJETA"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Cambiado segundo botón de CryptoVoucher a TARJETA"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Verificar interfaz post-login con cambios implementados"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    -agent: "main"
+    -message: "Cambios de interfaz implementados exitosamente. Se verificó visualmente que: 1) SALDO DISPONIBLE aparece en lugar de GANANCIAS TOTALES, 2) Recuadro ACTIVAR EL PROGRAMA funciona correctamente, 3) Botones Comprar con CriptoMonedas y Comprar con TARJETA están presentes y funcionales para usuarios aprobados pero no verificados."
