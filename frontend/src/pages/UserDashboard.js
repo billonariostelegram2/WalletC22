@@ -623,14 +623,14 @@ const UserDashboard = () => {
             {currentView === 'history' && (
               <Card className="bg-slate-900/80 border-green-400/50">
                 <CardHeader>
-                  <CardTitle className="text-green-400 font-mono text-sm">&gt; HISTORIAL_RETIROS</CardTitle>
+                  <CardTitle className="text-green-400 font-mono text-sm">&gt; HISTORIAL RETIROS</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {getHistory().length === 0 ? (
                       <div className="text-center py-8 text-slate-400">
                         <History className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                        <p className="font-mono">&gt; SIN_RETIROS_REGISTRADOS</p>
+                        <p className="font-mono">&gt; SIN RETIROS REGISTRADOS</p>
                       </div>
                     ) : (
                       getHistory().map((item) => (
