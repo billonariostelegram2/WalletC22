@@ -14,11 +14,12 @@ const HomePage = () => {
 
   useEffect(() => {
     const title = 'CriptoHerencia IA';
+    setAnimatedText(''); // Clear any existing text
     let index = 0;
     
     const typeWriter = () => {
       if (index < title.length) {
-        setAnimatedText(prev => prev + title.charAt(index));
+        setAnimatedText(title.substring(0, index + 1));
         index++;
         setTimeout(typeWriter, 100);
       }
