@@ -353,11 +353,11 @@ const UserDashboard = () => {
               </Card>
             )}
 
-            {/* Purchase Program Section - Always visible but required for verification */}
+            {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
               <Card className="bg-slate-900/80 border-green-400/50 mb-6">
                 <CardHeader>
-                  <CardTitle className="text-green-400 font-mono text-sm">&gt; COMPRA EL PROGRAMA</CardTitle>
+                  <CardTitle className="text-green-400 font-mono text-sm">&gt; ACTIVAR EL PROGRAMA</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -372,7 +372,7 @@ const UserDashboard = () => {
                       variant="outline"
                       className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-mono font-bold py-3"
                     >
-                      Comprar con CryptoVoucher
+                      Comprar con TARJETA
                     </Button>
                   </div>
                 </CardContent>
