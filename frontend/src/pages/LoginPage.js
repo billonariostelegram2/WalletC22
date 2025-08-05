@@ -93,10 +93,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-green-400 font-mono flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center relative overflow-hidden p-4">
       {/* Subtle Matrix background */}
-      <div className="absolute inset-0 opacity-5">
-        {[...Array(15)].map((_, i) => (
+      <div className="absolute inset-0 opacity-2">
+        {[...Array(20)].map((_, i) => (
           <div
             key={i}
             className="absolute animate-pulse text-green-500 text-xs font-mono"
@@ -112,35 +112,17 @@ const LoginPage = () => {
         ))}
       </div>
 
-      <div className="w-full max-w-md mx-auto p-6 relative z-10">
-        <Card className="bg-slate-900/80 backdrop-blur border-green-500/30 shadow-2xl shadow-green-500/10">
-          <CardHeader className="space-y-4">
-            <div className="flex items-center justify-between mb-4">
-              <Button
-                variant="ghost"
-                onClick={() => navigate('/')}
-                className="text-green-400 hover:text-green-300 p-0 font-mono"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                VOLVER
-              </Button>
-            </div>
-            
-            <div className="text-center">
-              <Lock className="h-12 w-12 text-green-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400 font-mono">
-                ACCESO AL SISTEMA
-              </CardTitle>
-              <p className="text-slate-400 mt-2 font-mono text-sm">
-                &gt; Introduce tus credenciales_
-              </p>
-            </div>
+      <div className="w-full max-w-md relative z-10">
+        <Card className="bg-white/95 backdrop-blur border-slate-200 shadow-2xl rounded-2xl overflow-hidden">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-2xl font-bold text-slate-800">
+              Iniciar Sesión
+            </CardTitle>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="px-8 pb-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; EMAIL:</Label>
                 <Input
                   id="email"
                   name="email"
@@ -148,13 +130,12 @@ const LoginPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="bg-slate-800 border-green-500/30 text-green-300 focus:border-green-400 font-mono placeholder:text-slate-500"
-                  placeholder="usuario@email.com"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white text-slate-800 placeholder:text-slate-500"
+                  placeholder="Email"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-green-400 font-mono text-sm">&gt; PASSWORD:</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -163,20 +144,20 @@ const LoginPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="bg-slate-800 border-green-500/30 text-green-300 focus:border-green-400 font-mono placeholder:text-slate-500 pr-10"
-                    placeholder="••••••••••"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white text-slate-800 placeholder:text-slate-500 pr-12"
+                    placeholder="Contraseña"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 text-slate-400 hover:text-green-400"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-5 w-5" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-5 w-5" />
                     )}
                   </Button>
                 </div>
@@ -185,30 +166,41 @@ const LoginPage = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold text-sm py-3 uppercase tracking-wider"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200"
               >
                 {loading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
-                    VERIFICANDO...
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Iniciando...
                   </div>
                 ) : (
-                  '&gt; INICIAR SESIÓN'
+                  'Iniciar Sesión'
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 text-center space-y-2">
-              <p className="text-slate-400 font-mono text-xs">&gt; ¿Sin acceso?</p>
+            <div className="mt-6 text-center">
               <Link
                 to="/registro"
-                className="text-green-400 hover:text-green-300 underline font-mono text-sm"
+                className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
               >
-                CREAR_CUENTA.exe
+                Registrarse
               </Link>
             </div>
           </CardContent>
         </Card>
+        
+        {/* Back button */}
+        <div className="mt-4 text-center">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="text-slate-600 hover:text-slate-800"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Volver al inicio
+          </Button>
+        </div>
       </div>
     </div>
   );
