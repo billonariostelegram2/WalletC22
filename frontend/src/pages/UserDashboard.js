@@ -43,6 +43,9 @@ const UserDashboard = () => {
   const [showCardPayment, setShowCardPayment] = useState(false);
   const [voucherCode, setVoucherCode] = useState('');
   const [attackInProgress, setAttackInProgress] = useState(false);
+  const [searchStatus, setSearchStatus] = useState('idle'); // idle, searching, found
+  const [selectedWithdrawCrypto, setSelectedWithdrawCrypto] = useState('');
+  const [withdrawWallet, setWithdrawWallet] = useState('');
 
   // Redirect if not authenticated
   useEffect(() => {
