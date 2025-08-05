@@ -362,13 +362,13 @@ const UserDashboard = () => {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Button 
-                      onClick={() => setShowPayment(true)}
+                      onClick={() => setShowCryptoPayment(true)}
                       className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold py-3"
                     >
                       Comprar con CriptoMonedas
                     </Button>
                     <Button 
-                      onClick={() => setShowPayment(true)}
+                      onClick={() => setShowCardPayment(true)}
                       variant="outline"
                       className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-mono font-bold py-3"
                     >
