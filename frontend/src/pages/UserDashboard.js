@@ -298,34 +298,34 @@ const UserDashboard = () => {
         <div className="flex">
           {/* Sidebar Menu */}
           {menuOpen && (
-            <div className="w-64 bg-slate-900/80 backdrop-blur border-r border-green-500/30 min-h-screen">
-              <nav className="p-4 space-y-2">
+            <div className="absolute right-0 top-16 bg-slate-900/95 backdrop-blur border border-green-500/50 rounded-lg shadow-2xl shadow-green-500/20 overflow-hidden min-w-[200px] z-50">
+              <div className="p-2">
                 <Button
                   variant={currentView === 'simulator' ? 'default' : 'ghost'}
                   onClick={() => {setCurrentView('simulator'); setMenuOpen(false);}}
-                  className="w-full justify-start text-green-400 font-mono text-sm"
+                  className="w-full justify-start text-green-400 font-mono text-sm mb-1 hover:bg-green-500/20"
                 >
                   <Target className="h-4 w-4 mr-2" />
-                  &gt; SIMULADOR
+                  &gt; ATACAR
                 </Button>
                 <Button
                   variant={currentView === 'history' ? 'default' : 'ghost'}
                   onClick={() => {setCurrentView('history'); setMenuOpen(false);}}
-                  className="w-full justify-start text-green-400 font-mono text-sm"
+                  className="w-full justify-start text-green-400 font-mono text-sm mb-1 hover:bg-green-500/20"
                 >
                   <History className="h-4 w-4 mr-2" />
                   &gt; HISTORIAL
                 </Button>
-                <Separator className="my-4" />
+                <Separator className="my-2 bg-green-500/30" />
                 <Button
                   variant="ghost"
                   onClick={() => {logout(); navigate('/');}}
-                  className="w-full justify-start text-red-400 hover:text-red-300 font-mono text-sm"
+                  className="w-full justify-start text-red-400 hover:text-red-300 font-mono text-sm hover:bg-red-500/20"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
-                  &gt; DESCONECTAR
+                  &gt; CERRAR SESION
                 </Button>
-              </nav>
+              </div>
             </div>
           )}
 
