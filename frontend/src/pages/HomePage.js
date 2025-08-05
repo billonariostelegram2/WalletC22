@@ -151,7 +151,7 @@ const HomePage = () => {
                   ¿Listo para ganar dinero?
                 </h2>
                 <p className="text-lg text-slate-600 mb-8">
-                  Únete a miles de usuarios que ya están generando ingresos con nuestra tecnología avanzada
+                  Únete a cientos de usuarios que ya están generando ingresos con nuestra tecnología avanzada
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
