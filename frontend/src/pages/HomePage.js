@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { Star, Shield, Smartphone, Zap, DollarSign, Gift } from 'lucide-react';
+import { Star, Shield, Smartphone, Zap, DollarSign, Gift, Menu, X } from 'lucide-react';
 import { mockReviews } from '../components/mock';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [animatedText, setAnimatedText] = useState('');
   const [showText, setShowText] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const title = 'CriptoHerencia IA';
@@ -19,7 +20,7 @@ const HomePage = () => {
       if (index < title.length) {
         setAnimatedText(prev => prev + title.charAt(index));
         index++;
-        setTimeout(typeWriter, 150);
+        setTimeout(typeWriter, 100);
       } else {
         setShowText(true);
       }
@@ -27,7 +28,7 @@ const HomePage = () => {
     
     const timer = setTimeout(() => {
       typeWriter();
-    }, 1000);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
