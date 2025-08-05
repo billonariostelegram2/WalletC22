@@ -21,9 +21,29 @@ import {
   AlertCircle,
   Copy,
   CheckCircle,
-  Target
+  Target,
+  Lock,
+  Bitcoin,
+  DollarSign
 } from 'lucide-react';
 import { bip39Words, getRandomAmount, cryptoIcons, paymentAddresses } from '../components/mock';
+
+const UserDashboard = () => {
+  const navigate = useNavigate();
+  const { user, logout, updateUser } = useAuth();
+  const { toast } = useToast();
+  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [currentView, setCurrentView] = useState('simulator');
+  const [selectedCrypto, setSelectedCrypto] = useState('');
+  const [userWallet, setUserWallet] = useState('');
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [currentWords, setCurrentWords] = useState([]);
+  const [foundWallet, setFoundWallet] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [voucherCode, setVoucherCode] = useState('');
+  const [attackInProgress, setAttackInProgress] = useState(false);
 
 const UserDashboard = () => {
   const navigate = useNavigate();
