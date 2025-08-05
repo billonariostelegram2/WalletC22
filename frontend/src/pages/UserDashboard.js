@@ -330,7 +330,7 @@ const UserDashboard = () => {
           )}
 
           {/* Main Content */}
-          <div className="flex-1 p-6">
+          <div className="flex-1 p-6 relative">
             {/* Account Status Alert */}
             {!user.approved && (
               <Card className="bg-yellow-900/50 border-yellow-400/50 mb-6">
@@ -338,8 +338,8 @@ const UserDashboard = () => {
                   <div className="flex items-center space-x-2">
                     <AlertCircle className="h-5 w-5 text-yellow-400" />
                     <div>
-                      <h3 className="font-bold text-yellow-400 font-mono">&gt; CUENTA_PENDIENTE</h3>
-                      <p className="text-sm text-yellow-200 font-mono">Tu cuenta está pendiente de aprobación por el administrador.</p>
+                      <h3 className="font-bold text-yellow-400 font-mono">&gt; CUENTA PENDIENTE</h3>
+                      <p className="text-sm text-yellow-200 font-mono">Tu cuenta está pendiente de verificación por el administrador.</p>
                     </div>
                   </div>
                 </CardContent>
