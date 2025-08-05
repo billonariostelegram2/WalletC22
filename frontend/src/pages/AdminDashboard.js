@@ -109,6 +109,8 @@ const AdminDashboard = () => {
       description: "El código ha sido marcado como inválido",
       variant: "destructive"
     });
+  };
+
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
       toast({
