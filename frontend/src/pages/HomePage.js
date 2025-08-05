@@ -42,24 +42,43 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-800 font-sans relative overflow-hidden">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Matrix effect - Binary numbers */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(30)].map((_, i) => (
             <div
               key={i}
-              className="absolute animate-pulse text-blue-400 text-xs"
+              className="absolute animate-pulse text-green-500 text-sm font-mono"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${3 + Math.random() * 3}s`
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${3 + Math.random() * 4}s`
               }}
             >
-              ●
+              {Math.random() > 0.5 ? '1' : '0'}
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Falling money effect */}
+      <div className="absolute inset-0 opacity-3 pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={`money-${i}`}
+            className="absolute text-green-500 text-xl animate-bounce"
+            style={{
+              left: `${10 + Math.random() * 80}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${8 + Math.random() * 4}s`,
+              transform: 'rotate(15deg)'
+            }}
+          >
+            💵
+          </div>
+        ))}
       </div>
 
       {/* Floating crypto logos */}
@@ -67,12 +86,12 @@ const HomePage = () => {
         {cryptoLogos.map((crypto, index) => (
           <div
             key={crypto.name}
-            className={`absolute text-xl text-blue-400/20 animate-bounce`}
+            className={`absolute text-xl text-blue-400/15 animate-bounce`}
             style={{
               left: `${15 + (index * 18)}%`,
               top: `${25 + (index * 12)}%`,
               animationDelay: `${index * 0.5}s`,
-              animationDuration: '6s'
+              animationDuration: '8s'
             }}
           >
             {crypto.symbol}
