@@ -157,7 +157,7 @@ const HomePage = () => {
 
         {/* CTA Buttons Section */}
         {showText && (
-          <section className="py-12 px-4 animate-fade-in">
+          <section className="py-12 px-4">
             <div className="max-w-4xl mx-auto text-center">
               <div className="bg-white/80 backdrop-blur border border-slate-200 rounded-2xl p-8 shadow-xl">
                 <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4">
