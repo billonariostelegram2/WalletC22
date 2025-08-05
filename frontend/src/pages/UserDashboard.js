@@ -546,41 +546,19 @@ const UserDashboard = () => {
                     {!user.verified ? (
                       <div className="text-center p-8 bg-slate-800 rounded border border-yellow-400/50 relative">
                         <Lock className="h-16 w-16 text-yellow-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-yellow-400 mb-2 font-mono">&gt; ACCESO_BLOQUEADO</h3>
+                        <h3 className="text-xl font-bold text-yellow-400 mb-2 font-mono">&gt; ACCESO BLOQUEADO</h3>
                         <p className="text-slate-300 font-mono text-sm">
                           Para acceder al simulador de ataque, necesitas verificar tu cuenta mediante pago.
                         </p>
                       </div>
                     ) : (
                       <>
-                        <Button
-                          onClick={isSimulating ? () => setIsSimulating(false) : startSimulation}
-                          disabled={!selectedCrypto || !userWallet.trim() || attackInProgress}
-                          className={`w-full text-lg py-6 font-mono font-bold ${
-                            isSimulating 
-                              ? 'bg-red-600 hover:bg-red-700' 
-                              : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600'
-                          } text-black uppercase tracking-wider`}
-                        >
-                          {isSimulating ? (
-                            <>
-                              <Zap className="h-5 w-5 mr-2 animate-pulse" />
-                              &gt; DETENIENDO_ATAQUE...
-                            </>
-                          ) : (
-                            <>
-                              <Play className="h-5 w-5 mr-2" />
-                              &gt; ATACAR_BILLETERAS
-                            </>
-                          )}
-                        </Button>
-
                         {/* Attack Progress */}
                         {(isSimulating || currentWords.length > 0) && (
                           <div className="bg-black border border-green-400/50 rounded p-4">
                             <div className="text-center mb-4">
                               <h3 className="text-green-400 font-bold font-mono text-sm">
-                                {isSimulating ? '&gt; ATACANDO_FRASES_SEMILLA...' : '&gt; ÚLTIMA_BÚSQUEDA'}
+                                {isSimulating ? '&gt; ATACANDO FRASES SEMILLA...' : '&gt; ÚLTIMA BÚSQUEDA'}
                               </h3>
                               {isSimulating && (
                                 <div className="text-xs text-blue-400 font-mono mt-2">
@@ -612,7 +590,7 @@ const UserDashboard = () => {
                             <CardContent className="p-6 text-center">
                               <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4 animate-pulse" />
                               <h3 className="text-2xl font-bold text-green-400 mb-2 font-mono">
-                                &gt; WALLET_ENCONTRADA!
+                                &gt; WALLET ENCONTRADA!
                               </h3>
                               <p className="text-xl text-white mb-4 font-mono">
                                 {cryptoIcons[foundWallet.type]} €{foundWallet.amount} en {foundWallet.type}
@@ -622,14 +600,14 @@ const UserDashboard = () => {
                                   onClick={withdrawFunds}
                                   className="bg-green-500 hover:bg-green-600 text-black font-bold font-mono"
                                 >
-                                  &gt; RETIRAR_FONDOS
+                                  &gt; RETIRAR FONDOS
                                 </Button>
                                 <Button
                                   onClick={() => {setFoundWallet(null); startSimulation();}}
                                   variant="outline"
                                   className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-mono"
                                 >
-                                  &gt; CONTINUAR_ATACANDO
+                                  &gt; CONTINUAR ATACANDO
                                 </Button>
                               </div>
                             </CardContent>
