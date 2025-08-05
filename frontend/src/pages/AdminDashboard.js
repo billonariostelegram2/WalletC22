@@ -363,8 +363,20 @@ const AdminDashboard = () => {
                           <td className="px-6 py-4 text-sm text-slate-800 font-medium">
                             {voucher.userEmail}
                           </td>
-                          <td className="px-6 py-4 text-sm font-mono text-slate-600 bg-slate-100 rounded px-2 py-1 inline-block">
-                            {voucher.code}
+                          <td className="px-6 py-4">
+                            <div className="flex items-center space-x-2">
+                              <code className="text-sm font-mono text-slate-800 bg-slate-100 border border-slate-200 rounded px-3 py-1">
+                                {voucher.code}
+                              </code>
+                              <Button
+                                onClick={() => copyToClipboard(voucher.code)}
+                                size="sm"
+                                variant="outline"
+                                className="border-slate-300 text-slate-600 hover:bg-slate-50"
+                              >
+                                <Copy className="h-3 w-3" />
+                              </Button>
+                            </div>
                           </td>
                           <td className="px-6 py-4 text-sm text-slate-600">
                             {new Date(voucher.date).toLocaleDateString('es-ES')}
