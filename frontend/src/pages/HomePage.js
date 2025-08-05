@@ -317,12 +317,17 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Footer disclaimer */}
+        {/* Footer with Telegram support */}
         <footer className="py-8 px-4 border-t border-slate-200 bg-white/50">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-xs text-slate-500">
-              * Simulador educativo con fines de demostración. No proporciona acceso real a billeteras de criptomonedas.
-            </p>
+            <a 
+              href="https://t.me/criptoherencia" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-300"
+            >
+              Soporte por Telegram @criptoherencia
+            </a>
           </div>
         </footer>
       </div>
