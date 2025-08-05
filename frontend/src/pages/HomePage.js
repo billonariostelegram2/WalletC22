@@ -348,10 +348,38 @@ const HomePage = () => {
           to { opacity: 1; transform: translateY(0); }
         }
         
-        @keyframes money-fall {
-          0% { transform: translateY(-20px) rotate(15deg); opacity: 0; }
-          50% { opacity: 0.1; }
-          100% { transform: translateY(100vh) rotate(15deg); opacity: 0; }
+        @keyframes matrixRain {
+          0% { 
+            transform: translateY(-100vh); 
+            opacity: 0; 
+          }
+          10% { 
+            opacity: 1; 
+          }
+          90% { 
+            opacity: 1; 
+          }
+          100% { 
+            transform: translateY(100vh); 
+            opacity: 0; 
+          }
+        }
+        
+        @keyframes moneyFall {
+          0% { 
+            transform: translateY(-50px) rotate(0deg); 
+            opacity: 0; 
+          }
+          10% { 
+            opacity: 1; 
+          }
+          90% { 
+            opacity: 1; 
+          }
+          100% { 
+            transform: translateY(calc(100vh + 50px)) rotate(360deg); 
+            opacity: 0; 
+          }
         }
         
         .animate-blink {
@@ -360,10 +388,6 @@ const HomePage = () => {
         
         .animate-fade-in {
           animation: fade-in 0.8s ease-out;
-        }
-        
-        .money-fall {
-          animation: money-fall 15s linear infinite;
         }
       `}</style>
     </div>
