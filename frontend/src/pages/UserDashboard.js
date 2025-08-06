@@ -784,7 +784,15 @@ const UserDashboard = () => {
                     <CardTitle className="text-gray-800 font-sans text-lg">Sistema de Ataque</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6">
-                    {!user.verified ? (
+                    {(() => {
+                      const isVerified = user.verified;
+                      console.log('Simulator access check:', {
+                        user: { verified: user.verified, approved: user.approved },
+                        isVerified: isVerified,
+                        shouldBlockAccess: !isVerified
+                      });
+                      return !isVerified;
+                    })() ? (
                       <div className="text-center p-6 bg-gray-100 rounded border border-gray-300 relative min-h-[400px] max-h-[400px] flex flex-col justify-center">
                         {/* Single Lock Icon - Clean Design */}
                         <div className="mb-6">
