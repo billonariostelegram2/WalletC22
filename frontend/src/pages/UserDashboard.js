@@ -705,7 +705,7 @@ const UserDashboard = () => {
                         <Lock className="h-16 w-16 text-yellow-600 mx-auto mb-4" />
                         <h3 className="text-xl font-bold text-yellow-800 mb-2 font-sans">ACCESO BLOQUEADO</h3>
                         <p className="text-yellow-700 font-sans text-sm">
-                          Para usar CriptoHerencia, necesitas verificar tu cuenta pagando 200€. 
+                          Para usar CriptoHerencia y así ganar dinero necesitas activar el programa pagando 200€. 
                           El administrador revisará tu pago (normalmente inmediato, máximo 3 horas).
                         </p>
                       </div>
