@@ -173,7 +173,7 @@ const UserDashboard = () => {
   const continueSearching = () => {
     setSearchStatus('idle');
     setFoundWallet(null);
-    setCurrentWords([]);
+    setCurrentWords(Array(12).fill('empezar'));
   };
 
   const processWithdrawal = () => {
