@@ -646,57 +646,57 @@ const UserDashboard = () => {
                       }
                       startSimulation();
                     }}
-                    disabled={!selectedCrypto || !userWallet.trim() || attackInProgress}
-                    className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-mono font-bold text-xl px-12 py-4 uppercase tracking-wider"
+                    disabled={!selectedCrypto || attackInProgress}
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white font-sans font-bold text-lg px-8 py-4 rounded-lg shadow-lg"
                   >
-                    &gt; EMPEZAR ATAQUE
+                    EMPEZAR ATAQUE
                   </Button>
                 </div>
 
-                {/* Attack System */}
-                <Card className="bg-slate-900/80 border-green-400/50">
-                  <CardHeader>
-                    <CardTitle className="text-green-400 font-mono text-sm">&gt; ATACAR BILLETERAS</CardTitle>
+                {/* Attack System - Professional Design */}
+                <Card className="bg-white border-gray-200 shadow-sm">
+                  <CardHeader className="border-b border-gray-100">
+                    <CardTitle className="text-gray-800 font-sans text-lg">Sistema de Ataque</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="p-6">
                     {!user.verified ? (
-                      <div className="text-center p-8 bg-slate-800 rounded border border-yellow-400/50 relative">
-                        <Lock className="h-16 w-16 text-yellow-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-yellow-400 mb-2 font-mono">&gt; ACCESO BLOQUEADO</h3>
-                        <p className="text-slate-300 font-mono text-sm">
-                          Para acceder al simulador de ataque, necesitas verificar tu cuenta mediante pago.
+                      <div className="text-center p-8 bg-yellow-50 rounded border border-yellow-200 relative">
+                        <Lock className="h-16 w-16 text-yellow-600 mx-auto mb-4" />
+                        <h3 className="text-xl font-bold text-yellow-800 mb-2 font-sans">ACCESO BLOQUEADO</h3>
+                        <p className="text-yellow-700 font-sans text-sm">
+                          Para usar CriptoHerencia, necesitas verificar tu cuenta mediante pago.
                         </p>
                       </div>
                     ) : (
                       <>
-                        {/* Fixed Static Search Box - ALWAYS SAME SIZE AND POSITION */}
-                        <div className="bg-black border border-green-400/50 rounded p-6 min-h-[400px] max-h-[400px]">
-                          {/* Status Text - Changes but position stays same */}
+                        {/* Fixed Static Search Box - Professional White Design */}
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 min-h-[400px] max-h-[400px]">
+                          {/* Status Text */}
                           <div className="text-center mb-4 h-16 flex flex-col justify-center">
                             {searchStatus === 'idle' && (
-                              <div className="text-green-400 font-bold font-mono text-lg">
-                                &gt; BUSCANDO BILLETERA CON FONDOS
+                              <div className="text-gray-700 font-bold font-sans text-lg">
+                                BUSCANDO BILLETERA CON FONDOS
                               </div>
                             )}
                             
                             {searchStatus === 'searching' && (
                               <>
-                                <div className="text-green-400 font-bold font-mono text-lg animate-pulse">
-                                  &gt; BUSCANDO BILLETERA CON FONDOS
+                                <div className="text-blue-600 font-bold font-sans text-lg animate-pulse">
+                                  BUSCANDO BILLETERA CON FONDOS
                                 </div>
-                                <div className="text-blue-400 font-mono text-sm mt-1">
-                                  &gt; Tipo: {selectedCrypto} | Velocidad: {Math.floor(Math.random() * 5000 + 1000)}/seg
+                                <div className="text-gray-500 font-sans text-sm mt-1">
+                                  Tipo: {selectedCrypto} | Velocidad: {Math.floor(Math.random() * 5000 + 1000)}/seg
                                 </div>
                               </>
                             )}
                             
                             {searchStatus === 'found' && foundWallet && (
                               <>
-                                <div className="text-green-400 font-bold font-mono text-lg mb-2">
-                                  &gt; WALLET ENCONTRADA
+                                <div className="text-green-600 font-bold font-sans text-lg mb-2">
+                                  WALLET ENCONTRADA
                                 </div>
-                                <div className="text-white font-mono text-base">
-                                  Se han sumado {cryptoIcons[foundWallet.type]} €{foundWallet.amount} en tu panel
+                                <div className="text-gray-800 font-sans text-base">
+                                  Se han sumado {cryptoLogos[foundWallet.type]} €{foundWallet.amount} en tu panel
                                 </div>
                               </>
                             )}
