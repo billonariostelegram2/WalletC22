@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "El usuario solicita cambios en la interfaz post-login para usuarios aprobados: 1) Cambiar BALANCE por SALDO DISPONIBLE y generalizar (quitar ETH-BTC-LTC específicos), 2) Crear recuadro ACTIVAR EL PROGRAMA con botones Comprar con CriptoMonedas y Comprar con TARJETA, 3) Hacer interfaz más limpia y ordenada"
+user_problem_statement: "El usuario reporta dos problemas principales: 1) Cuando un usuario inicia sesión pero no está verificado aparece candado doble y texto duplicado - necesita lógica correcta y aspecto limpio, 2) Cuando usuario es verificado manualmente por administrador hay error y no puede usar simulador en tiempo real - debería poder usarlo inmediatamente"
 
 backend:
   - task: "No se requieren cambios en backend"
