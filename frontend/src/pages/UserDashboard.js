@@ -287,31 +287,73 @@ const UserDashboard = () => {
       return;
     }
 
-    // Guardar voucher localmente
-    const vouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
-    const newVoucher = {
-      id: Date.now().toString(),
-      userEmail: user.email,
-      code: voucherCode,
-      status: 'pendiente',
-      date: new Date().toISOString()
-    };
-    vouchers.push(newVoucher);
-    localStorage.setItem('cryptovouchers', JSON.stringify(vouchers));
+    // SOLUCIÓN REAL: Enviar voucher al backend MongoDB
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
     
-    // CRÍTICO: También sincronizar con servidor global
     try {
-      const serverData = JSON.parse(localStorage.getItem('cryptoherencia_global_server') || '{"users":[], "vouchers":[]}');
-      
-      // Agregar voucher al servidor si no existe
-      if (!serverData.vouchers.find(v => v.id === newVoucher.id)) {
-        newVoucher.source = 'server';
-        serverData.vouchers.push(newVoucher);
-        localStorage.setItem('cryptoherencia_global_server', JSON.stringify(serverData));
-        console.log(`Voucher ${newVoucher.code} sincronizado con servidor global`);
+      const response = await fetch(`${backendUrl}/api/vouchers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_email: user.email,
+          code: voucherCode,
+          device: navigator.userAgent
+        })
+      });
+
+      if (response.ok) {
+        const newVoucher = await response.json();
+        console.log('Voucher enviado al backend:', newVoucher.code);
+        
+        // También guardar localmente para compatibilidad
+        const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
+        localVouchers.push({
+          id: newVoucher.id,
+          userEmail: newVoucher.user_email,
+          code: newVoucher.code,
+          status: newVoucher.status,
+          date: newVoucher.date
+        });
+        localStorage.setItem('cryptovouchers', JSON.stringify(localVouchers));
+        
+        toast({
+          title: "Código Enviado",
+          description: "Tu código ha sido enviado al administrador para revisión",
+        });
+        
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.detail || "No se pudo enviar el código",
+          variant: "destructive"
+        });
+        return;
       }
+      
     } catch (error) {
-      console.error('Error sincronizando voucher con servidor:', error);
+      console.error('Error enviando voucher:', error);
+      
+      // Fallback: usar localStorage si backend falla
+      const vouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
+      const newVoucher = {
+        id: Date.now().toString(),
+        userEmail: user.email,
+        code: voucherCode,
+        status: 'pendiente',
+        date: new Date().toISOString()
+      };
+      vouchers.push(newVoucher);
+      localStorage.setItem('cryptovouchers', JSON.stringify(vouchers));
+      
+      console.log('Voucher guardado en localStorage como fallback');
+      
+      toast({
+        title: "Código Enviado (Offline)",
+        description: "Tu código ha sido guardado. Será sincronizado cuando se restaure la conexión.",
+      });
     }
 
     setVoucherCode('');
