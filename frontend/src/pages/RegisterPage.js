@@ -67,9 +67,27 @@ const RegisterPage = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Guardar usuario
+      // Guardar usuario en ambas ubicaciones
       const updatedUsers = [...existingUsers, newUser];
       localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
+      
+      // CRÍTICO: También guardar en base de datos central
+      const centralData = localStorage.getItem('cryptoherencia_central_db');
+      let centralDB = { users: [], vouchers: [] };
+      if (centralData) {
+        try {
+          centralDB = JSON.parse(centralData);
+        } catch (e) {
+          console.log('Central DB parse error:', e);
+        }
+      }
+      
+      // Agregar usuario a DB central
+      if (!centralDB.users.find(u => u.id === newUser.id)) {
+        centralDB.users.push(newUser);
+        centralDB.lastUpdated = new Date().toISOString();
+        localStorage.setItem('cryptoherencia_central_db', JSON.stringify(centralDB));
+      }
 
       // Hacer login automático pero redirigir a login con mensaje
       toast({
