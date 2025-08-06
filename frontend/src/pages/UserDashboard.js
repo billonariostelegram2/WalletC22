@@ -669,62 +669,72 @@ const UserDashboard = () => {
                       </div>
                     ) : (
                       <>
-                        {/* Fixed Search Status Box */}
-                        <div className="bg-black border border-green-400/50 rounded p-6 min-h-[200px] flex flex-col justify-center">
-                          {searchStatus === 'idle' && (
-                            <div className="text-center">
-                              <div className="text-green-400 font-bold font-mono text-lg mb-2">
+                        {/* Fixed Static Search Box - ALWAYS SAME SIZE AND POSITION */}
+                        <div className="bg-black border border-green-400/50 rounded p-6 min-h-[400px] max-h-[400px]">
+                          {/* Status Text - Changes but position stays same */}
+                          <div className="text-center mb-4 h-16 flex flex-col justify-center">
+                            {searchStatus === 'idle' && (
+                              <div className="text-green-400 font-bold font-mono text-lg">
                                 &gt; BUSCANDO BILLETERA CON FONDOS
                               </div>
-                              <div className="text-slate-400 font-mono text-sm">
-                                Presiona "EMPEZAR ATAQUE" para comenzar la búsqueda
-                              </div>
-                            </div>
-                          )}
-                          
-                          {searchStatus === 'searching' && (
-                            <div>
-                              <div className="text-center mb-4">
+                            )}
+                            
+                            {searchStatus === 'searching' && (
+                              <>
                                 <div className="text-green-400 font-bold font-mono text-lg animate-pulse">
                                   &gt; BUSCANDO BILLETERA CON FONDOS
                                 </div>
-                                <div className="text-blue-400 font-mono text-sm mt-2">
+                                <div className="text-blue-400 font-mono text-sm mt-1">
                                   &gt; Tipo: {selectedCrypto} | Velocidad: {Math.floor(Math.random() * 5000 + 1000)}/seg
                                 </div>
-                              </div>
-                              
-                              {currentWords.length > 0 && (
-                                <div className="grid grid-cols-3 md:grid-cols-4 gap-2 text-xs">
-                                  {currentWords.map((word, index) => (
-                                    <div
-                                      key={index}
-                                      className="p-2 rounded border border-yellow-400 text-yellow-400 animate-pulse text-center font-mono"
-                                    >
-                                      [{String(index + 1).padStart(2, '0')}] {word}
-                                    </div>
-                                  ))}
+                              </>
+                            )}
+                            
+                            {searchStatus === 'found' && foundWallet && (
+                              <>
+                                <div className="text-green-400 font-bold font-mono text-lg mb-2">
+                                  &gt; WALLET ENCONTRADA
                                 </div>
-                              )}
-                            </div>
-                          )}
+                                <div className="text-white font-mono text-base">
+                                  Se han sumado {cryptoIcons[foundWallet.type]} €{foundWallet.amount} en tu panel
+                                </div>
+                              </>
+                            )}
+                          </div>
                           
-                          {searchStatus === 'found' && foundWallet && (
-                            <div className="text-center">
-                              <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4 animate-pulse" />
-                              <div className="text-green-400 font-bold font-mono text-lg mb-2">
-                                &gt; WALLET ENCONTRADA
+                          {/* 12 Words Grid - ALWAYS VISIBLE, SAME POSITION */}
+                          <div className="grid grid-cols-3 md:grid-cols-4 gap-2 text-xs mb-6">
+                            {currentWords.map((word, index) => (
+                              <div
+                                key={index}
+                                className={`p-2 rounded border text-center font-mono ${
+                                  searchStatus === 'searching'
+                                    ? 'border-yellow-400 text-yellow-400 animate-pulse' 
+                                    : 'border-green-400 text-green-400'
+                                }`}
+                              >
+                                [{String(index + 1).padStart(2, '0')}] {word}
                               </div>
-                              <div className="text-white font-mono text-lg mb-4">
-                                Se han sumado {cryptoIcons[foundWallet.type]} €{foundWallet.amount} en tu panel
+                            ))}
+                          </div>
+                          
+                          {/* Bottom Button Area - ALWAYS SAME POSITION */}
+                          <div className="text-center h-12 flex items-center justify-center">
+                            {searchStatus === 'idle' && (
+                              <div className="text-slate-400 font-mono text-sm">
+                                Presiona "EMPEZAR ATAQUE" para comenzar la búsqueda
                               </div>
+                            )}
+                            
+                            {searchStatus === 'found' && (
                               <Button
                                 onClick={continueSearching}
                                 className="bg-green-500 hover:bg-green-600 text-black font-bold font-mono"
                               >
                                 &gt; SEGUIR BUSCANDO
                               </Button>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </>
                     )}
