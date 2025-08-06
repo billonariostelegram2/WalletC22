@@ -56,8 +56,8 @@ const RegisterPage = () => {
         email: formData.email,
         password: formData.password,
         referralCode: formData.referralCode,
-        approved: false,
-        verified: false,
+        approved: true,  // CAMBIO: Aprobado automáticamente
+        verified: false, // Verificación manual tras pago
         balance: {
           BTC: 0,
           ETH: 0,
