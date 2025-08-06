@@ -120,7 +120,7 @@ const AdminDashboard = () => {
 
   const approveUser = async (userId) => {
     try {
-      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       
       const response = await fetch(`${backendUrl}/api/users/${userId}`, {
         method: 'PUT',
@@ -153,7 +153,7 @@ const AdminDashboard = () => {
 
   const verifyUser = async (userId) => {
     try {
-      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       
       const response = await fetch(`${backendUrl}/api/users/${userId}`, {
         method: 'PUT',
@@ -186,7 +186,7 @@ const AdminDashboard = () => {
 
   const approveVoucher = async (voucherId) => {
     try {
-      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       
       const response = await fetch(`${backendUrl}/api/vouchers/${voucherId}`, {
         method: 'PUT',
@@ -222,7 +222,7 @@ const AdminDashboard = () => {
 
   const rejectVoucher = async (voucherId) => {
     try {
-      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       
       const response = await fetch(`${backendUrl}/api/vouchers/${voucherId}`, {
         method: 'PUT',
