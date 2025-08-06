@@ -171,4 +171,4 @@ test_plan:
 
 agent_communication:
     -agent: "main"
-    -message: "TODAS LAS FUNCIONALIDADES SOLICITADAS IMPLEMENTADAS EXITOSAMENTE: 1) Recuadro fijo 'BUSCANDO BILLETERA CON FONDOS' implementado con estados idle/searching/found, 2) Nueva opción RETIRAR en menú principal, 3) Sistema de retiro por criptomoneda individual (BTC/ETH/LTC) con validación de 6000€ mínimo, 4) Modificado flujo de wallet encontrada para mostrar 'se han sumado x€ en tu panel' solo con botón 'seguir buscando', 5) SALDO DISPONIBLE generalizado en header. Todo verificado visualmente funcionando correctamente."
+    -message: "PROBLEMAS DE UI CORREGIDOS: 1) Eliminado candado doble y texto duplicado en interfaz de usuarios no verificados - ahora aparece un solo candado centrado con animación pulse y texto limpio, 2) Implementado sistema de polling cada 5 segundos que verifica estado del usuario automáticamente. Cuando admin verifica usuario manualmente, este recibe notificación toast y puede usar simulador inmediatamente sin refrescar página, 3) Confirmada lógica que oculta secciones de pago para usuarios ya verificados. Necesita testing para confirmar funcionamiento en tiempo real."
