@@ -570,14 +570,7 @@ const UserDashboard = () => {
             )}
 
             {/* Activate Program Section - Only for approved but not verified users */}
-            {(() => {
-              const shouldShow = user.approved && !user.verified;
-              console.log('Activate Program section check:', {
-                user: { approved: user.approved, verified: user.verified },
-                shouldShow: shouldShow
-              });
-              return shouldShow;
-            })() && (
+            {user.approved && !user.verified && (
               <Card className="bg-white border-gray-200 shadow-sm mb-6">
                 <CardHeader className="border-b border-gray-100">
                   <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
