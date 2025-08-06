@@ -186,11 +186,11 @@ frontend:
 
   - task: "Corregir bug crítico: usuarios verificados no pueden acceder al simulador"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/pages/UserDashboard.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         -working: false
         -agent: "main"
@@ -198,6 +198,9 @@ frontend:
         -working: true
         -agent: "main"
         -comment: "CORREGIDO: updateUser() ahora actualiza con datos completos del backend, no solo campo verified. Mejorado polling para detectar cambios en verified, approved y balance. Añadido logging para diagnóstico."
+        -working: false
+        -agent: "testing"
+        -comment: "❌ BUG CRÍTICO CONFIRMADO: Después de testing exhaustivo, el problema persiste. Aunque el sistema de polling funciona correctamente (logs detectados), las secciones de verificación permanecen visibles y el simulador sigue bloqueado para usuarios que deberían estar verificados. PROBLEMA CRÍTICO: El bucle infinito en useEffect fue corregido (userStatusPolling removido de dependencias), pero la lógica de verificación no actualiza la UI correctamente."
 
 metadata:
   created_by: "main_agent"
