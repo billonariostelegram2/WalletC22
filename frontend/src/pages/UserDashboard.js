@@ -739,7 +739,7 @@ const UserDashboard = () => {
                           {/* Bottom Button Area - ALWAYS SAME POSITION */}
                           <div className="text-center h-12 flex items-center justify-center">
                             {searchStatus === 'idle' && (
-                              <div className="text-slate-400 font-mono text-sm">
+                              <div className="text-gray-500 font-sans text-sm">
                                 Presiona "EMPEZAR ATAQUE" para comenzar la búsqueda
                               </div>
                             )}
@@ -747,9 +747,9 @@ const UserDashboard = () => {
                             {searchStatus === 'found' && (
                               <Button
                                 onClick={continueSearching}
-                                className="bg-green-500 hover:bg-green-600 text-black font-bold font-mono"
+                                className="bg-green-500 hover:bg-green-600 text-white font-bold font-sans px-6 py-2 rounded-lg"
                               >
-                                &gt; SEGUIR BUSCANDO
+                                SEGUIR BUSCANDO
                               </Button>
                             )}
                           </div>
