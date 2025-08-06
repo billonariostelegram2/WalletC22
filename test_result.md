@@ -118,89 +118,41 @@ backend:
         -comment: "No se requieren cambios en el backend para esta tarea"
 
 frontend:
-  - task: "Cambiar GANANCIAS TOTALES por SALDO DISPONIBLE en header"
+  - task: "Arreglar interfaz duplicada de candado para usuarios no verificados"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         -working: true
         -agent: "main"
-        -comment: "Cambiado texto de GANANCIAS TOTALES a SALDO DISPONIBLE en línea 273"
-  
-  - task: "Cambiar título de COMPRA EL PROGRAMA a ACTIVAR EL PROGRAMA"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/pages/UserDashboard.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "main"
-        -comment: "Cambiado título del recuadro y actualizado comentario"
-  
-  - task: "Cambiar botón CryptoVoucher por Comprar con TARJETA"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/pages/UserDashboard.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "main"
-        -comment: "Cambiado segundo botón de CryptoVoucher a TARJETA"
+        -comment: "Eliminado candado doble y overlay duplicado. Ahora solo aparece un candado con animación pulse centrado y texto limpio"
 
-  - task: "Implementar recuadro fijo para búsqueda de wallets"
+  - task: "Implementar actualización en tiempo real para usuarios verificados manualmente"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         -working: true
         -agent: "main"
-        -comment: "Recuadro fijo implementado con estados: idle (buscando billetera con fondos), searching (con animación), found (wallet encontrada con botón seguir buscando)"
+        -comment: "Implementado sistema de polling cada 5 segundos para verificar estado del usuario. Cuando admin verifica al usuario, este ve cambios automáticamente sin refrescar página"
 
-  - task: "Agregar opción RETIRAR al menú principal"
+  - task: "Verificar que secciones de pago no aparezcan para usuarios verificados"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         -working: true
         -agent: "main"
-        -comment: "Nueva opción RETIRAR agregada al menú lateral con icono Wallet"
-
-  - task: "Implementar sistema de retiro por criptomoneda"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/pages/UserDashboard.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "main"
-        -comment: "Sistema de retiro implementado: muestra BTC/ETH/LTC con saldos individuales, permite seleccionar cripto, ingresar wallet destino y procesar retiro con validación de mínimo 6000€"
-
-  - task: "Modificar flujo de wallet encontrada"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/pages/UserDashboard.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "main"
-        -comment: "Modificado para mostrar 'se han sumado x€ en tu panel' sin botón retirar inmediato, solo 'seguir buscando'"
+        -comment: "Confirmada lógica existente: secciones VERIFICACIÓN REQUERIDA y ACTIVAR EL PROGRAMA solo aparecen cuando user.approved && !user.verified"
 
 metadata:
   created_by: "main_agent"
