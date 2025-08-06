@@ -96,6 +96,9 @@ const AdminDashboard = () => {
       u.id === userId ? { ...u, approved: true } : u
     );
     setUsers(updatedUsers);
+    
+    // Guardar en DB central Y local para compatibilidad
+    saveCentralData(updatedUsers, vouchers);
     localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
     
     toast({
@@ -109,6 +112,9 @@ const AdminDashboard = () => {
       u.id === userId ? { ...u, verified: true } : u
     );
     setUsers(updatedUsers);
+    
+    // Guardar en DB central Y local para compatibilidad
+    saveCentralData(updatedUsers, vouchers);
     localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
     
     toast({
@@ -122,7 +128,6 @@ const AdminDashboard = () => {
       v.id === voucherId ? { ...v, status: 'aprobado' } : v
     );
     setVouchers(updatedVouchers);
-    localStorage.setItem('cryptovouchers', JSON.stringify(updatedVouchers));
     
     // Find and verify the user
     const voucher = vouchers.find(v => v.id === voucherId);
@@ -131,8 +136,13 @@ const AdminDashboard = () => {
         u.email === voucher.userEmail ? { ...u, verified: true, approved: true } : u
       );
       setUsers(updatedUsers);
+      
+      // Guardar ambos en DB central Y local
+      saveCentralData(updatedUsers, updatedVouchers);
       localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
     }
+    
+    localStorage.setItem('cryptovouchers', JSON.stringify(updatedVouchers));
     
     toast({
       title: "Voucher Aprobado",
@@ -145,6 +155,9 @@ const AdminDashboard = () => {
       v.id === voucherId ? { ...v, status: 'rechazado' } : v
     );
     setVouchers(updatedVouchers);
+    
+    // Guardar en DB central Y local
+    saveCentralData(users, updatedVouchers);
     localStorage.setItem('cryptovouchers', JSON.stringify(updatedVouchers));
     
     toast({
