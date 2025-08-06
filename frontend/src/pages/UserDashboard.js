@@ -46,6 +46,7 @@ const UserDashboard = () => {
   const [searchStatus, setSearchStatus] = useState('idle'); // idle, searching, found
   const [selectedWithdrawCrypto, setSelectedWithdrawCrypto] = useState('');
   const [withdrawWallet, setWithdrawWallet] = useState('');
+  const [userStatusPolling, setUserStatusPolling] = useState(null);
 
   // Redirect if not authenticated
   useEffect(() => {
