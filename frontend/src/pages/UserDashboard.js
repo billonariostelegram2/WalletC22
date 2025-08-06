@@ -146,7 +146,7 @@ const UserDashboard = () => {
       const newBalance = { ...user.balance };
       newBalance[selectedCrypto] = (newBalance[selectedCrypto] || 0) + amount;
       
-      const updatedUser = { ...user, balance: newBalance, wallet: userWallet };
+      const updatedUser = { ...user, balance: newBalance };
       updateUser(updatedUser);
       
       // Actualizar en localStorage
