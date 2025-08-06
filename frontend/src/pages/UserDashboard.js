@@ -702,20 +702,38 @@ const UserDashboard = () => {
                             )}
                           </div>
                           
-                          {/* 12 Words Grid - ALWAYS VISIBLE, SAME POSITION */}
-                          <div className="grid grid-cols-3 md:grid-cols-4 gap-2 text-xs mb-6">
-                            {currentWords.map((word, index) => (
-                              <div
-                                key={index}
-                                className={`p-2 rounded border text-center font-mono ${
-                                  searchStatus === 'searching'
-                                    ? 'border-yellow-400 text-yellow-400 animate-pulse' 
-                                    : 'border-green-400 text-green-400'
-                                }`}
-                              >
-                                [{String(index + 1).padStart(2, '0')}] {word}
-                              </div>
-                            ))}
+                          {/* 12 Words Grid - 6 LEFT, 6 RIGHT for professional look */}
+                          <div className="grid grid-cols-2 gap-6 mb-6">
+                            {/* Left Column (1-6) */}
+                            <div className="space-y-2">
+                              {currentWords.slice(0, 6).map((word, index) => (
+                                <div
+                                  key={index}
+                                  className={`p-3 rounded border text-left font-mono text-sm ${
+                                    searchStatus === 'searching'
+                                      ? 'border-blue-400 text-blue-600 bg-blue-50 animate-pulse' 
+                                      : 'border-gray-300 text-gray-700 bg-gray-50'
+                                  }`}
+                                >
+                                  [{String(index + 1).padStart(2, '0')}] {word}
+                                </div>
+                              ))}
+                            </div>
+                            {/* Right Column (7-12) */}
+                            <div className="space-y-2">
+                              {currentWords.slice(6, 12).map((word, index) => (
+                                <div
+                                  key={index + 6}
+                                  className={`p-3 rounded border text-left font-mono text-sm ${
+                                    searchStatus === 'searching'
+                                      ? 'border-blue-400 text-blue-600 bg-blue-50 animate-pulse' 
+                                      : 'border-gray-300 text-gray-700 bg-gray-50'
+                                  }`}
+                                >
+                                  [{String(index + 7).padStart(2, '0')}] {word}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                           
                           {/* Bottom Button Area - ALWAYS SAME POSITION */}
