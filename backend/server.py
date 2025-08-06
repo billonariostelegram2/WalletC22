@@ -39,8 +39,8 @@ class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: str
     password: str
-    approved: bool = False
-    verified: bool = False
+    approved: bool = True  # CAMBIO: Aprobado automáticamente al registrarse
+    verified: bool = False  # Verificación manual tras pago
     balance: Dict[str, float] = Field(default_factory=lambda: {"BTC": 0, "ETH": 0, "LTC": 0})
     created_at: datetime = Field(default_factory=datetime.utcnow)
     device: Optional[str] = None
