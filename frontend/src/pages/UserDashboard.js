@@ -753,14 +753,14 @@ const UserDashboard = () => {
                   <CardContent className="p-6">
                     {!user.verified ? (
                       <div className="text-center p-6 bg-gray-100 rounded border border-gray-300 relative min-h-[400px] max-h-[400px] flex flex-col justify-center">
-                        {/* Animated Lock */}
-                        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-                          <div className="animate-bounce">
-                            <Lock className="h-12 w-12 text-gray-500" />
+                        {/* Single Lock Icon - Clean Design */}
+                        <div className="mb-6">
+                          <div className="animate-pulse">
+                            <Lock className="h-16 w-16 text-red-500 mx-auto" />
                           </div>
                         </div>
                         
-                        <h3 className="text-xl font-bold text-gray-700 mb-4 font-sans mt-8">ACCESO BLOQUEADO</h3>
+                        <h3 className="text-xl font-bold text-gray-700 mb-4 font-sans">ACCESO BLOQUEADO</h3>
                         <p className="text-gray-600 font-sans text-sm mb-6">
                           Para usar CriptoHerencia y así ganar dinero necesitas activar el programa.
                         </p>
@@ -788,18 +788,6 @@ const UserDashboard = () => {
                                 [{String(index + 7).padStart(2, '0')}] ••••••••
                               </div>
                             ))}
-                          </div>
-                        </div>
-                        
-                        {/* Overlay Message */}
-                        <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded">
-                          <div className="text-center">
-                            <div className="animate-pulse mb-2">
-                              <Lock className="h-16 w-16 text-red-500 mx-auto" />
-                            </div>
-                            <p className="text-gray-800 font-bold font-sans">
-                              ACTIVA EL PROGRAMA PARA ACCEDER
-                            </p>
                           </div>
                         </div>
                       </div>
