@@ -40,141 +40,51 @@ const AdminDashboard = () => {
     loadData();
   }, [user, navigate]);
 
-  // SISTEMA BACKEND SIMULADO CON SINCRONIZACIÓN REAL
-  const BACKEND_API_URL = 'https://api.jsonbin.io/v3/b'; // API gratuita para testing
-  const API_KEY = '$2a$10$8K9kGlJ7FuWEHvMzS4D.j3'; // Clave de ejemplo
-  
   const loadData = async () => {
     try {
-      // PASO 1: Intentar cargar desde "servidor" simulado
-      let serverData = await loadFromSimulatedServer();
+      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
       
-      // PASO 2: Cargar datos locales
-      const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-      const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
+      // SOLUCIÓN REAL: Cargar desde backend MongoDB
+      console.log('Loading data from backend API...');
       
-      // PASO 3: Combinar datos de servidor + locales
-      let allUsers = [...(serverData.users || [])];
-      let allVouchers = [...(serverData.vouchers || [])];
+      // Cargar usuarios desde backend
+      const usersResponse = await fetch(`${backendUrl}/api/users`);
+      const usersData = await usersResponse.json();
       
-      // Agregar usuarios locales que no estén en servidor
-      localUsers.forEach(localUser => {
-        if (!allUsers.find(u => u.email === localUser.email)) {
-          localUser.source = 'local';
-          allUsers.push(localUser);
-        }
-      });
+      // Cargar vouchers desde backend
+      const vouchersResponse = await fetch(`${backendUrl}/api/vouchers`);
+      const vouchersData = await vouchersResponse.json();
       
-      // Agregar vouchers locales
-      localVouchers.forEach(localVoucher => {
-        if (!allVouchers.find(v => v.id === localVoucher.id)) {
-          localVoucher.source = 'local';
-          allVouchers.push(localVoucher);
-        }
-      });
+      setUsers(usersData);
+      setVouchers(vouchersData);
       
-      // PASO 4: Sincronizar cambios de vuelta al servidor
-      await saveToSimulatedServer({ users: allUsers, vouchers: allVouchers });
-      
-      setUsers(allUsers);
-      setVouchers(allVouchers);
-      
-      console.log(`Admin cargó: ${allUsers.length} usuarios de múltiples fuentes`);
+      console.log(`Admin loaded: ${usersData.length} users and ${vouchersData.length} vouchers from backend`);
       
     } catch (error) {
-      console.error('Error cargando datos:', error);
-      // Fallback a datos predeterminados si falla el servidor
-      loadFallbackData();
-    }
-  };
-  
-  const loadFromSimulatedServer = async () => {
-    // Simular carga desde servidor externo
-    // En producción real, esto sería una llamada API real
-    const serverData = localStorage.getItem('cryptoherencia_global_server');
-    if (serverData) {
-      return JSON.parse(serverData);
-    }
-    
-    // Datos iniciales del "servidor"
-    const initialServerData = {
-      users: [
+      console.error('Error loading data from backend:', error);
+      
+      // Fallback: mostrar datos de ejemplo si backend falla
+      const fallbackUsers = [
         {
-          id: 'server-user-001',
-          email: 'juan@hotmail.com', 
-          password: 'test123',
-          approved: false,
-          verified: false,
-          balance: { BTC: 0, ETH: 0, LTC: 0 },
-          createdAt: new Date().toISOString(),
-          device: 'Samsung Galaxy',
-          source: 'server'
-        },
-        {
-          id: 'server-user-002',
-          email: 'maria.global@gmail.com',
-          password: 'test123', 
-          approved: true,
-          verified: false,
-          balance: { BTC: 125.50, ETH: 200.75, LTC: 89.25 },
-          createdAt: new Date(Date.now() - 86400000).toISOString(),
-          device: 'iPhone 14',
-          source: 'server'
-        },
-        {
-          id: 'server-user-003',
-          email: 'carlos.remote@outlook.com',
-          password: 'test123',
+          id: 'fallback-001',
+          email: 'admin.test@system.com',
           approved: true,
           verified: true,
-          balance: { BTC: 800.00, ETH: 1200.50, LTC: 400.25 },
-          createdAt: new Date(Date.now() - 172800000).toISOString(),
-          device: 'Windows PC',
-          source: 'server'
+          balance: { BTC: 0, ETH: 0, LTC: 0 },
+          created_at: new Date().toISOString(),
+          device: 'Sistema'
         }
-      ],
-      vouchers: [
-        {
-          id: 'server-voucher-001',
-          userEmail: 'juan@hotmail.com',
-          code: 'SAMSUNG123ABC',
-          status: 'pendiente',
-          date: new Date().toISOString(),
-          device: 'Samsung Galaxy',
-          source: 'server'
-        }
-      ]
-    };
-    
-    localStorage.setItem('cryptoherencia_global_server', JSON.stringify(initialServerData));
-    return initialServerData;
-  };
-  
-  const saveToSimulatedServer = async (data) => {
-    try {
-      // Guardar en "servidor" simulado
-      localStorage.setItem('cryptoherencia_global_server', JSON.stringify(data));
-      console.log('Datos sincronizados con servidor');
-    } catch (error) {
-      console.error('Error sincronizando con servidor:', error);
+      ];
+      
+      setUsers(fallbackUsers);
+      setVouchers([]);
+      
+      toast({
+        title: "Error de Conexión",
+        description: "No se pudo conectar al servidor. Mostrando datos de ejemplo.",
+        variant: "destructive"
+      });
     }
-  };
-  
-  const loadFallbackData = () => {
-    // Datos de emergencia si todo falla
-    const fallbackUsers = [
-      {
-        id: 'fallback-001',
-        email: 'admin.test@system.com',
-        approved: true,
-        verified: true,
-        balance: { BTC: 0, ETH: 0, LTC: 0 },
-        source: 'fallback'
-      }
-    ];
-    
-    setUsers(fallbackUsers);
-    setVouchers([]);
   };
 
   const approveUser = (userId) => {
