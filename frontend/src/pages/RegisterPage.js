@@ -87,18 +87,12 @@ const RegisterPage = () => {
           const newUser = await response.json();
           console.log('Usuario registrado en backend:', newUser.email);
           
-          // También guardar localmente para compatibilidad
-          const existingUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-          existingUsers.push({
-            id: newUser.id,
-            email: newUser.email,
-            password: newUser.password,
-            approved: newUser.approved,
-            verified: newUser.verified,
-            balance: newUser.balance
+          toast({
+            title: "¡Cuenta Creada!",
+            description: "Tu cuenta ha sido creada exitosamente. Ya puedes iniciar sesión.",
           });
-          localStorage.setItem('cryptoherencia_users', JSON.stringify(existingUsers));
-          
+
+          navigate('/login');
         } else {
           const error = await response.json();
           toast({
