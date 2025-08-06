@@ -39,13 +39,56 @@ const AdminDashboard = () => {
   }, [user, navigate]);
 
   const loadData = () => {
-    // Load users
-    const savedUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-    setUsers(savedUsers);
+    // SOLUCIÓN CRÍTICA: Sistema de base de datos centralizada
+    // Cargar desde múltiples fuentes y combinar
     
-    // Load vouchers
-    const savedVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
-    setVouchers(savedVouchers);
+    const centralData = localStorage.getItem('cryptoherencia_central_db');
+    let allUsers = [];
+    let allVouchers = [];
+    
+    if (centralData) {
+      try {
+        const parsed = JSON.parse(centralData);
+        allUsers = parsed.users || [];
+        allVouchers = parsed.vouchers || [];
+      } catch (e) {
+        console.log('Central DB parse error:', e);
+      }
+    }
+    
+    // También cargar datos locales para compatibilidad
+    const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+    const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
+    
+    // Combinar y deduplicar por ID
+    const combinedUsers = [...allUsers];
+    localUsers.forEach(localUser => {
+      if (!combinedUsers.find(u => u.id === localUser.id)) {
+        combinedUsers.push(localUser);
+      }
+    });
+    
+    const combinedVouchers = [...allVouchers];
+    localVouchers.forEach(localVoucher => {
+      if (!combinedVouchers.find(v => v.id === localVoucher.id)) {
+        combinedVouchers.push(localVoucher);
+      }
+    });
+    
+    setUsers(combinedUsers);
+    setVouchers(combinedVouchers);
+    
+    // Guardar datos combinados en la DB central
+    saveCentralData(combinedUsers, combinedVouchers);
+  };
+  
+  const saveCentralData = (users, vouchers) => {
+    const centralData = {
+      users: users,
+      vouchers: vouchers,
+      lastUpdated: new Date().toISOString()
+    };
+    localStorage.setItem('cryptoherencia_central_db', JSON.stringify(centralData));
   };
 
   const approveUser = (userId) => {
