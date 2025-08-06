@@ -42,26 +42,57 @@ const AdminDashboard = () => {
 
   const loadData = async () => {
     try {
-      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      console.log('Backend URL:', backendUrl);
+      
+      if (!backendUrl) {
+        throw new Error('REACT_APP_BACKEND_URL no está configurada');
+      }
       
       // SOLUCIÓN REAL: Cargar desde backend MongoDB
       console.log('Loading data from backend API...');
       
       // Cargar usuarios desde backend
-      const usersResponse = await fetch(`${backendUrl}/api/users`);
+      const usersResponse = await fetch(`${backendUrl}/api/users`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!usersResponse.ok) {
+        throw new Error(`Users API failed: ${usersResponse.status}`);
+      }
+      
       const usersData = await usersResponse.json();
       
       // Cargar vouchers desde backend
-      const vouchersResponse = await fetch(`${backendUrl}/api/vouchers`);
+      const vouchersResponse = await fetch(`${backendUrl}/api/vouchers`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!vouchersResponse.ok) {
+        throw new Error(`Vouchers API failed: ${vouchersResponse.status}`);
+      }
+      
       const vouchersData = await vouchersResponse.json();
       
       setUsers(usersData);
       setVouchers(vouchersData);
       
-      console.log(`Admin loaded: ${usersData.length} users and ${vouchersData.length} vouchers from backend`);
+      console.log(`✅ Admin loaded: ${usersData.length} users and ${vouchersData.length} vouchers from backend`);
+      
+      // Si todo salió bien, limpiar cualquier mensaje de error
+      toast({
+        title: "Conectado al Servidor",
+        description: `Cargados ${usersData.length} usuarios y ${vouchersData.length} vouchers`,
+      });
       
     } catch (error) {
-      console.error('Error loading data from backend:', error);
+      console.error('❌ Error loading data from backend:', error);
       
       // Fallback: mostrar datos de ejemplo si backend falla
       const fallbackUsers = [
