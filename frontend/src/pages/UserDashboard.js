@@ -32,9 +32,6 @@ const UserDashboard = () => {
   const { user, logout, updateUser } = useAuth();
   const { toast } = useToast();
   
-  // Log para debugging
-  console.log('UserDashboard render - Current user state:', user);
-  
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentView, setCurrentView] = useState('simulator');
   const [selectedCrypto, setSelectedCrypto] = useState('');
