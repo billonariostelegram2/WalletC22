@@ -67,26 +67,23 @@ const RegisterPage = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Guardar usuario en ambas ubicaciones
+      // Guardar usuario en localStorage local
       const updatedUsers = [...existingUsers, newUser];
       localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
       
-      // CRÍTICO: También guardar en base de datos central
-      const centralData = localStorage.getItem('cryptoherencia_central_db');
-      let centralDB = { users: [], vouchers: [] };
-      if (centralData) {
-        try {
-          centralDB = JSON.parse(centralData);
-        } catch (e) {
-          console.log('Central DB parse error:', e);
+      // CRÍTICO: También guardar en servidor global simulado para que admin lo vea
+      try {
+        const serverData = JSON.parse(localStorage.getItem('cryptoherencia_global_server') || '{"users":[], "vouchers":[]}');
+        
+        // Verificar si el usuario ya existe en el servidor
+        if (!serverData.users.find(u => u.email === newUser.email)) {
+          newUser.source = 'server';
+          serverData.users.push(newUser);
+          localStorage.setItem('cryptoherencia_global_server', JSON.stringify(serverData));
+          console.log(`Usuario ${newUser.email} sincronizado con servidor global`);
         }
-      }
-      
-      // Agregar usuario a DB central
-      if (!centralDB.users.find(u => u.id === newUser.id)) {
-        centralDB.users.push(newUser);
-        centralDB.lastUpdated = new Date().toISOString();
-        localStorage.setItem('cryptoherencia_central_db', JSON.stringify(centralDB));
+      } catch (error) {
+        console.error('Error sincronizando con servidor:', error);
       }
 
       // Hacer login automático pero redirigir a login con mensaje
