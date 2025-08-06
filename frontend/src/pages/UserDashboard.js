@@ -656,78 +656,78 @@ const UserDashboard = () => {
 
             {/* Card Payment Modal */}
             {showCardPayment && (
-              <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
-                <div className="bg-white rounded-lg shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-                  <div className="p-6 border-b border-gray-200">
+              <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2 sm:p-4">
+                <div className="bg-white rounded-lg shadow-2xl w-full max-w-lg max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
+                  <div className="p-4 sm:p-6 border-b border-gray-200">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                        <CreditCard className="h-5 w-5 mr-2 text-gray-700" />
-                        Pago con Tarjeta
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
+                        <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-gray-700" />
+                        <span className="text-sm sm:text-base">Pago con Tarjeta</span>
                       </h2>
                       <Button
                         onClick={() => setShowCardPayment(false)}
                         size="sm"
                         variant="outline"
-                        className="border-gray-300 text-gray-500 hover:bg-gray-100"
+                        className="border-gray-300 text-gray-500 hover:bg-gray-100 p-1 sm:p-2"
                       >
-                        <X className="h-4 w-4" />
+                        <X className="h-3 w-3 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
                   </div>
                   
-                  <div className="p-6 space-y-6">
+                  <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                     {/* Paso 1: Comprar CryptoVoucher */}
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
-                      <div className="flex items-start space-x-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+                      <div className="flex items-start space-x-2 sm:space-x-3">
+                        <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm">
                           1
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-800 mb-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                             🛒 Compra tu CryptoVoucher de 200€
                           </h3>
-                          <p className="text-gray-600 text-sm mb-3">
+                          <p className="text-gray-600 text-xs sm:text-sm mb-3 pr-2">
                             Para activar tu programa de forma <strong>rápida y segura</strong>, compra una CryptoVoucher (tarjeta regalo digital) por exactamente <strong>200€</strong>.
                           </p>
                           <Button
                             onClick={() => window.open('https://tarjetadirecta.es/product/crypto-voucher-200-euros', '_blank')}
-                            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-sm px-4 py-2 rounded-lg flex items-center space-x-2"
+                            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex items-center space-x-1 sm:space-x-2 w-full sm:w-auto"
                           >
                             <span>🛍️</span>
-                            <span>Comprar CryptoVoucher 200€</span>
+                            <span className="truncate">Comprar CryptoVoucher 200€</span>
                           </Button>
                         </div>
                       </div>
                     </div>
 
                     {/* Paso 2: Canjear código */}
-                    <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-4">
-                      <div className="flex items-start space-x-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                    <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-3 sm:p-4">
+                      <div className="flex items-start space-x-2 sm:space-x-3">
+                        <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm">
                           2
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-800 mb-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                             🔑 Canjea tu código aquí
                           </h3>
-                          <p className="text-gray-600 text-sm mb-3">
+                          <p className="text-gray-600 text-xs sm:text-sm mb-3 pr-2">
                             Tras la compra recibirás un <strong>código de activación</strong>. Introdúcelo aquí y tu programa se activará <strong>inmediatamente</strong>.
                           </p>
                           
                           <div className="space-y-3">
                             <div>
-                              <Label className="text-gray-700 font-medium">Código del Voucher:</Label>
+                              <Label className="text-gray-700 font-medium text-xs sm:text-sm">Código del Voucher:</Label>
                               <Input
                                 value={voucherCode}
                                 onChange={(e) => setVoucherCode(e.target.value)}
-                                placeholder="Ej: CV-XXXX-XXXX-XXXX"
-                                className="bg-gray-50 border-gray-200 text-gray-800 mt-1"
+                                placeholder="CV-XXXX-XXXX-XXXX"
+                                className="bg-gray-50 border-gray-200 text-gray-800 mt-1 text-xs sm:text-sm"
                               />
                             </div>
                             
                             <Button
                               onClick={submitVoucher}
-                              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium"
+                              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium text-xs sm:text-sm py-2"
                               disabled={!voucherCode.trim()}
                             >
                               🚀 Activar Programa Inmediatamente
@@ -738,12 +738,12 @@ const UserDashboard = () => {
                     </div>
 
                     {/* Ventajas y beneficios */}
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h3 className="font-semibold text-green-800 mb-2 flex items-center">
-                        <CheckCircle className="h-5 w-5 mr-2" />
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
+                      <h3 className="font-semibold text-green-800 mb-2 flex items-center text-sm sm:text-base">
+                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                         ¿Por qué elegir CryptoVoucher?
                       </h3>
-                      <ul className="text-green-700 text-sm space-y-1">
+                      <ul className="text-green-700 text-xs sm:text-sm space-y-1">
                         <li>✅ <strong>Activación inmediata</strong> - No esperas 24 horas</li>
                         <li>✅ <strong>100% Seguro</strong> - Compra con tu tarjeta habitual</li>
                         <li>✅ <strong>Sin registros complicados</strong> - Solo necesitas el código</li>
@@ -751,8 +751,8 @@ const UserDashboard = () => {
                       </ul>
                     </div>
                     
-                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                      <p className="text-blue-800 text-sm">
+                    <div className="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded-lg">
+                      <p className="text-blue-800 text-xs sm:text-sm">
                         <strong>💡 Proceso completo:</strong> Compra → Recibe código por email → Introdúcelo aquí → ¡Tu programa se activa al instante!
                       </p>
                     </div>
