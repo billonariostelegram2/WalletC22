@@ -73,6 +73,13 @@ const UserDashboard = () => {
     return patterns[type]?.test(address) || false;
   };
 
+  const getWalletType = (address) => {
+    if (validateWalletAddress(address, 'BTC')) return 'BTC';
+    if (validateWalletAddress(address, 'ETH')) return 'ETH';
+    if (validateWalletAddress(address, 'LTC')) return 'LTC';
+    return null;
+  };
+
   // Crypto logos y colores
   const cryptoLogos = {
     BTC: '₿',
