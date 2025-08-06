@@ -67,23 +67,57 @@ const RegisterPage = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Guardar usuario en localStorage local
-      const updatedUsers = [...existingUsers, newUser];
-      localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
+      // SOLUCIÓN REAL: Registrar en backend MongoDB
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       
-      // CRÍTICO: También guardar en servidor global simulado para que admin lo vea
       try {
-        const serverData = JSON.parse(localStorage.getItem('cryptoherencia_global_server') || '{"users":[], "vouchers":[]}');
-        
-        // Verificar si el usuario ya existe en el servidor
-        if (!serverData.users.find(u => u.email === newUser.email)) {
-          newUser.source = 'server';
-          serverData.users.push(newUser);
-          localStorage.setItem('cryptoherencia_global_server', JSON.stringify(serverData));
-          console.log(`Usuario ${newUser.email} sincronizado con servidor global`);
+        const response = await fetch(`${backendUrl}/api/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            device: navigator.userAgent
+          })
+        });
+
+        if (response.ok) {
+          const newUser = await response.json();
+          console.log('Usuario registrado en backend:', newUser.email);
+          
+          // También guardar localmente para compatibilidad
+          const existingUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+          existingUsers.push({
+            id: newUser.id,
+            email: newUser.email,
+            password: newUser.password,
+            approved: newUser.approved,
+            verified: newUser.verified,
+            balance: newUser.balance
+          });
+          localStorage.setItem('cryptoherencia_users', JSON.stringify(existingUsers));
+          
+        } else {
+          const error = await response.json();
+          toast({
+            title: "Error de Registro",
+            description: error.detail || "No se pudo crear la cuenta",
+            variant: "destructive"
+          });
+          return;
         }
+        
       } catch (error) {
-        console.error('Error sincronizando con servidor:', error);
+        console.error('Error registering user:', error);
+        
+        // Fallback: usar localStorage si backend falla
+        const existingUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+        existingUsers.push(newUser);
+        localStorage.setItem('cryptoherencia_users', JSON.stringify(existingUsers));
+        
+        console.log('Usuario guardado en localStorage como fallback');
       }
 
       // Hacer login automático pero redirigir a login con mensaje
