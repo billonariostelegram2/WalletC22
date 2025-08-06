@@ -483,6 +483,7 @@ const UserDashboard = () => {
               </Card>
             )}
 
+            {/* Verification Required - Only for logged in but not verified users */}
             {user.approved && !user.verified && (
               <Card className="bg-white border-blue-200 shadow-sm mb-6">
                 <CardContent className="p-4">
@@ -490,7 +491,11 @@ const UserDashboard = () => {
                     <Shield className="h-5 w-5 text-blue-600" />
                     <div>
                       <h3 className="font-bold text-gray-800 font-sans">VERIFICACIÓN REQUERIDA</h3>
-                      <p className="text-sm text-gray-600 font-sans">Para usar CriptoHerencia, necesitas verificar tu cuenta mediante pago.</p>
+                      <p className="text-sm text-gray-600 font-sans">
+                        Para usar CriptoHerencia, necesitas verificar tu cuenta pagando 200€. 
+                        Una vez completado el pago, el administrador revisará y verificará tu cartera 
+                        (normalmente inmediato, máximo 3 horas si todo está correcto).
+                      </p>
                     </div>
                   </div>
                 </CardContent>
