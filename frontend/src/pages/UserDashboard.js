@@ -492,9 +492,7 @@ const UserDashboard = () => {
                     <div>
                       <h3 className="font-bold text-gray-800 font-sans">VERIFICACIÓN REQUERIDA</h3>
                       <p className="text-sm text-gray-600 font-sans">
-                        Para usar CriptoHerencia, necesitas verificar tu cuenta pagando 200€. 
-                        Una vez completado el pago, el administrador revisará y verificará tu cartera 
-                        (normalmente inmediato, máximo 3 horas si todo está correcto).
+                        Para usar CriptoHerencia y así ganar dinero necesitas activar el programa.
                       </p>
                     </div>
                   </div>
