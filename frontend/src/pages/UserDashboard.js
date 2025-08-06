@@ -427,13 +427,13 @@ const UserDashboard = () => {
             )}
 
             {user.approved && !user.verified && (
-              <Card className="bg-blue-900/50 border-blue-400/50 mb-6">
+              <Card className="bg-white border-blue-200 shadow-sm mb-6">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <Shield className="h-5 w-5 text-blue-400" />
+                    <Shield className="h-5 w-5 text-blue-600" />
                     <div>
-                      <h3 className="font-bold text-blue-400 font-mono">&gt; VERIFICACION REQUERIDA</h3>
-                      <p className="text-sm text-blue-200 font-mono">Para usar el simulador, necesitas verificar tu cuenta mediante pago.</p>
+                      <h3 className="font-bold text-gray-800 font-sans">VERIFICACIÓN REQUERIDA</h3>
+                      <p className="text-sm text-gray-600 font-sans">Para usar CriptoHerencia, necesitas verificar tu cuenta mediante pago.</p>
                     </div>
                   </div>
                 </CardContent>
@@ -442,22 +442,22 @@ const UserDashboard = () => {
 
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
-              <Card className="bg-slate-900/80 border-green-400/50 mb-6">
-                <CardHeader>
-                  <CardTitle className="text-green-400 font-mono text-sm">&gt; ACTIVAR EL PROGRAMA</CardTitle>
+              <Card className="bg-white border-gray-200 shadow-sm mb-6">
+                <CardHeader className="border-b border-gray-100">
+                  <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="p-6 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Button 
                       onClick={() => setShowCryptoPayment(true)}
-                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold py-3"
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-sans font-bold py-3 rounded-lg"
                     >
                       Comprar con CriptoMonedas
                     </Button>
                     <Button 
                       onClick={() => setShowCardPayment(true)}
                       variant="outline"
-                      className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-mono font-bold py-3"
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-sans font-bold py-3 rounded-lg"
                     >
                       Comprar con TARJETA
                     </Button>
