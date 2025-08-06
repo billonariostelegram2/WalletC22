@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "BUG CRÍTICO REPORTADO: Usuario verificado manualmente (después de enviar cryptovoucher correcto) aún no puede acceder al simulador y sigue viendo opciones de pago. Necesita corrección urgente del flujo de verificación."
+user_problem_statement: "USUARIO REPORTA: Notificación flotante 'with made emergente' aparece durante los primeros 3 segundos al acceder al sitio web. Necesita ser eliminada completamente."
 
 backend:
   - task: "Verificar endpoint GET /api/users para usuarios verificados"
