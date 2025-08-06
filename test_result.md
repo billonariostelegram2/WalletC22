@@ -105,17 +105,53 @@
 user_problem_statement: "El usuario reporta dos problemas principales: 1) Cuando un usuario inicia sesión pero no está verificado aparece candado doble y texto duplicado - necesita lógica correcta y aspecto limpio, 2) Cuando usuario es verificado manualmente por administrador hay error y no puede usar simulador en tiempo real - debería poder usarlo inmediatamente"
 
 backend:
-  - task: "No se requieren cambios en backend"
+  - task: "Verificar endpoint GET /api/users para usuarios verificados"
     implemented: true
-    working: "NA"
-    file: "N/A"
+    working: true
+    file: "/app/backend/server.py"
     stuck_count: 0
-    priority: "low"
+    priority: "high"
     needs_retesting: false
     status_history:
-        -working: "NA"
-        -agent: "main"
-        -comment: "No se requieren cambios en el backend para esta tarea"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CONFIRMADO: GET /api/users devuelve correctamente todos los usuarios con estados verified y approved precisos. Usuario cagon@gmail.com aparece como verified:true y approved:true correctamente."
+
+  - task: "Verificar proceso de verificación manual PUT /api/users/{user_id}"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CONFIRMADO: PUT /api/users/{user_id} con {verified:true} funciona correctamente. Usuario se actualiza y persiste en base de datos. Verificación manual FUNCIONANDO."
+
+  - task: "Verificar proceso de voucher aprobado automático"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CONFIRMADO: Cuando voucher se aprueba con status='aprobado', usuario asociado se actualiza automáticamente con verified:true y approved:true. Proceso automático FUNCIONANDO."
+
+  - task: "Verificar consistencia de datos entre endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CONFIRMADO: Datos consistentes entre GET /api/users y GET /api/users/{user_id}. No hay discrepancias en estados de verificación. Consistencia de datos CORRECTA."
 
 frontend:
   - task: "Arreglar interfaz duplicada de candado para usuarios no verificados"
