@@ -122,13 +122,13 @@ const RegisterPage = () => {
 
       // Hacer login automático pero redirigir a login con mensaje
       toast({
-        title: "¡Cuenta Creada!",
-        description: "Tu cuenta será aprobada por un administrador",
+        title: "¡Felicidades!",
+        description: "Tu cuenta ha sido creada correctamente. Ya puedes iniciar sesión.",
       });
 
       // Redirigir a login después de un breve delay
       setTimeout(() => {
-        navigate('/login?pending=true');
+        navigate('/login');
       }, 2000);
     } catch (error) {
       toast({
