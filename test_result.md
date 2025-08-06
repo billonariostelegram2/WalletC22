@@ -207,15 +207,18 @@ frontend:
 
   - task: "Eliminar notificación flotante 'with made emergente' durante carga de página"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
         -working: true
         -agent: "testing"
         -comment: "✅ PRUEBA ESPECÍFICA COMPLETADA: Testing exhaustivo con scripts especializados para detectar notificaciones flotantes 'with made emergente' durante los primeros 5 segundos de carga. RESULTADOS: ✅ Páginas probadas: Principal (/), Login (/login), Registro (/registro). ✅ No se detectaron elementos flotantes con position:fixed, z-index alto y texto 'made with emergent'. ✅ DOM completamente limpio de notificaciones Emergent. ✅ Sistema de eliminación en App.js funcionando correctamente con múltiples métodos: 1) Búsqueda por contenido de texto, 2) Eliminación por posición fija, 3) Eliminación por z-index alto, 4) Limpieza periódica cada segundo durante 10 segundos. OBJETIVO CUMPLIDO: La notificación emergente ha sido eliminada completamente."
+        -working: false
+        -agent: "testing"
+        -comment: "❌ PRUEBA DOBLE REVELÓ PROBLEMA PERSISTENTE: Después de testing ultra-sensible con múltiples recargas, se detectó texto 'Emergent' en: 1) Título de página: 'Emergent | Fullstack App' en /app/frontend/public/index.html línea 21, 2) Badge HTML fijo: 'Made with Emergent' en /app/frontend/public/index.html líneas 36-82 con position:fixed, 3) Referencias en CSS de Tailwind. PROBLEMA CRÍTICO: El sistema de eliminación en App.js NO puede eliminar elementos del HTML estático ni cambiar el título de la página. SOLUCIÓN REQUERIDA: 1) Cambiar título en index.html, 2) Remover o ocultar badge 'Made with Emergent', 3) Verificar referencias CSS. La notificación Emergent AÚN ESTÁ PRESENTE en forma de badge fijo y título."
 
 metadata:
   created_by: "main_agent"
