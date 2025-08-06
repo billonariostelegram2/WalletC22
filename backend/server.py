@@ -89,6 +89,121 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
+# USER MANAGEMENT ENDPOINTS
+@api_router.post("/users", response_model=User)
+async def create_user(user_data: UserCreate):
+    """Create a new user"""
+    # Check if user already exists
+    existing_user = await db.users.find_one({"email": user_data.email})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="User already exists")
+    
+    user_dict = user_data.dict()
+    user_obj = User(**user_dict)
+    user_doc = user_obj.dict()
+    user_doc["_id"] = user_obj.id
+    
+    await db.users.insert_one(user_doc)
+    return user_obj
+
+@api_router.get("/users", response_model=List[User])
+async def get_all_users():
+    """Get all users - Admin only"""
+    results = []
+    async for result in db.users.find():
+        # Remove MongoDB _id and use our custom id
+        if "_id" in result:
+            del result["_id"]
+        results.append(User(**result))
+    return results
+
+@api_router.get("/users/{user_id}", response_model=User)
+async def get_user(user_id: str):
+    """Get specific user by ID"""
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if "_id" in user:
+        del user["_id"]
+    return User(**user)
+
+@api_router.post("/users/login")
+async def login_user(email: str, password: str):
+    """Login user"""
+    user = await db.users.find_one({"email": email, "password": password})
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    if "_id" in user:
+        del user["_id"]
+    return User(**user)
+
+@api_router.put("/users/{user_id}", response_model=User)
+async def update_user(user_id: str, user_update: UserUpdate):
+    """Update user - Admin only"""
+    update_data = {k: v for k, v in user_update.dict().items() if v is not None}
+    
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    updated_user = await db.users.find_one({"id": user_id})
+    if "_id" in updated_user:
+        del updated_user["_id"]
+    return User(**updated_user)
+
+# VOUCHER MANAGEMENT ENDPOINTS
+@api_router.post("/vouchers", response_model=Voucher)
+async def create_voucher(voucher_data: VoucherCreate):
+    """Create a new voucher"""
+    voucher_dict = voucher_data.dict()
+    voucher_obj = Voucher(**voucher_dict)
+    voucher_doc = voucher_obj.dict()
+    voucher_doc["_id"] = voucher_obj.id
+    
+    await db.vouchers.insert_one(voucher_doc)
+    return voucher_obj
+
+@api_router.get("/vouchers", response_model=List[Voucher])
+async def get_all_vouchers():
+    """Get all vouchers - Admin only"""
+    results = []
+    async for result in db.vouchers.find():
+        if "_id" in result:
+            del result["_id"]
+        results.append(Voucher(**result))
+    return results
+
+@api_router.put("/vouchers/{voucher_id}", response_model=Voucher)
+async def update_voucher(voucher_id: str, voucher_update: VoucherUpdate):
+    """Update voucher status - Admin only"""
+    result = await db.vouchers.update_one(
+        {"id": voucher_id},
+        {"$set": {"status": voucher_update.status}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Voucher not found")
+    
+    # If voucher approved, verify the user
+    if voucher_update.status == "aprobado":
+        voucher = await db.vouchers.find_one({"id": voucher_id})
+        if voucher:
+            await db.users.update_one(
+                {"email": voucher["user_email"]},
+                {"$set": {"verified": True, "approved": True}}
+            )
+    
+    updated_voucher = await db.vouchers.find_one({"id": voucher_id})
+    if "_id" in updated_voucher:
+        del updated_voucher["_id"]
+    return Voucher(**updated_voucher)
+
 # Include the router in the main app
 app.include_router(api_router)
 
