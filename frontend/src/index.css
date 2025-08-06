@@ -2,9 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Simple approach to hide emergent notifications */
+/* Aggressive approach to hide Emergent notifications completely */
+/* Hide by text content */
 div[style*="position: fixed"]:has-text("Made with"),
-div[style*="position: fixed"]:has-text("Emergent") {
+div[style*="position: fixed"]:has-text("Emergent"),
+div[style*="position: fixed"]:has-text("made with"),
+div[style*="position: fixed"]:has-text("emergent") {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Hide by common Emergent styling patterns */
+div[style*="position: fixed"][style*="z-index"] {
+    display: none !important;
+}
+
+/* Generic fixed position elements that might be notifications */
+div[style*="position: fixed"][style*="bottom"][style*="right"] {
+    display: none !important;
+}
+
+div[style*="position: fixed"][style*="top"][style*="right"] {
     display: none !important;
 }
 
