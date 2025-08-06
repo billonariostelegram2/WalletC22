@@ -77,6 +77,16 @@ const UserDashboard = () => {
           const users = await response.json();
           const currentUser = users.find(u => u.id === user.id);
           
+          if (!currentUser) {
+            console.warn('Usuario no encontrado en la respuesta del backend');
+            return;
+          }
+          
+          console.log('Estado actual del usuario:', {
+            frontend: { verified: user.verified, approved: user.approved },
+            backend: { verified: currentUser.verified, approved: currentUser.approved }
+          });
+          
           if (currentUser && (
             currentUser.verified !== user.verified || 
             currentUser.approved !== user.approved ||
@@ -84,6 +94,7 @@ const UserDashboard = () => {
           )) {
             // El estado del usuario cambió, actualizar usuario completamente
             const wasVerified = user.verified;
+            console.log('Actualizando estado del usuario:', currentUser);
             updateUser(currentUser);
             
             // Solo mostrar toast si cambió de no verificado a verificado
@@ -95,6 +106,8 @@ const UserDashboard = () => {
               });
             }
           }
+        } else {
+          console.error('Error al obtener usuarios del backend:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error checking user status:', error);
