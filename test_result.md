@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "USUARIO REPORTA: Notificación flotante 'with made emergente' aparece durante los primeros 3 segundos al acceder al sitio web. Necesita ser eliminada completamente."
+user_problem_statement: "USUARIO SOLICITA DOS MEJORAS: 1) Eliminar completamente notificación 'with made emergente' que aparece milisegundo al cargar página, 2) Mejorar modal crypto voucher añadiendo información clara sobre dónde comprar (https://tarjetadirecta.es/product/crypto-voucher-200-euros) con botón de enlace directo y explicación profesional para novatos."
 
 backend:
   - task: "Verificar endpoint GET /api/users para usuarios verificados"
