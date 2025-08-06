@@ -78,8 +78,8 @@ const UserDashboard = () => {
           const currentUser = users.find(u => u.id === user.id);
           
           if (currentUser && currentUser.verified !== user.verified) {
-            // El estado de verificación cambió, actualizar usuario
-            updateUser({ ...user, verified: currentUser.verified });
+            // El estado de verificación cambió, actualizar usuario completamente
+            updateUser(currentUser);
             
             if (currentUser.verified) {
               toast({
