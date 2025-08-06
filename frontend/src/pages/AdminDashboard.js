@@ -284,6 +284,15 @@ const AdminDashboard = () => {
     });
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copiado",
+        description: "Código copiado al portapapeles",
+      });
+    });
+  };
+
   const [showSyncModal, setShowSyncModal] = useState(false);
   const [syncEmail, setSyncEmail] = useState('');
 
