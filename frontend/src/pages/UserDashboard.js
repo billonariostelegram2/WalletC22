@@ -277,7 +277,7 @@ const UserDashboard = () => {
     });
   };
 
-  const submitVoucher = () => {
+  const submitVoucher = async () => {
     if (!voucherCode.trim()) {
       toast({
         title: "Error",
