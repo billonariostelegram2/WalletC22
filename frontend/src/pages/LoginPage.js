@@ -53,8 +53,25 @@ const LoginPage = () => {
         });
         navigate('/admin');
       } else {
-        // Simular usuarios regulares
-        const users = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+        // CRÍTICO: Buscar en base de datos central primero
+        let users = [];
+        
+        // Cargar de DB central
+        const centralData = localStorage.getItem('cryptoherencia_central_db');
+        if (centralData) {
+          try {
+            const parsed = JSON.parse(centralData);
+            users = parsed.users || [];
+          } catch (e) {
+            console.log('Central DB parse error:', e);
+          }
+        }
+        
+        // Si no está en central, buscar en local como respaldo
+        if (users.length === 0) {
+          users = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+        }
+        
         const user = users.find(u => u.email === formData.email && u.password === formData.password);
         
         if (user) {
