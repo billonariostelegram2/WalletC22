@@ -37,7 +37,7 @@ const UserDashboard = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [userWallet, setUserWallet] = useState('');
   const [isSimulating, setIsSimulating] = useState(false);
-  const [currentWords, setCurrentWords] = useState([]);
+  const [currentWords, setCurrentWords] = useState(Array(12).fill('empezar'));
   const [foundWallet, setFoundWallet] = useState(null);
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
   const [showCardPayment, setShowCardPayment] = useState(false);
