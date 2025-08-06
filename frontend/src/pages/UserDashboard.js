@@ -701,13 +701,56 @@ const UserDashboard = () => {
                   </CardHeader>
                   <CardContent className="p-6">
                     {!user.verified ? (
-                      <div className="text-center p-8 bg-yellow-50 rounded border border-yellow-200 relative">
-                        <Lock className="h-16 w-16 text-yellow-600 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-yellow-800 mb-2 font-sans">ACCESO BLOQUEADO</h3>
-                        <p className="text-yellow-700 font-sans text-sm">
-                          Para usar CriptoHerencia y así ganar dinero necesitas activar el programa pagando 200€. 
-                          El administrador revisará tu pago (normalmente inmediato, máximo 3 horas).
+                      <div className="text-center p-6 bg-gray-100 rounded border border-gray-300 relative min-h-[400px] max-h-[400px] flex flex-col justify-center">
+                        {/* Animated Lock */}
+                        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+                          <div className="animate-bounce">
+                            <Lock className="h-12 w-12 text-gray-500" />
+                          </div>
+                        </div>
+                        
+                        <h3 className="text-xl font-bold text-gray-700 mb-4 font-sans mt-8">ACCESO BLOQUEADO</h3>
+                        <p className="text-gray-600 font-sans text-sm mb-6">
+                          Para usar CriptoHerencia y así ganar dinero necesitas activar el programa.
                         </p>
+                        
+                        {/* Blurred 6-6 Words Layout */}
+                        <div className="grid grid-cols-2 gap-6 mb-4 opacity-30">
+                          {/* Left Column (1-6) */}
+                          <div className="space-y-2">
+                            {Array(6).fill().map((_, index) => (
+                              <div
+                                key={index}
+                                className="p-3 rounded border border-gray-300 text-left font-mono text-sm bg-gray-200 blur-sm"
+                              >
+                                [{String(index + 1).padStart(2, '0')}] ••••••••
+                              </div>
+                            ))}
+                          </div>
+                          {/* Right Column (7-12) */}
+                          <div className="space-y-2">
+                            {Array(6).fill().map((_, index) => (
+                              <div
+                                key={index + 6}
+                                className="p-3 rounded border border-gray-300 text-left font-mono text-sm bg-gray-200 blur-sm"
+                              >
+                                [{String(index + 7).padStart(2, '0')}] ••••••••
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        {/* Overlay Message */}
+                        <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded">
+                          <div className="text-center">
+                            <div className="animate-pulse mb-2">
+                              <Lock className="h-16 w-16 text-red-500 mx-auto" />
+                            </div>
+                            <p className="text-gray-800 font-bold font-sans">
+                              ACTIVA EL PROGRAMA PARA ACCEDER
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     ) : (
                       <>
