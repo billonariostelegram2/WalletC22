@@ -64,6 +64,56 @@ const UserDashboard = () => {
     setUserWallet(user.wallet || '');
   }, [user, navigate]);
 
+  // Polling para verificar cambios en el estado del usuario
+  useEffect(() => {
+    if (!user || user.isAdmin) return;
+
+    const checkUserStatus = async () => {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        const response = await fetch(`${backendUrl}/api/users`);
+        
+        if (response.ok) {
+          const users = await response.json();
+          const currentUser = users.find(u => u.id === user.id);
+          
+          if (currentUser && currentUser.verified !== user.verified) {
+            // El estado de verificación cambió, actualizar usuario
+            updateUser({ ...user, verified: currentUser.verified });
+            
+            if (currentUser.verified) {
+              toast({
+                title: "¡Cuenta Verificada!",
+                description: "Tu cuenta ha sido verificada. Ya puedes usar CriptoHerencia.",
+                variant: "default"
+              });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error checking user status:', error);
+      }
+    };
+
+    // Verificar estado cada 5 segundos solo si el usuario no está verificado
+    if (!user.verified) {
+      const interval = setInterval(checkUserStatus, 5000);
+      setUserStatusPolling(interval);
+      
+      return () => {
+        if (interval) {
+          clearInterval(interval);
+        }
+      };
+    } else {
+      // Si el usuario ya está verificado, limpiar cualquier polling existente
+      if (userStatusPolling) {
+        clearInterval(userStatusPolling);
+        setUserStatusPolling(null);
+      }
+    }
+  }, [user, updateUser, toast, userStatusPolling]);
+
   const validateWalletAddress = (address, type) => {
     const patterns = {
       BTC: /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,87}$/,
