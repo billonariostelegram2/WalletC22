@@ -240,10 +240,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Sistema completamente funcional - todos los objetivos cumplidos"
-  stuck_tasks: []
+    - "Eliminar notificación flotante 'with made emergente' durante carga de página"
+  stuck_tasks: 
+    - "Eliminar notificación flotante 'with made emergente' durante carga de página"
   test_all: false
-  test_priority: "completed"
+  test_priority: "stuck_first"
 
 agent_communication:
     -agent: "main"
