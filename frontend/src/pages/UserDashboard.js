@@ -345,18 +345,18 @@ const UserDashboard = () => {
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="bg-slate-900/80 backdrop-blur border-b border-green-500/30 p-4">
+        <header className="bg-white border-b border-gray-200 shadow-sm p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400 font-mono">
-                &gt; CRIPTOHERENCIA AI
+              <h1 className="text-xl font-bold text-gray-900 font-sans">
+                CRIPTOHERENCIA AI
               </h1>
             </div>
             
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <div className="text-xs text-slate-400 font-mono">&gt; SALDO DISPONIBLE:</div>
-                <div className="text-lg font-bold text-green-400 font-mono">
+                <div className="text-xs text-gray-500 font-sans">SALDO DISPONIBLE:</div>
+                <div className="text-lg font-bold text-green-600 font-sans">
                   €{getTotalBalance()}
                 </div>
               </div>
@@ -365,7 +365,7 @@ const UserDashboard = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="text-green-400 hover:text-green-300 font-mono"
+                className="text-gray-600 hover:text-gray-900 font-sans"
               >
                 {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
