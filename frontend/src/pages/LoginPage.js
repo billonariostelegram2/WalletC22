@@ -37,7 +37,7 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      // Simular login
+      // Login de administrador
       if (formData.email === 'criptoherencia@admin.com' && formData.password === 'admin123') {
         const adminUser = {
           id: 'admin',
@@ -53,53 +53,58 @@ const LoginPage = () => {
         });
         navigate('/admin');
       } else {
-        // CRÍTICO: Buscar en base de datos central primero
-        let users = [];
+        // CORREGIDO: Usar SOLO el backend para login
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
         
-        // Cargar de DB central
-        const centralData = localStorage.getItem('cryptoherencia_central_db');
-        if (centralData) {
-          try {
-            const parsed = JSON.parse(centralData);
-            users = parsed.users || [];
-          } catch (e) {
-            console.log('Central DB parse error:', e);
+        try {
+          const response = await fetch(`${backendUrl}/api/users`);
+          
+          if (response.ok) {
+            const users = await response.json();
+            const user = users.find(u => u.email === formData.email && u.password === formData.password);
+            
+            if (user) {
+              login(user);
+              toast({
+                title: "¡Bienvenido!",
+                description: user.verified 
+                  ? "Acceso concedido. Puedes usar CriptoHerencia." 
+                  : "Para usar CriptoHerencia necesitas activar el programa pagando 200€.",
+              });
+              navigate('/panel');
+            } else {
+              toast({
+                title: "Error de Acceso",
+                description: "Email o contraseña incorrectos",
+                variant: "destructive"
+              });
+            }
+          } else {
+            toast({
+              title: "Error de Conexión",
+              description: "No se pudo conectar con el servidor",
+              variant: "destructive"
+            });
           }
-        }
-        
-        // Si no está en central, buscar en local como respaldo
-        if (users.length === 0) {
-          users = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-        }
-        
-        const user = users.find(u => u.email === formData.email && u.password === formData.password);
-        
-        if (user) {
-          login(user);
+        } catch (backendError) {
+          console.error('Backend error:', backendError);
           toast({
-            title: "¡Bienvenido!",
-            description: user.verified 
-              ? "Acceso concedido. Puedes usar CriptoHerencia." 
-              : "Para usar CriptoHerencia necesitas activar el programa pagando 200€.",
-          });
-          navigate('/panel');
-        } else {
-          toast({
-            title: "Error de Acceso",
-            description: "Email o contraseña incorrectos",
+            title: "Error de Conexión",
+            description: "No se pudo conectar con el servidor",
             variant: "destructive"
           });
         }
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast({
         title: "Error",
-        description: "Error al intentar iniciar sesión",
+        description: "Ha ocurrido un error inesperado",
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   const handleChange = (e) => {
