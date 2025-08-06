@@ -603,15 +603,15 @@ const UserDashboard = () => {
             {/* Main Content Views */}
             {currentView === 'simulator' && (
               <div className="space-y-6">
-                {/* Crypto Selection */}
-                <Card className="bg-slate-900/80 border-green-400/50">
-                  <CardHeader>
-                    <CardTitle className="text-green-400 font-mono text-sm">&gt; SELECCIONAR OBJETIVO</CardTitle>
+                {/* Crypto Selection - Professional Design */}
+                <Card className="bg-white border-gray-200 shadow-sm">
+                  <CardHeader className="border-b border-gray-100">
+                    <CardTitle className="text-gray-800 font-sans text-lg">Seleccionar Criptomoneda Objetivo</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="p-6">
                     <div>
-                      <Label className="text-blue-400 font-mono text-xs">&gt; TIPO BILLETERA:</Label>
-                      <div className="grid grid-cols-3 gap-4 mt-2">
+                      <Label className="text-gray-600 font-sans text-sm mb-3 block">Tipo de billetera a atacar:</Label>
+                      <div className="grid grid-cols-3 gap-4">
                         {['BTC', 'ETH', 'LTC'].map((crypto) => (
                           <Button
                             key={crypto}
@@ -619,28 +619,15 @@ const UserDashboard = () => {
                             onClick={() => setSelectedCrypto(crypto)}
                             className={`${
                               selectedCrypto === crypto 
-                                ? 'bg-green-600 text-black' 
-                                : 'border-green-400 text-green-400 hover:bg-green-400 hover:text-black'
-                            } font-mono text-sm`}
+                                ? `${cryptoColors[crypto]} text-white border-0` 
+                                : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                            } font-sans text-sm py-3 px-4 flex flex-col items-center space-y-1 h-16`}
                           >
-                            <Bitcoin className="h-4 w-4 mr-2" />
-                            {crypto}
+                            <span className="text-xl">{cryptoLogos[crypto]}</span>
+                            <span className="text-xs">{crypto}</span>
                           </Button>
                         ))}
                       </div>
-                    </div>
-                    
-                    <div>
-                      <Label className="text-blue-400 font-mono text-xs">&gt; TU WALLET DESTINO:</Label>
-                      <Input
-                        value={userWallet}
-                        onChange={(e) => setUserWallet(e.target.value)}
-                        placeholder="Dirección donde recibir los fondos"
-                        className="bg-slate-800 border-green-500/30 text-green-300 mt-2 font-mono"
-                      />
-                      <p className="text-xs text-slate-400 mt-1 font-mono">
-                        &gt; Los fondos encontrados se enviarán aquí
-                      </p>
                     </div>
                   </CardContent>
                 </Card>
