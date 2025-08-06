@@ -33,7 +33,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = (userData) => {
-    const updatedUser = { ...user, ...userData };
+    console.log('AuthContext updateUser called with:', userData);
+    console.log('Current user before update:', user);
+    
+    // Crear nueva referencia del usuario para forzar re-render
+    const updatedUser = { ...userData };
+    console.log('New user after update:', updatedUser);
+    
     setUser(updatedUser);
     localStorage.setItem('cryptoherencia_user', JSON.stringify(updatedUser));
   };
