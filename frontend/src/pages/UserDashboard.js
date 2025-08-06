@@ -103,29 +103,10 @@ const UserDashboard = () => {
       return;
     }
 
-    if (!userWallet.trim()) {
-      toast({
-        title: "Error",
-        description: "Introduce tu dirección de wallet de destino",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const walletType = getWalletType(userWallet);
-    if (!walletType) {
-      toast({
-        title: "Dirección Inválida",
-        description: "La dirección de wallet no es válida",
-        variant: "destructive"
-      });
-      return;
-    }
-
     if (!user.verified) {
       toast({
         title: "Acceso Restringido",
-        description: "Necesitas verificar tu cuenta para usar el simulador",
+        description: "Necesitas verificar tu cuenta para usar CriptoHerencia",
         variant: "destructive"
       });
       return;
