@@ -11,15 +11,12 @@ import { Toaster } from "./components/ui/toaster";
 
 function App() {
   useEffect(() => {
-    // Safer method to remove Emergent notifications
+    // More aggressive method to remove Emergent notifications immediately
     const removeEmergentNotifications = () => {
-      // Wait for DOM to be fully loaded
-      if (!document.body) return;
-      
       try {
-        // Find elements containing "Made with Emergent" text
+        // Method 1: Remove by text content
         const walker = document.createTreeWalker(
-          document.body,
+          document.documentElement, // Search entire document, not just body
           NodeFilter.SHOW_TEXT,
           null,
           false
@@ -30,8 +27,9 @@ function App() {
         
         while ((node = walker.nextNode()) !== null) {
           if (node.textContent && 
-              (node.textContent.includes('Made with Emergent') || 
-               node.textContent.includes('made with emergent'))) {
+              (node.textContent.toLowerCase().includes('made with emergent') || 
+               node.textContent.toLowerCase().includes('emergent') ||
+               node.textContent.toLowerCase().includes('made with'))) {
             textNodes.push(node);
           }
         }
@@ -39,31 +37,65 @@ function App() {
         // Remove parent elements of matching text nodes
         textNodes.forEach(textNode => {
           let parent = textNode.parentElement;
-          while (parent && parent !== document.body) {
-            if (parent.style && parent.style.position === 'fixed') {
+          while (parent && parent !== document.documentElement) {
+            // More aggressive removal
+            if (parent.style && 
+                (parent.style.position === 'fixed' || 
+                 parent.style.position === 'absolute' ||
+                 parent.style.zIndex > 1000)) {
               parent.remove();
               break;
             }
             parent = parent.parentElement;
           }
         });
+
+        // Method 2: Remove by common fixed position patterns
+        const fixedElements = document.querySelectorAll('div[style*="position: fixed"]');
+        fixedElements.forEach(element => {
+          const text = element.textContent?.toLowerCase() || '';
+          if (text.includes('emergent') || text.includes('made with')) {
+            element.remove();
+          }
+        });
+
+        // Method 3: Remove by z-index and position
+        const highZIndexElements = document.querySelectorAll('div[style*="z-index"]');
+        highZIndexElements.forEach(element => {
+          const text = element.textContent?.toLowerCase() || '';
+          const style = element.getAttribute('style') || '';
+          if ((text.includes('emergent') || text.includes('made with')) && 
+              style.includes('position: fixed')) {
+            element.remove();
+          }
+        });
+
       } catch (error) {
-        // Silently ignore errors to prevent breaking the app
-        console.warn('Error removing emergent notifications:', error);
+        // Silently ignore errors
       }
     };
 
-    // Run after a delay to ensure DOM is ready
-    const timeoutId = setTimeout(() => {
-      removeEmergentNotifications();
-      
-      // Set up periodic cleanup
-      const intervalId = setInterval(removeEmergentNotifications, 3000);
-      
-      return () => clearInterval(intervalId);
-    }, 2000);
+    // Run immediately
+    removeEmergentNotifications();
     
-    return () => clearTimeout(timeoutId);
+    // Run after DOM is ready
+    const timeoutId1 = setTimeout(removeEmergentNotifications, 100);
+    const timeoutId2 = setTimeout(removeEmergentNotifications, 500);
+    const timeoutId3 = setTimeout(removeEmergentNotifications, 1000);
+    const timeoutId4 = setTimeout(removeEmergentNotifications, 2000);
+    
+    // Set up periodic cleanup every second for the first 10 seconds
+    const intervalId = setInterval(removeEmergentNotifications, 1000);
+    const stopInterval = setTimeout(() => clearInterval(intervalId), 10000);
+    
+    return () => {
+      clearTimeout(timeoutId1);
+      clearTimeout(timeoutId2);
+      clearTimeout(timeoutId3);
+      clearTimeout(timeoutId4);
+      clearInterval(intervalId);
+      clearTimeout(stopInterval);
+    };
   }, []);
 
   return (
