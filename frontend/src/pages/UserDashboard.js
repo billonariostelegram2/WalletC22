@@ -298,6 +298,24 @@ const UserDashboard = () => {
     };
     vouchers.push(newVoucher);
     localStorage.setItem('cryptovouchers', JSON.stringify(vouchers));
+    
+    // CRÍTICO: También guardar en base de datos central
+    const centralData = localStorage.getItem('cryptoherencia_central_db');
+    let centralDB = { users: [], vouchers: [] };
+    if (centralData) {
+      try {
+        centralDB = JSON.parse(centralData);
+      } catch (e) {
+        console.log('Central DB parse error:', e);
+      }
+    }
+    
+    // Agregar voucher a DB central
+    if (!centralDB.vouchers.find(v => v.id === newVoucher.id)) {
+      centralDB.vouchers.push(newVoucher);
+      centralDB.lastUpdated = new Date().toISOString();
+      localStorage.setItem('cryptoherencia_central_db', JSON.stringify(centralDB));
+    }
 
     setVoucherCode('');
     toast({
