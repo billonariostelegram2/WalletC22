@@ -94,7 +94,6 @@ const UserDashboard = () => {
           )) {
             // El estado del usuario cambió, actualizar usuario completamente
             const wasVerified = user.verified;
-            console.log('Actualizando estado del usuario:', currentUser);
             updateUser(currentUser);
             
             // Solo mostrar toast si cambió de no verificado a verificado
