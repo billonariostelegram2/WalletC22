@@ -553,14 +553,7 @@ const UserDashboard = () => {
             )}
 
             {/* Verification Required - Only for logged in but not verified users */}
-            {(() => {
-              const shouldShow = user.approved && !user.verified;
-              console.log('Verification Required section check:', {
-                user: { approved: user.approved, verified: user.verified },
-                shouldShow: shouldShow
-              });
-              return shouldShow;
-            })() && (
+            {user.approved && !user.verified && (
               <Card className="bg-white border-blue-200 shadow-sm mb-6">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
