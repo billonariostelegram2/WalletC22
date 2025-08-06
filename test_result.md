@@ -184,20 +184,20 @@ frontend:
         -agent: "testing"
         -comment: "✅ CONFIRMADO: Sistema de polling funcionando. Cuando admin verifica usuario, las secciones de verificación desaparecen automáticamente y aparece toast de confirmación. Actualización en tiempo real FUNCIONANDO."
 
-  - task: "Verificar que secciones de pago no aparezcan para usuarios verificados"
+  - task: "Corregir bug crítico: usuarios verificados no pueden acceder al simulador"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
     stuck_count: 0
-    priority: "high"
-    needs_retesting: false
+    priority: "critical"
+    needs_retesting: true
     status_history:
+        -working: false
+        -agent: "main"
+        -comment: "BUG REPORTADO: Usuarios verificados manualmente siguen sin acceso al simulador y ven opciones de pago"
         -working: true
         -agent: "main"
-        -comment: "Confirmada lógica existente: secciones VERIFICACIÓN REQUERIDA y ACTIVAR EL PROGRAMA solo aparecen cuando user.approved && !user.verified"
-        -working: true
-        -agent: "testing"
-        -comment: "✅ CONFIRMADO: Secciones 'VERIFICACIÓN REQUERIDA' y 'ACTIVAR EL PROGRAMA' solo aparecen para usuarios no verificados. Para usuarios verificados estas secciones se ocultan automáticamente. Lógica FUNCIONANDO correctamente."
+        -comment: "CORREGIDO: updateUser() ahora actualiza con datos completos del backend, no solo campo verified. Mejorado polling para detectar cambios en verified, approved y balance. Añadido logging para diagnóstico."
 
 metadata:
   created_by: "main_agent"
