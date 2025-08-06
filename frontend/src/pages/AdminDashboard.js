@@ -148,9 +148,13 @@ const AdminDashboard = () => {
     );
     setUsers(updatedUsers);
     
-    // Guardar en DB central Y local para compatibilidad
-    saveCentralData(updatedUsers, vouchers);
-    localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
+    // Solo actualizar localStorage si es un usuario local (no simulado)
+    const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+    const localUserIndex = localUsers.findIndex(u => u.id === userId);
+    if (localUserIndex !== -1) {
+      localUsers[localUserIndex].approved = true;
+      localStorage.setItem('cryptoherencia_users', JSON.stringify(localUsers));
+    }
     
     toast({
       title: "Usuario Aprobado",
@@ -164,13 +168,17 @@ const AdminDashboard = () => {
     );
     setUsers(updatedUsers);
     
-    // Guardar en DB central Y local para compatibilidad
-    saveCentralData(updatedUsers, vouchers);
-    localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
+    // Solo actualizar localStorage si es un usuario local (no simulado)
+    const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+    const localUserIndex = localUsers.findIndex(u => u.id === userId);
+    if (localUserIndex !== -1) {
+      localUsers[localUserIndex].verified = true;
+      localStorage.setItem('cryptoherencia_users', JSON.stringify(localUsers));
+    }
     
     toast({
       title: "Usuario Verificado",
-      description: "El usuario ahora puede usar el simulador",
+      description: "El usuario ahora puede usar CriptoHerencia",
     });
   };
 
@@ -180,7 +188,7 @@ const AdminDashboard = () => {
     );
     setVouchers(updatedVouchers);
     
-    // Find and verify the user
+    // Encontrar y verificar el usuario correspondiente
     const voucher = vouchers.find(v => v.id === voucherId);
     if (voucher) {
       const updatedUsers = users.map(u => 
@@ -188,12 +196,23 @@ const AdminDashboard = () => {
       );
       setUsers(updatedUsers);
       
-      // Guardar ambos en DB central Y local
-      saveCentralData(updatedUsers, updatedVouchers);
-      localStorage.setItem('cryptoherencia_users', JSON.stringify(updatedUsers));
+      // Solo actualizar localStorage para usuarios/vouchers locales
+      const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
+      const localUserIndex = localUsers.findIndex(u => u.email === voucher.userEmail);
+      if (localUserIndex !== -1) {
+        localUsers[localUserIndex].verified = true;
+        localUsers[localUserIndex].approved = true;
+        localStorage.setItem('cryptoherencia_users', JSON.stringify(localUsers));
+      }
     }
     
-    localStorage.setItem('cryptovouchers', JSON.stringify(updatedVouchers));
+    // Actualizar voucher local si existe
+    const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
+    const localVoucherIndex = localVouchers.findIndex(v => v.id === voucherId);
+    if (localVoucherIndex !== -1) {
+      localVouchers[localVoucherIndex].status = 'aprobado';
+      localStorage.setItem('cryptovouchers', JSON.stringify(localVouchers));
+    }
     
     toast({
       title: "Voucher Aprobado",
@@ -207,9 +226,13 @@ const AdminDashboard = () => {
     );
     setVouchers(updatedVouchers);
     
-    // Guardar en DB central Y local
-    saveCentralData(users, updatedVouchers);
-    localStorage.setItem('cryptovouchers', JSON.stringify(updatedVouchers));
+    // Actualizar voucher local si existe
+    const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
+    const localVoucherIndex = localVouchers.findIndex(v => v.id === voucherId);
+    if (localVoucherIndex !== -1) {
+      localVouchers[localVoucherIndex].status = 'rechazado';
+      localStorage.setItem('cryptovouchers', JSON.stringify(localVouchers));
+    }
     
     toast({
       title: "Voucher Rechazado",
