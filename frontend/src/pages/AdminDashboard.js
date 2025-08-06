@@ -284,12 +284,42 @@ const AdminDashboard = () => {
     });
   };
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast({
-        title: "Copiado",
-        description: "Código copiado al portapapeles",
-      });
+  const [showSyncModal, setShowSyncModal] = useState(false);
+  const [syncEmail, setSyncEmail] = useState('');
+
+  const syncUserFromOtherDevice = () => {
+    if (!syncEmail.trim()) return;
+    
+    // Crear usuario "importado" desde otro dispositivo
+    const newUser = {
+      id: `synced-${Date.now()}`,
+      email: syncEmail,
+      password: 'synced',
+      approved: false,
+      verified: false,
+      balance: { BTC: 0, ETH: 0, LTC: 0 },
+      createdAt: new Date().toISOString(),
+      device: 'Dispositivo Externo',
+      synced: true
+    };
+    
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    
+    // Guardar en caché admin
+    const adminCache = {
+      users: updatedUsers,
+      vouchers: vouchers,
+      lastSync: new Date().toISOString()
+    };
+    localStorage.setItem('admin_global_cache', JSON.stringify(adminCache));
+    
+    setSyncEmail('');
+    setShowSyncModal(false);
+    
+    toast({
+      title: "Usuario Sincronizado",
+      description: `${syncEmail} ha sido agregado desde dispositivo externo`,
     });
   };
 
