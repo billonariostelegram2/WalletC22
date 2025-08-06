@@ -2,30 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Aggressive approach to hide Emergent notifications completely */
-/* Hide by text content */
+/* ULTRA AGGRESSIVE approach to hide Emergent notifications instantly */
+/* Prevent any flash of notification by hiding from the start */
+* {
+    -webkit-animation-fill-mode: both !important;
+    animation-fill-mode: both !important;
+}
+
+/* Hide by text content variations */
 div[style*="position: fixed"]:has-text("Made with"),
 div[style*="position: fixed"]:has-text("Emergent"),
 div[style*="position: fixed"]:has-text("made with"),
-div[style*="position: fixed"]:has-text("emergent") {
+div[style*="position: fixed"]:has-text("emergent"),
+div[style*="position: fixed"]:has-text("MADE WITH"),
+div[style*="position: fixed"]:has-text("EMERGENT") {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    z-index: -9999999 !important;
 }
 
-/* Hide by common Emergent styling patterns */
-div[style*="position: fixed"][style*="z-index"] {
+/* Hide by common Emergent styling patterns - more aggressive */
+div[style*="position: fixed"][style*="z-index"]:not(.toast):not([class*="toast"]):not([id*="toast"]) {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
-/* Generic fixed position elements that might be notifications */
-div[style*="position: fixed"][style*="bottom"][style*="right"] {
+/* Generic fixed position elements in corners - likely notifications */
+div[style*="position: fixed"][style*="bottom"][style*="right"]:not(.toast):not([class*="toast"]):not([id*="toast"]) {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
-div[style*="position: fixed"][style*="top"][style*="right"] {
+div[style*="position: fixed"][style*="top"][style*="right"]:not(.toast):not([class*="toast"]):not([id*="toast"]) {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Catch any element that might contain emergent text */
+*:not(.toast):not([class*="toast"]):not([id*="toast"]) {
+    --emergent-display: block;
+}
+
+*[style*="position: fixed"]:not(.toast):not([class*="toast"]):not([id*="toast"]) {
+    --emergent-display: none !important;
+    display: var(--emergent-display) !important;
+}
+
+/* Final catch-all for any sneaky notifications */
+body > div:not([id]):not([class])[style*="position: fixed"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
 body {
