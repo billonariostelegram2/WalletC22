@@ -131,7 +131,7 @@ const UserDashboard = () => {
         setUserStatusPolling(null);
       }
     }
-  }, [user, updateUser, toast, userStatusPolling]);
+  }, [user, updateUser, toast]);
 
   const validateWalletAddress = (address, type) => {
     const patterns = {
