@@ -11,12 +11,12 @@ import { Toaster } from "./components/ui/toaster";
 
 function App() {
   useEffect(() => {
-    // More aggressive method to remove Emergent notifications immediately
+    // ULTRA AGGRESSIVE method to remove Emergent notifications before they appear
     const removeEmergentNotifications = () => {
       try {
-        // Method 1: Remove by text content
+        // Method 1: Remove by text content search
         const walker = document.createTreeWalker(
-          document.documentElement, // Search entire document, not just body
+          document.documentElement,
           NodeFilter.SHOW_TEXT,
           null,
           false
@@ -26,23 +26,21 @@ function App() {
         let node;
         
         while ((node = walker.nextNode()) !== null) {
-          if (node.textContent && 
-              (node.textContent.toLowerCase().includes('made with emergent') || 
-               node.textContent.toLowerCase().includes('emergent') ||
-               node.textContent.toLowerCase().includes('made with'))) {
+          const text = node.textContent?.toLowerCase() || '';
+          if (text.includes('made with emergent') || 
+              text.includes('emergent') ||
+              text.includes('made with')) {
             textNodes.push(node);
           }
         }
         
-        // Remove parent elements of matching text nodes
         textNodes.forEach(textNode => {
           let parent = textNode.parentElement;
           while (parent && parent !== document.documentElement) {
-            // More aggressive removal
             if (parent.style && 
                 (parent.style.position === 'fixed' || 
                  parent.style.position === 'absolute' ||
-                 parent.style.zIndex > 1000)) {
+                 parseInt(parent.style.zIndex) > 1000)) {
               parent.remove();
               break;
             }
@@ -50,22 +48,41 @@ function App() {
           }
         });
 
-        // Method 2: Remove by common fixed position patterns
-        const fixedElements = document.querySelectorAll('div[style*="position: fixed"]');
+        // Method 2: Remove suspicious fixed elements
+        const fixedElements = document.querySelectorAll(
+          'div[style*="position: fixed"], div[style*="position:fixed"]'
+        );
         fixedElements.forEach(element => {
           const text = element.textContent?.toLowerCase() || '';
-          if (text.includes('emergent') || text.includes('made with')) {
+          const hasEmergentText = text.includes('emergent') || 
+                                text.includes('made with') ||
+                                text.includes('made') ||
+                                text.includes('with');
+          
+          // Don't remove legitimate UI elements
+          const isLegitimate = element.classList.length > 0 || 
+                              element.id || 
+                              element.closest('.toast') ||
+                              element.closest('[class*="toast"]') ||
+                              element.closest('[id*="toast"]');
+          
+          if (hasEmergentText && !isLegitimate) {
             element.remove();
           }
         });
 
-        // Method 3: Remove by z-index and position
-        const highZIndexElements = document.querySelectorAll('div[style*="z-index"]');
-        highZIndexElements.forEach(element => {
+        // Method 3: Remove by z-index and suspicious patterns
+        const highZElements = document.querySelectorAll('*[style*="z-index"]');
+        highZElements.forEach(element => {
           const text = element.textContent?.toLowerCase() || '';
           const style = element.getAttribute('style') || '';
-          if ((text.includes('emergent') || text.includes('made with')) && 
-              style.includes('position: fixed')) {
+          const zIndex = parseInt(element.style.zIndex) || 0;
+          
+          const hasEmergentText = text.includes('emergent') || text.includes('made with');
+          const isFixed = style.includes('position: fixed') || style.includes('position:fixed');
+          const isLegitimate = element.classList.length > 0 || element.id;
+          
+          if (hasEmergentText && isFixed && zIndex > 999 && !isLegitimate) {
             element.remove();
           }
         });
@@ -75,24 +92,60 @@ function App() {
       }
     };
 
-    // Run immediately
+    // Set up MutationObserver to catch elements as they're added
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node;
+            const text = element.textContent?.toLowerCase() || '';
+            const style = element.getAttribute('style') || '';
+            
+            // Check if it's an Emergent notification
+            const hasEmergentText = text.includes('emergent') || 
+                                  text.includes('made with') ||
+                                  text.includes('made') ||
+                                  text.includes('with');
+            const isFixed = style.includes('position: fixed') || 
+                          style.includes('position:fixed');
+            const isLegitimate = element.classList.length > 0 || 
+                               element.id ||
+                               element.closest('.toast') ||
+                               element.closest('[class*="toast"]');
+            
+            if (hasEmergentText && isFixed && !isLegitimate) {
+              element.remove();
+            }
+          }
+        });
+      });
+    });
+
+    // Start observing immediately
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+
+    // Run removal immediately and aggressively
     removeEmergentNotifications();
     
-    // Run after DOM is ready
-    const timeoutId1 = setTimeout(removeEmergentNotifications, 100);
-    const timeoutId2 = setTimeout(removeEmergentNotifications, 500);
-    const timeoutId3 = setTimeout(removeEmergentNotifications, 1000);
-    const timeoutId4 = setTimeout(removeEmergentNotifications, 2000);
+    // Multiple immediate timeouts
+    setTimeout(removeEmergentNotifications, 0);
+    setTimeout(removeEmergentNotifications, 1);
+    setTimeout(removeEmergentNotifications, 10);
+    setTimeout(removeEmergentNotifications, 50);
+    setTimeout(removeEmergentNotifications, 100);
+    setTimeout(removeEmergentNotifications, 250);
+    setTimeout(removeEmergentNotifications, 500);
+    setTimeout(removeEmergentNotifications, 1000);
     
-    // Set up periodic cleanup every second for the first 10 seconds
-    const intervalId = setInterval(removeEmergentNotifications, 1000);
-    const stopInterval = setTimeout(() => clearInterval(intervalId), 10000);
+    // Continuous monitoring for first 5 seconds
+    const intervalId = setInterval(removeEmergentNotifications, 50);
+    const stopInterval = setTimeout(() => clearInterval(intervalId), 5000);
     
     return () => {
-      clearTimeout(timeoutId1);
-      clearTimeout(timeoutId2);
-      clearTimeout(timeoutId3);
-      clearTimeout(timeoutId4);
+      observer.disconnect();
       clearInterval(intervalId);
       clearTimeout(stopInterval);
     };
