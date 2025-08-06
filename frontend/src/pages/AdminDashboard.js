@@ -477,22 +477,13 @@ const AdminDashboard = () => {
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex space-x-2">
-                              {!user.approved && (
-                                <Button
-                                  onClick={() => approveUser(user.id)}
-                                  size="sm"
-                                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 text-xs"
-                                >
-                                  Aprobar
-                                </Button>
-                              )}
-                              {user.approved && !user.verified && (
+                              {!user.verified && (
                                 <Button
                                   onClick={() => verifyUser(user.id)}
                                   size="sm"
                                   className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs"
                                 >
-                                  Verificar
+                                  Verificar (Tras Pago)
                                 </Button>
                               )}
                               <Button
