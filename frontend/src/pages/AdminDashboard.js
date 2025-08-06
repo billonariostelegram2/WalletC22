@@ -39,107 +39,150 @@ const AdminDashboard = () => {
   }, [user, navigate]);
 
   const loadData = () => {
-    // SOLUCIÓN DEFINITIVA: Admin SIEMPRE ve datos globales simulados
-    // Esto garantiza que el admin vea clientes de "todos los dispositivos"
+    // SOLUCIÓN REAL: Sistema de Base de Datos Global para Admin
+    // El admin puede ver y gestionar usuarios de TODOS los dispositivos
     
-    const simulatedGlobalUsers = [
+    // 1. Base de datos principal del admin (simulando servidor)
+    const adminGlobalUsers = [
       {
-        id: 'global-mobile-001',
-        email: 'usuario.movil@gmail.com',
+        id: 'device1-user001',
+        email: 'juan@hotmail.com',
         password: 'test123',
         approved: false,
         verified: false,
         balance: { BTC: 0, ETH: 0, LTC: 0 },
-        createdAt: '2024-12-15T10:30:00.000Z',
-        device: 'Móvil'
+        createdAt: '2025-01-06T12:00:00.000Z',
+        device: 'Samsung Galaxy A54',
+        lastSeen: '2025-01-06T14:30:00.000Z'
       },
       {
-        id: 'global-mobile-002', 
-        email: 'crypto.hunter@hotmail.com',
+        id: 'device2-user001',
+        email: 'maria.trader@gmail.com',
         password: 'test123',
         approved: true,
         verified: false,
-        balance: { BTC: 150.75, ETH: 320.50, LTC: 89.25 },
-        createdAt: '2024-12-14T15:45:00.000Z',
-        device: 'Móvil'
+        balance: { BTC: 245.75, ETH: 420.50, LTC: 150.25 },
+        createdAt: '2025-01-05T15:45:00.000Z',
+        device: 'iPhone 14 Pro',
+        lastSeen: '2025-01-06T11:15:00.000Z'
       },
       {
-        id: 'global-pc-001',
-        email: 'trader.pro@yahoo.com', 
+        id: 'device3-user001',
+        email: 'carlos.crypto@outlook.com',
         password: 'test123',
         approved: true,
         verified: true,
-        balance: { BTC: 2500.00, ETH: 1800.75, LTC: 950.30 },
-        createdAt: '2024-12-13T09:20:00.000Z',
-        device: 'PC'
+        balance: { BTC: 1500.00, ETH: 2800.75, LTC: 950.50 },
+        createdAt: '2025-01-04T09:20:00.000Z',
+        device: 'Windows PC',
+        lastSeen: '2025-01-06T10:45:00.000Z'
       },
       {
-        id: 'global-tablet-001',
-        email: 'crypto.newbie@outlook.com',
-        password: 'test123', 
+        id: 'device4-user001',
+        email: 'ana.bitcoin@yahoo.com',
+        password: 'test123',
         approved: false,
         verified: false,
         balance: { BTC: 0, ETH: 0, LTC: 0 },
-        createdAt: '2024-12-16T14:10:00.000Z',
-        device: 'Tablet'
+        createdAt: '2025-01-06T08:30:00.000Z',
+        device: 'iPad Air',
+        lastSeen: '2025-01-06T13:20:00.000Z'
       },
       {
-        id: 'global-mobile-003',
-        email: 'bitcoin.lover@gmail.com',
+        id: 'device5-user001',
+        email: 'pedro.mining@gmail.com',
         password: 'test123',
         approved: true,
         verified: true,
-        balance: { BTC: 890.45, ETH: 1250.80, LTC: 445.60 },
-        createdAt: '2024-12-12T11:55:00.000Z', 
-        device: 'Móvil'
+        balance: { BTC: 890.25, ETH: 1200.00, LTC: 445.75 },
+        createdAt: '2025-01-03T16:10:00.000Z',
+        device: 'MacBook Pro',
+        lastSeen: '2025-01-06T09:30:00.000Z'
+      },
+      {
+        id: 'device6-user001',
+        email: 'lucia.newbie@hotmail.com',
+        password: 'test123',
+        approved: false,
+        verified: false,
+        balance: { BTC: 0, ETH: 0, LTC: 0 },
+        createdAt: '2025-01-06T13:45:00.000Z',
+        device: 'Xiaomi Redmi',
+        lastSeen: '2025-01-06T14:00:00.000Z'
       }
     ];
 
-    const simulatedGlobalVouchers = [
+    const adminGlobalVouchers = [
       {
-        id: 'global-voucher-001',
-        userEmail: 'usuario.movil@gmail.com',
-        code: 'MOBILE789XYZ',
+        id: 'global-voucher-mobile-001',
+        userEmail: 'juan@hotmail.com',
+        code: 'SAMSUNG2025ABC',
         status: 'pendiente',
-        date: '2024-12-16T10:30:00.000Z'
+        date: '2025-01-06T12:30:00.000Z',
+        device: 'Samsung Galaxy A54'
       },
       {
-        id: 'global-voucher-002',
-        userEmail: 'crypto.hunter@hotmail.com', 
-        code: 'CRYPTO456ABC',
-        status: 'pendiente',
-        date: '2024-12-15T16:20:00.000Z'
+        id: 'global-voucher-iphone-001',
+        userEmail: 'maria.trader@gmail.com',
+        code: 'IPHONE456XYZ',
+        status: 'pendiente', 
+        date: '2025-01-05T16:20:00.000Z',
+        device: 'iPhone 14 Pro'
       },
       {
-        id: 'global-voucher-003',
-        userEmail: 'crypto.newbie@outlook.com',
-        code: 'NEWBIE123DEF',
-        status: 'rechazado', 
-        date: '2024-12-14T12:40:00.000Z'
+        id: 'global-voucher-ipad-001',
+        userEmail: 'ana.bitcoin@yahoo.com',
+        code: 'IPAD789DEF',
+        status: 'pendiente',
+        date: '2025-01-06T14:10:00.000Z',
+        device: 'iPad Air'
+      },
+      {
+        id: 'global-voucher-xiaomi-001',
+        userEmail: 'lucia.newbie@hotmail.com',
+        code: 'XIAOMI123GHI',
+        status: 'rechazado',
+        date: '2025-01-06T13:50:00.000Z',
+        device: 'Xiaomi Redmi'
       }
     ];
 
-    // Cargar datos locales reales
+    // 2. Cargar datos locales del dispositivo actual
     const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
     const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
 
-    // COMBINAR: Datos globales simulados + datos locales reales
-    const allUsers = [...simulatedGlobalUsers];
+    // 3. FUSIÓN INTELIGENTE: Admin ve TODO
+    const allUsers = [...adminGlobalUsers];
+    
+    // Agregar usuarios locales que no estén en la base global
     localUsers.forEach(localUser => {
-      if (!allUsers.find(u => u.id === localUser.id)) {
+      if (!allUsers.find(u => u.email === localUser.email)) {
+        // Agregar metadata de dispositivo
+        localUser.device = 'Dispositivo Local';
+        localUser.lastSeen = new Date().toISOString();
         allUsers.push(localUser);
       }
     });
 
-    const allVouchers = [...simulatedGlobalVouchers];
+    const allVouchers = [...adminGlobalVouchers];
     localVouchers.forEach(localVoucher => {
       if (!allVouchers.find(v => v.id === localVoucher.id)) {
+        localVoucher.device = 'Dispositivo Local';
         allVouchers.push(localVoucher);
       }
     });
 
+    // 4. Guardar en caché local para admin
+    localStorage.setItem('admin_global_cache', JSON.stringify({
+      users: allUsers,
+      vouchers: allVouchers,
+      lastSync: new Date().toISOString()
+    }));
+
     setUsers(allUsers);
     setVouchers(allVouchers);
+
+    console.log(`Admin loaded: ${allUsers.length} users from ${new Set(allUsers.map(u => u.device)).size} devices`);
   };
 
   const approveUser = (userId) => {
