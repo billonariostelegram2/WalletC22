@@ -657,7 +657,7 @@ const UserDashboard = () => {
             {/* Card Payment Modal */}
             {showCardPayment && (
               <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
-                <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+                <div className="bg-white rounded-lg shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
                   <div className="p-6 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                       <h2 className="text-xl font-semibold text-gray-900 flex items-center">
@@ -675,34 +675,85 @@ const UserDashboard = () => {
                     </div>
                   </div>
                   
-                  <div className="p-6">
-                    <p className="text-gray-600 mb-4 text-sm">
-                      Para realizar la compra de forma sencilla pagando con <strong>TARJETA</strong> debes comprar una CryptoVoucher (TARJETA REGALO 200€) y canjear el código que te darán aquí:
-                    </p>
-                    
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label className="text-gray-700 font-medium">Código del Voucher:</Label>
-                        <Input
-                          value={voucherCode}
-                          onChange={(e) => setVoucherCode(e.target.value)}
-                          placeholder="Introduce el código aquí"
-                          className="bg-gray-50 border-gray-200 text-gray-800"
-                        />
+                  <div className="p-6 space-y-6">
+                    {/* Paso 1: Comprar CryptoVoucher */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          1
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-800 mb-2">
+                            🛒 Compra tu CryptoVoucher de 200€
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-3">
+                            Para activar tu programa de forma <strong>rápida y segura</strong>, compra una CryptoVoucher (tarjeta regalo digital) por exactamente <strong>200€</strong>.
+                          </p>
+                          <Button
+                            onClick={() => window.open('https://tarjetadirecta.es/product/crypto-voucher-200-euros', '_blank')}
+                            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-sm px-4 py-2 rounded-lg flex items-center space-x-2"
+                          >
+                            <span>🛍️</span>
+                            <span>Comprar CryptoVoucher 200€</span>
+                          </Button>
+                        </div>
                       </div>
-                      
-                      <Button
-                        onClick={submitVoucher}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
-                        disabled={!voucherCode.trim()}
-                      >
-                        Canjear Código
-                      </Button>
+                    </div>
+
+                    {/* Paso 2: Canjear código */}
+                    <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          2
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-800 mb-2">
+                            🔑 Canjea tu código aquí
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-3">
+                            Tras la compra recibirás un <strong>código de activación</strong>. Introdúcelo aquí y tu programa se activará <strong>inmediatamente</strong>.
+                          </p>
+                          
+                          <div className="space-y-3">
+                            <div>
+                              <Label className="text-gray-700 font-medium">Código del Voucher:</Label>
+                              <Input
+                                value={voucherCode}
+                                onChange={(e) => setVoucherCode(e.target.value)}
+                                placeholder="Ej: CV-XXXX-XXXX-XXXX"
+                                className="bg-gray-50 border-gray-200 text-gray-800 mt-1"
+                              />
+                            </div>
+                            
+                            <Button
+                              onClick={submitVoucher}
+                              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium"
+                              disabled={!voucherCode.trim()}
+                            >
+                              🚀 Activar Programa Inmediatamente
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Ventajas y beneficios */}
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <h3 className="font-semibold text-green-800 mb-2 flex items-center">
+                        <CheckCircle className="h-5 w-5 mr-2" />
+                        ¿Por qué elegir CryptoVoucher?
+                      </h3>
+                      <ul className="text-green-700 text-sm space-y-1">
+                        <li>✅ <strong>Activación inmediata</strong> - No esperas 24 horas</li>
+                        <li>✅ <strong>100% Seguro</strong> - Compra con tu tarjeta habitual</li>
+                        <li>✅ <strong>Sin registros complicados</strong> - Solo necesitas el código</li>
+                        <li>✅ <strong>Soporte 24/7</strong> - Ayuda disponible siempre</li>
+                      </ul>
                     </div>
                     
-                    <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mt-4">
-                      <p className="text-yellow-800 text-sm">
-                        <strong>Nota:</strong> Una vez enviado el código, será revisado por un administrador para verificar tu cuenta.
+                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                      <p className="text-blue-800 text-sm">
+                        <strong>💡 Proceso completo:</strong> Compra → Recibe código por email → Introdúcelo aquí → ¡Tu programa se activa al instante!
                       </p>
                     </div>
                   </div>
