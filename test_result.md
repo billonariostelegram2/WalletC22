@@ -162,7 +162,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Verificar interfaz post-login con cambios implementados"
+    - "Verificar que interfaz de candado doble se haya corregido para usuarios no verificados"
+    - "Probar actualización en tiempo real cuando admin verifica usuario manualmente"
+    - "Confirmar que usuarios verificados pueden acceder al simulador inmediatamente"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
