@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "El usuario reporta dos problemas principales: 1) Cuando un usuario inicia sesión pero no está verificado aparece candado doble y texto duplicado - necesita lógica correcta y aspecto limpio, 2) Cuando usuario es verificado manualmente por administrador hay error y no puede usar simulador en tiempo real - debería poder usarlo inmediatamente"
+user_problem_statement: "BUG CRÍTICO REPORTADO: Usuario verificado manualmente (después de enviar cryptovoucher correcto) aún no puede acceder al simulador y sigue viendo opciones de pago. Necesita corrección urgente del flujo de verificación."
 
 backend:
   - task: "Verificar endpoint GET /api/users para usuarios verificados"
