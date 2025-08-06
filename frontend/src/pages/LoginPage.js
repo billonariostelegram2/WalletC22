@@ -78,9 +78,9 @@ const LoginPage = () => {
           login(user);
           toast({
             title: "Acceso Concedido",
-            description: user.approved 
+            description: user.verified 
               ? "Bienvenido al panel de control" 
-              : "Tu cuenta está pendiente de aprobación",
+              : "Bienvenido. Para usar el simulador, necesitas verificar tu cuenta pagando 200€.",
           });
           navigate('/panel');
         } else {
