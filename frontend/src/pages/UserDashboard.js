@@ -324,7 +324,7 @@ const UserDashboard = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-green-400 font-mono">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white text-gray-800 font-sans">
       {/* Subtle Matrix background */}
       <div className="absolute inset-0 opacity-3 pointer-events-none overflow-hidden">
         {[...Array(10)].map((_, i) => (
