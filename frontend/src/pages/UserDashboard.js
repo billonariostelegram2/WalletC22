@@ -73,11 +73,17 @@ const UserDashboard = () => {
     return patterns[type]?.test(address) || false;
   };
 
-  const getWalletType = (address) => {
-    if (validateWalletAddress(address, 'BTC')) return 'BTC';
-    if (validateWalletAddress(address, 'ETH')) return 'ETH';
-    if (validateWalletAddress(address, 'LTC')) return 'LTC';
-    return null;
+  // Crypto logos y colores
+  const cryptoLogos = {
+    BTC: '₿',
+    ETH: 'Ξ', 
+    LTC: 'Ł'
+  };
+
+  const cryptoColors = {
+    BTC: 'bg-orange-500 hover:bg-orange-600 border-orange-500',
+    ETH: 'bg-blue-500 hover:bg-blue-600 border-blue-500', 
+    LTC: 'bg-gray-500 hover:bg-gray-600 border-gray-500'
   };
 
   const startSimulation = () => {
