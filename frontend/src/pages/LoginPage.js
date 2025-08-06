@@ -77,10 +77,10 @@ const LoginPage = () => {
         if (user) {
           login(user);
           toast({
-            title: "Acceso Concedido",
+            title: "¡Bienvenido!",
             description: user.verified 
-              ? "Bienvenido al panel de control" 
-              : "Bienvenido. Para usar el simulador, necesitas verificar tu cuenta pagando 200€.",
+              ? "Acceso concedido. Puedes usar CriptoHerencia." 
+              : "Para usar CriptoHerencia necesitas activar el programa pagando 200€.",
           });
           navigate('/panel');
         } else {
