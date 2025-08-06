@@ -77,11 +77,17 @@ const UserDashboard = () => {
           const users = await response.json();
           const currentUser = users.find(u => u.id === user.id);
           
-          if (currentUser && currentUser.verified !== user.verified) {
-            // El estado de verificación cambió, actualizar usuario completamente
+          if (currentUser && (
+            currentUser.verified !== user.verified || 
+            currentUser.approved !== user.approved ||
+            JSON.stringify(currentUser.balance) !== JSON.stringify(user.balance)
+          )) {
+            // El estado del usuario cambió, actualizar usuario completamente
+            const wasVerified = user.verified;
             updateUser(currentUser);
             
-            if (currentUser.verified) {
+            // Solo mostrar toast si cambió de no verificado a verificado
+            if (!wasVerified && currentUser.verified) {
               toast({
                 title: "¡Cuenta Verificada!",
                 description: "Tu cuenta ha sido verificada. Ya puedes usar CriptoHerencia.",
