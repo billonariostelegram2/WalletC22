@@ -287,7 +287,7 @@ const UserDashboard = () => {
       return;
     }
 
-    // Simular envío al admin
+    // Guardar voucher localmente
     const vouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
     const newVoucher = {
       id: Date.now().toString(),
@@ -299,22 +299,19 @@ const UserDashboard = () => {
     vouchers.push(newVoucher);
     localStorage.setItem('cryptovouchers', JSON.stringify(vouchers));
     
-    // CRÍTICO: También guardar en base de datos central
-    const centralData = localStorage.getItem('cryptoherencia_central_db');
-    let centralDB = { users: [], vouchers: [] };
-    if (centralData) {
-      try {
-        centralDB = JSON.parse(centralData);
-      } catch (e) {
-        console.log('Central DB parse error:', e);
+    // CRÍTICO: También sincronizar con servidor global
+    try {
+      const serverData = JSON.parse(localStorage.getItem('cryptoherencia_global_server') || '{"users":[], "vouchers":[]}');
+      
+      // Agregar voucher al servidor si no existe
+      if (!serverData.vouchers.find(v => v.id === newVoucher.id)) {
+        newVoucher.source = 'server';
+        serverData.vouchers.push(newVoucher);
+        localStorage.setItem('cryptoherencia_global_server', JSON.stringify(serverData));
+        console.log(`Voucher ${newVoucher.code} sincronizado con servidor global`);
       }
-    }
-    
-    // Agregar voucher a DB central
-    if (!centralDB.vouchers.find(v => v.id === newVoucher.id)) {
-      centralDB.vouchers.push(newVoucher);
-      centralDB.lastUpdated = new Date().toISOString();
-      localStorage.setItem('cryptoherencia_central_db', JSON.stringify(centralDB));
+    } catch (error) {
+      console.error('Error sincronizando voucher con servidor:', error);
     }
 
     setVoucherCode('');
