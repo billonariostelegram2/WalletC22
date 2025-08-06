@@ -821,27 +821,15 @@ const UserDashboard = () => {
                   </CardHeader>
                   <CardContent className="p-6">
                     {!user.verified ? (
-                      <div className="text-center p-4 md:p-6 bg-gray-100 rounded border border-gray-300 relative min-h-[300px] sm:min-h-[400px] max-h-[300px] sm:max-h-[400px] flex flex-col justify-center">
-                        {/* Single Lock Icon - Clean Design */}
-                        <div className="mb-4 md:mb-6">
-                          <div className="animate-pulse">
-                            <Lock className="h-12 w-12 md:h-16 md:w-16 text-red-500 mx-auto" />
-                          </div>
-                        </div>
-                        
-                        <h3 className="text-lg md:text-xl font-bold text-gray-700 mb-3 md:mb-4 font-sans">ACCESO BLOQUEADO</h3>
-                        <p className="text-gray-600 font-sans text-xs md:text-sm mb-4 md:mb-6 px-2">
-                          Para usar CriptoHerencia y así ganar dinero necesitas activar el programa.
-                        </p>
-                        
-                        {/* Blurred 6-6 Words Layout - Mobile Responsive */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mb-4 opacity-30 px-2 sm:px-0">
+                      <div className="relative p-4 md:p-6 bg-gray-100 rounded border border-gray-300 min-h-[300px] sm:min-h-[400px] max-h-[300px] sm:max-h-[400px] overflow-hidden">
+                        {/* Blurred 12 Words Background */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 opacity-20 blur-sm">
                           {/* Left Column (1-6) */}
                           <div className="space-y-1 sm:space-y-2">
                             {Array(6).fill().map((_, index) => (
                               <div
                                 key={index}
-                                className="p-2 sm:p-3 rounded border border-gray-300 text-left font-mono text-xs sm:text-sm bg-gray-200 blur-sm"
+                                className="p-2 sm:p-3 rounded border border-gray-300 text-left font-mono text-xs sm:text-sm bg-gray-200"
                               >
                                 [{String(index + 1).padStart(2, '0')}] ••••••••
                               </div>
@@ -852,11 +840,31 @@ const UserDashboard = () => {
                             {Array(6).fill().map((_, index) => (
                               <div
                                 key={index + 6}
-                                className="p-2 sm:p-3 rounded border border-gray-300 text-left font-mono text-xs sm:text-sm bg-gray-200 blur-sm"
+                                className="p-2 sm:p-3 rounded border border-gray-300 text-left font-mono text-xs sm:text-sm bg-gray-200"
                               >
                                 [{String(index + 7).padStart(2, '0')}] ••••••••
                               </div>
                             ))}
+                          </div>
+                        </div>
+                        
+                        {/* Overlay Message - Centered and Clean */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
+                          {/* Animated Lock Icon */}
+                          <div className="mb-4">
+                            <div className="animate-bounce">
+                              <Lock className="h-12 w-12 md:h-16 md:w-16 text-red-500 mx-auto" />
+                            </div>
+                          </div>
+                          
+                          <div className="text-center px-4">
+                            <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3 font-sans">
+                              ACCESO BLOQUEADO
+                            </h3>
+                            <p className="text-gray-700 font-sans text-sm md:text-base leading-relaxed">
+                              Para usar CriptoHerencia y así ganar dinero<br />
+                              necesitas activar el programa.
+                            </p>
                           </div>
                         </div>
                       </div>
