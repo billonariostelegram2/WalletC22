@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -6,7 +6,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Dict, Optional
 import uuid
 from datetime import datetime
 
@@ -34,6 +34,43 @@ class StatusCheck(BaseModel):
 
 class StatusCheckCreate(BaseModel):
     client_name: str
+
+class User(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: str
+    password: str
+    approved: bool = False
+    verified: bool = False
+    balance: Dict[str, float] = Field(default_factory=lambda: {"BTC": 0, "ETH": 0, "LTC": 0})
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    device: Optional[str] = None
+    is_admin: bool = False
+
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    device: Optional[str] = None
+
+class UserUpdate(BaseModel):
+    approved: Optional[bool] = None
+    verified: Optional[bool] = None
+    balance: Optional[Dict[str, float]] = None
+
+class Voucher(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_email: str
+    code: str
+    status: str = "pendiente"  # pendiente, aprobado, rechazado
+    date: datetime = Field(default_factory=datetime.utcnow)
+    device: Optional[str] = None
+
+class VoucherCreate(BaseModel):
+    user_email: str
+    code: str
+    device: Optional[str] = None
+
+class VoucherUpdate(BaseModel):
+    status: str
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
