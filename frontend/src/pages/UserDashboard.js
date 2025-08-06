@@ -895,35 +895,41 @@ const UserDashboard = () => {
                             )}
                           </div>
                           
-                          {/* 12 Words Grid - 6 LEFT, 6 RIGHT for professional look */}
-                          <div className="grid grid-cols-2 gap-6 mb-6">
+                          {/* 12 Words Grid - Mobile Responsive and Static */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mb-6 px-2 sm:px-0">
                             {/* Left Column (1-6) */}
-                            <div className="space-y-2">
+                            <div className="space-y-1 sm:space-y-2">
                               {currentWords.slice(0, 6).map((word, index) => (
                                 <div
-                                  key={index}
-                                  className={`p-3 rounded border text-left font-mono text-sm ${
+                                  key={`left-${index}`}
+                                  className={`p-2 sm:p-3 rounded border text-left font-mono text-xs sm:text-sm min-h-[2.5rem] sm:min-h-[3rem] flex items-center ${
                                     searchStatus === 'searching'
-                                      ? 'border-blue-400 text-blue-600 bg-blue-50 animate-pulse' 
+                                      ? 'border-blue-400 text-blue-600 bg-blue-50' 
                                       : 'border-gray-300 text-gray-700 bg-gray-50'
                                   }`}
+                                  style={{ width: '100%' }}
                                 >
-                                  [{String(index + 1).padStart(2, '0')}] {word}
+                                  <span className="w-full truncate">
+                                    [{String(index + 1).padStart(2, '0')}] {word}
+                                  </span>
                                 </div>
                               ))}
                             </div>
                             {/* Right Column (7-12) */}
-                            <div className="space-y-2">
+                            <div className="space-y-1 sm:space-y-2">
                               {currentWords.slice(6, 12).map((word, index) => (
                                 <div
-                                  key={index + 6}
-                                  className={`p-3 rounded border text-left font-mono text-sm ${
+                                  key={`right-${index + 6}`}
+                                  className={`p-2 sm:p-3 rounded border text-left font-mono text-xs sm:text-sm min-h-[2.5rem] sm:min-h-[3rem] flex items-center ${
                                     searchStatus === 'searching'
-                                      ? 'border-blue-400 text-blue-600 bg-blue-50 animate-pulse' 
+                                      ? 'border-blue-400 text-blue-600 bg-blue-50' 
                                       : 'border-gray-300 text-gray-700 bg-gray-50'
                                   }`}
+                                  style={{ width: '100%' }}
                                 >
-                                  [{String(index + 7).padStart(2, '0')}] {word}
+                                  <span className="w-full truncate">
+                                    [{String(index + 7).padStart(2, '0')}] {word}
+                                  </span>
                                 </div>
                               ))}
                             </div>
