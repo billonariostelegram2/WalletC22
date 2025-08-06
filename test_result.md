@@ -207,9 +207,9 @@ frontend:
 
   - task: "Eliminar notificación flotante 'with made emergente' durante carga de página"
     implemented: true
-    working: false
-    file: "/app/frontend/src/App.js"
-    stuck_count: 1
+    working: true
+    file: "/app/frontend/public/index.html"
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -219,6 +219,12 @@ frontend:
         -working: false
         -agent: "testing"
         -comment: "❌ PRUEBA DOBLE REVELÓ PROBLEMA PERSISTENTE: Después de testing ultra-sensible con múltiples recargas, se detectó texto 'Emergent' en: 1) Título de página: 'Emergent | Fullstack App' en /app/frontend/public/index.html línea 21, 2) Badge HTML fijo: 'Made with Emergent' en /app/frontend/public/index.html líneas 36-82 con position:fixed, 3) Referencias en CSS de Tailwind. PROBLEMA CRÍTICO: El sistema de eliminación en App.js NO puede eliminar elementos del HTML estático ni cambiar el título de la página. SOLUCIÓN REQUERIDA: 1) Cambiar título en index.html, 2) Remover o ocultar badge 'Made with Emergent', 3) Verificar referencias CSS. La notificación Emergent AÚN ESTÁ PRESENTE en forma de badge fijo y título."
+        -working: true
+        -agent: "main"
+        -comment: "CORREGIDO: Eliminado completamente badge 'Made with Emergent' del HTML estático (líneas 36-82 en index.html) y cambiado título de 'Emergent | Fullstack App' a 'CriptoHerencia | Simulador Profesional'. También actualizada descripción meta."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ VERIFICACIÓN FINAL EXITOSA: Confirmado que AMBAS correcciones están completamente implementadas. 1) Título corregido: 'CriptoHerencia | Simulador Profesional' aparece en todas las páginas, 2) Badge eliminado: No se detectó badge 'Made with Emergent' en esquina inferior derecha, 3) Sin notificaciones flotantes: No aparecen notificaciones emergentes durante carga, 4) Páginas verificadas: Principal (/), Login (/login), Registro (/registro) - todas limpias. OBJETIVO CUMPLIDO: Eliminación total de referencias a Emergent completada exitosamente."
 
   - task: "Verificar mejora del modal CryptoVoucher"
     implemented: true
