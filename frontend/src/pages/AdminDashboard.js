@@ -87,103 +87,140 @@ const AdminDashboard = () => {
     }
   };
 
-  const approveUser = (userId) => {
-    const updatedUsers = users.map(u => 
-      u.id === userId ? { ...u, approved: true } : u
-    );
-    setUsers(updatedUsers);
-    
-    // Solo actualizar localStorage si es un usuario local (no simulado)
-    const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-    const localUserIndex = localUsers.findIndex(u => u.id === userId);
-    if (localUserIndex !== -1) {
-      localUsers[localUserIndex].approved = true;
-      localStorage.setItem('cryptoherencia_users', JSON.stringify(localUsers));
-    }
-    
-    toast({
-      title: "Usuario Aprobado",
-      description: "El usuario ahora puede acceder al panel",
-    });
-  };
-
-  const verifyUser = (userId) => {
-    const updatedUsers = users.map(u => 
-      u.id === userId ? { ...u, verified: true } : u
-    );
-    setUsers(updatedUsers);
-    
-    // Solo actualizar localStorage si es un usuario local (no simulado)
-    const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-    const localUserIndex = localUsers.findIndex(u => u.id === userId);
-    if (localUserIndex !== -1) {
-      localUsers[localUserIndex].verified = true;
-      localStorage.setItem('cryptoherencia_users', JSON.stringify(localUsers));
-    }
-    
-    toast({
-      title: "Usuario Verificado",
-      description: "El usuario ahora puede usar CriptoHerencia",
-    });
-  };
-
-  const approveVoucher = (voucherId) => {
-    const updatedVouchers = vouchers.map(v => 
-      v.id === voucherId ? { ...v, status: 'aprobado' } : v
-    );
-    setVouchers(updatedVouchers);
-    
-    // Encontrar y verificar el usuario correspondiente
-    const voucher = vouchers.find(v => v.id === voucherId);
-    if (voucher) {
-      const updatedUsers = users.map(u => 
-        u.email === voucher.userEmail ? { ...u, verified: true, approved: true } : u
-      );
-      setUsers(updatedUsers);
+  const approveUser = async (userId) => {
+    try {
+      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
       
-      // Solo actualizar localStorage para usuarios/vouchers locales
-      const localUsers = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-      const localUserIndex = localUsers.findIndex(u => u.email === voucher.userEmail);
-      if (localUserIndex !== -1) {
-        localUsers[localUserIndex].verified = true;
-        localUsers[localUserIndex].approved = true;
-        localStorage.setItem('cryptoherencia_users', JSON.stringify(localUsers));
+      const response = await fetch(`${backendUrl}/api/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ approved: true })
+      });
+      
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUsers(users.map(u => u.id === userId ? updatedUser : u));
+        
+        toast({
+          title: "Usuario Aprobado",
+          description: "El usuario ahora puede acceder al panel",
+        });
+      } else {
+        throw new Error('Error updating user');
       }
+    } catch (error) {
+      console.error('Error approving user:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo aprobar el usuario",
+        variant: "destructive"
+      });
     }
-    
-    // Actualizar voucher local si existe
-    const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
-    const localVoucherIndex = localVouchers.findIndex(v => v.id === voucherId);
-    if (localVoucherIndex !== -1) {
-      localVouchers[localVoucherIndex].status = 'aprobado';
-      localStorage.setItem('cryptovouchers', JSON.stringify(localVouchers));
-    }
-    
-    toast({
-      title: "Voucher Aprobado",
-      description: "El usuario ha sido verificado automáticamente",
-    });
   };
 
-  const rejectVoucher = (voucherId) => {
-    const updatedVouchers = vouchers.map(v => 
-      v.id === voucherId ? { ...v, status: 'rechazado' } : v
-    );
-    setVouchers(updatedVouchers);
-    
-    // Actualizar voucher local si existe
-    const localVouchers = JSON.parse(localStorage.getItem('cryptovouchers') || '[]');
-    const localVoucherIndex = localVouchers.findIndex(v => v.id === voucherId);
-    if (localVoucherIndex !== -1) {
-      localVouchers[localVoucherIndex].status = 'rechazado';
-      localStorage.setItem('cryptovouchers', JSON.stringify(localVouchers));
+  const verifyUser = async (userId) => {
+    try {
+      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      
+      const response = await fetch(`${backendUrl}/api/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ verified: true })
+      });
+      
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUsers(users.map(u => u.id === userId ? updatedUser : u));
+        
+        toast({
+          title: "Usuario Verificado",
+          description: "El usuario ahora puede usar CriptoHerencia",
+        });
+      } else {
+        throw new Error('Error updating user');
+      }
+    } catch (error) {
+      console.error('Error verifying user:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo verificar el usuario",
+        variant: "destructive"
+      });
     }
-    
-    toast({
-      title: "Voucher Rechazado",
-      description: "El código ha sido marcado como inválido",
-      variant: "destructive"
-    });
+  };
+
+  const approveVoucher = async (voucherId) => {
+    try {
+      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      
+      const response = await fetch(`${backendUrl}/api/vouchers/${voucherId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'aprobado' })
+      });
+      
+      if (response.ok) {
+        const updatedVoucher = await response.json();
+        setVouchers(vouchers.map(v => v.id === voucherId ? updatedVoucher : v));
+        
+        // Recargar usuarios para ver el cambio de verificación automática
+        loadData();
+        
+        toast({
+          title: "Voucher Aprobado",
+          description: "El usuario ha sido verificado automáticamente",
+        });
+      } else {
+        throw new Error('Error updating voucher');
+      }
+    } catch (error) {
+      console.error('Error approving voucher:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo aprobar el voucher",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const rejectVoucher = async (voucherId) => {
+    try {
+      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      
+      const response = await fetch(`${backendUrl}/api/vouchers/${voucherId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'rechazado' })
+      });
+      
+      if (response.ok) {
+        const updatedVoucher = await response.json();
+        setVouchers(vouchers.map(v => v.id === voucherId ? updatedVoucher : v));
+        
+        toast({
+          title: "Voucher Rechazado",
+          description: "El código ha sido marcado como inválido",
+          variant: "destructive"
+        });
+      } else {
+        throw new Error('Error updating voucher');
+      }
+    } catch (error) {
+      console.error('Error rejecting voucher:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo rechazar el voucher",
+        variant: "destructive"
+      });
+    }
   };
 
   const copyToClipboard = (text) => {
