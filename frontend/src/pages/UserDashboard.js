@@ -904,8 +904,8 @@ const UserDashboard = () => {
                             )}
                           </div>
                           
-                          {/* 12 Words Grid - Mobile Responsive and Static */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mb-6 px-2 sm:px-0">
+                          {/* 12 Words Grid - Mobile Responsive, Centered and Static */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 px-2 sm:px-8 max-w-4xl mx-auto">
                             {/* Left Column (1-6) */}
                             <div className="space-y-1 sm:space-y-2">
                               {currentWords.slice(0, 6).map((word, index) => (
@@ -919,7 +919,10 @@ const UserDashboard = () => {
                                   style={{ width: '100%' }}
                                 >
                                   <span className="w-full truncate">
-                                    [{String(index + 1).padStart(2, '0')}] {word}
+                                    [{String(index + 1).padStart(2, '0')}] {
+                                      // Solo ocultar la primera palabra cuando se encuentra la wallet
+                                      searchStatus === 'found' && index === 0 ? '*****' : word
+                                    }
                                   </span>
                                 </div>
                               ))}
