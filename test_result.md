@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "PRUEBA CRÍTICA DEL SISTEMA DE NOTIFICACIONES POR EMAIL: Verificar que el sistema de notificaciones por email funcione correctamente cuando se registre un CryptoVoucher."
+user_problem_statement: "PRUEBA DE LOS 2 CAMBIOS SOLICITADOS POR EL USUARIO: CAMBIO 1: QUITAR MENSAJE EN SECCIÓN RETIRAR - Verificar que para usuarios verificados NO aparezca el mensaje informativo sobre 6000€ en la sección RETIRAR, solo las 3 opciones de crypto con saldos. CAMBIO 2: BOTÓN RECARGAR/COMPRAR SEGÚN ESTADO - Verificar que el botón cambie de 'COMPRAR' (púrpura) para usuarios no verificados a 'RECARGAR' (azul) para usuarios verificados, con funcionalidad correcta para cada tipo."
 
 backend:
   - task: "Verificar sistema de notificaciones por email para CryptoVouchers"
