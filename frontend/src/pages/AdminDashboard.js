@@ -550,6 +550,12 @@ const AdminDashboard = () => {
                           <td className="px-6 py-4 text-sm text-slate-800 font-semibold">
                             €{Object.values(user.balance || {}).reduce((sum, val) => sum + val, 0).toFixed(2)}
                           </td>
+                          <td className="px-6 py-4 text-sm text-slate-600">
+                            <div className="flex items-center space-x-2">
+                              <Clock className="h-4 w-4 text-slate-400" />
+                              <span>{formatLastActivity(user.last_active)}</span>
+                            </div>
+                          </td>
                           <td className="px-6 py-4">
                             <div className="flex space-x-2">
                               <Badge 
