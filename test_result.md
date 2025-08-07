@@ -163,6 +163,36 @@ backend:
         -comment: "✅ FUNCIONALIDAD VERIFICADA: Testing exitoso del modal de edición admin confirma que se pueden modificar withdrawal_note, wallet_find_time_min y wallet_find_time_max. El frontend hace PUT request a ${backendUrl}/api/users/${user.id} con los nuevos valores. El backend debe procesar estos campos correctamente."
 
 frontend:
+  - task: "Verificar CAMBIO 1: Quitar mensaje en sección RETIRAR"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Pendiente de testing - verificar que para usuarios verificados NO aparezca mensaje informativo sobre 6000€ en sección RETIRAR, solo las 3 opciones de crypto con saldos"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CAMBIO 1 COMPLETAMENTE VERIFICADO: Testing exhaustivo confirma que la sección RETIRAR está limpia sin mensaje informativo inicial. RESULTADOS: 1) ✅ NO aparece mensaje 'Para poder retirar fondos necesitas al menos acumular en total 6000€' en la sección RETIRAR, 2) ✅ Solo aparecen las 3 opciones de crypto (BTC, ETH, LTC) con sus saldos respectivos, 3) ✅ El mensaje personalizable SOLO aparece cuando se presiona el botón 'PROCESAR RETIRO' final, tal como se solicitó. La implementación es correcta según especificaciones del usuario."
+
+  - task: "Verificar CAMBIO 2: Botón RECARGAR/COMPRAR según estado"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Pendiente de testing - verificar que botón cambie de 'COMPRAR' (púrpura) para usuarios no verificados a 'RECARGAR' (azul) para usuarios verificados"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CAMBIO 2 COMPLETAMENTE VERIFICADO: Testing exhaustivo confirma que el botón cambia correctamente según estado de verificación. RESULTADOS: 1) ✅ Usuario NO verificado: Muestra '> COMPRAR' con color púrpura (text-purple-400), 2) ✅ Al presionar abre modal 'Pago con Criptomonedas' o 'Pago con Tarjeta' para comprar el programa, 3) ✅ Usuario verificado: Muestra '> RECARGAR' con color azul (text-blue-400), 4) ✅ Al presionar abre modal 'Recargar Saldo' con 2 opciones: 'Recargar con Criptomonedas' y 'Recargar con TARJETA'. La funcionalidad es correcta para ambos tipos de usuario según especificaciones."
+
   - task: "Probar persistencia de saldo tras logout/login"
     implemented: true
     working: true
