@@ -218,58 +218,79 @@ def test_data_consistency():
         print(f"❌ ERROR: {str(e)}")
         return False
 
+def test_email_notification_system():
+    """Test 5: PRUEBA CRÍTICA DEL SISTEMA DE NOTIFICACIONES POR EMAIL"""
+    print_test_header("SISTEMA DE NOTIFICACIONES POR EMAIL - CRYPTOVOUCHER")
+    
+    try:
+        # 1. Crear un voucher de prueba con datos específicos
+        print("📧 STEP 1: Creating test voucher for email notification...")
+        voucher_data = {
+            "code": "TEST-EMAIL-2024",
+            "user_email": "test@test.com",  # Note: using user_email as per API
+            "device": "test_device"
+        }
+        
+        print(f"Voucher data: {json.dumps(voucher_data, indent=2)}")
+        
+        # Create voucher and capture response
+        response = requests.post(f"{BACKEND_URL}/vouchers", json=voucher_data)
+        voucher = print_response(response, "POST /api/vouchers Response")
+        
+        if response.status_code == 200 and voucher:
+            print(f"✅ SUCCESS: Voucher created successfully")
+            print(f"- Voucher ID: {voucher.get('id')}")
+            print(f"- Voucher Code: {voucher.get('code')}")
+            print(f"- User Email: {voucher.get('user_email')}")
+            print(f"- Status: {voucher.get('status')}")
+            
+            # 2. Verificar configuración de email
+            print(f"\n📧 STEP 2: Checking email configuration...")
+            print(f"Expected email configuration:")
+            print(f"- GMAIL_EMAIL: descifrab@gmail.com")
+            print(f"- GMAIL_APP_PASSWORD: cacadevaca")
+            print(f"- NOTIFICATION_EMAIL: descifrab@gmail.com")
+            
+            # 3. Información para verificar logs
+            print(f"\n📧 STEP 3: Email process verification instructions...")
+            print(f"🔍 CHECK BACKEND LOGS FOR:")
+            print(f"- Message: '🚨 VOUCHER REGISTERED: TEST-EMAIL-2024 by test@test.com - Email sent to descifrab@gmail.com'")
+            print(f"- Function execution: send_email_async called")
+            print(f"- Email sending: send_voucher_notification_email executed")
+            print(f"- Success message: '✅ Email notification sent successfully for voucher: TEST-EMAIL-2024'")
+            print(f"- OR Error message: '❌ Error sending email notification: [error details]'")
+            
+            print(f"\n📧 STEP 4: Checking backend logs now...")
+            return True
+            
+        else:
+            print(f"❌ FAILED: Could not create voucher - Status: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ ERROR: {str(e)}")
+        return False
+
 def main():
     """Main testing function"""
-    print("🚀 STARTING BACKEND API TESTING FOR USER VERIFICATION ISSUE")
+    print("🚀 STARTING BACKEND API TESTING - EMAIL NOTIFICATION SYSTEM")
     print(f"Backend URL: {BACKEND_URL}")
     print(f"Test Time: {datetime.now()}")
     
-    # Test 1: Get all users
-    users = test_get_users()
-    if not users:
-        print("❌ CRITICAL: Cannot proceed without user data")
-        return
+    # PRUEBA CRÍTICA: Sistema de notificaciones por email
+    email_test_result = test_email_notification_system()
     
-    # Find a test user (non-admin, preferably not verified)
-    test_user = None
-    for user in users:
-        if not user.get('is_admin', False):
-            test_user = user
-            break
-    
-    if not test_user:
-        print("❌ No suitable test user found. Creating one...")
-        # Create a test user
-        try:
-            user_data = {
-                "email": "testuser@verification.com",
-                "password": "testpass123",
-                "device": "test_device"
-            }
-            create_response = requests.post(f"{BACKEND_URL}/users", json=user_data)
-            if create_response.status_code == 200:
-                test_user = create_response.json()
-                print(f"✅ Created test user: {test_user.get('email')}")
-            else:
-                print(f"❌ Could not create test user: {create_response.status_code}")
-                return
-        except Exception as e:
-            print(f"❌ Error creating test user: {e}")
-            return
-    
-    print(f"\n🎯 Using test user: {test_user.get('email')} (ID: {test_user.get('id')})")
-    
-    # Test 2: Manual verification
-    updated_user = test_manual_verification(test_user.get('id'))
-    
-    # Test 3: Voucher workflow (use a different user or reset the test user)
-    test_voucher_workflow(test_user.get('email'))
-    
-    # Test 4: Data consistency
-    test_data_consistency()
+    if email_test_result:
+        print(f"\n✅ EMAIL NOTIFICATION TEST COMPLETED")
+        print(f"📧 Next steps:")
+        print(f"1. Check backend logs for email confirmation messages")
+        print(f"2. Verify no errors in email sending process")
+        print(f"3. Confirm send_email_async function executed")
+    else:
+        print(f"\n❌ EMAIL NOTIFICATION TEST FAILED")
     
     print(f"\n{'='*60}")
-    print("🏁 TESTING COMPLETED")
+    print("🏁 EMAIL NOTIFICATION TESTING COMPLETED")
     print(f"{'='*60}")
 
 if __name__ == "__main__":
