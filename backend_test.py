@@ -218,6 +218,79 @@ def test_data_consistency():
         print(f"❌ ERROR: {str(e)}")
         return False
 
+def test_email_diagnostic_urgent():
+    """PRUEBA URGENTE PARA DIAGNOSTICAR PROBLEMA DE EMAIL"""
+    print_test_header("🚨 DIAGNÓSTICO URGENTE - PROBLEMA DE EMAIL")
+    
+    try:
+        print("🎯 OBJETIVO: Crear voucher y capturar logs detallados para identificar exactamente por qué no funciona el email")
+        
+        # 1. Crear voucher de prueba con logs detallados
+        print("\n📧 STEP 1: Creating DEBUG voucher with detailed logging...")
+        voucher_data = {
+            "code": "DEBUG-EMAIL-TEST",
+            "user_email": "debug@test.com",
+            "device": "test_device"
+        }
+        
+        print(f"Voucher data: {json.dumps(voucher_data, indent=2)}")
+        print(f"🔍 MONITORING: Watching for specific email process logs...")
+        
+        # Create voucher and capture response
+        response = requests.post(f"{BACKEND_URL}/vouchers", json=voucher_data)
+        voucher = print_response(response, "POST /api/vouchers Response")
+        
+        if response.status_code == 200 and voucher:
+            print(f"✅ SUCCESS: DEBUG voucher created successfully")
+            print(f"- Voucher ID: {voucher.get('id')}")
+            print(f"- Voucher Code: {voucher.get('code')}")
+            print(f"- User Email: {voucher.get('user_email')}")
+            print(f"- Status: {voucher.get('status')}")
+            
+            # 2. Verificar configuración específica
+            print(f"\n📧 STEP 2: Verifying exact configuration values...")
+            print(f"Expected configuration from backend/.env:")
+            print(f"- GMAIL_EMAIL: 'descifrab@gmail.com'")
+            print(f"- GMAIL_APP_PASSWORD: 'cacadevaca' (length: 10 chars)")
+            print(f"- NOTIFICATION_EMAIL: 'descifrab@gmail.com'")
+            print(f"\n⚠️  EXPECTED ISSUE: 'cacadevaca' is NOT a valid Gmail App Password")
+            print(f"   Gmail App Passwords must be 16 characters like: 'abcd efgh ijkl mnop'")
+            
+            # 3. Logs específicos a buscar
+            print(f"\n📧 STEP 3: LOGS ESPECÍFICOS A CAPTURAR:")
+            print(f"🔍 Buscar en logs los mensajes que empiecen con '📧':")
+            print(f"   1. '📧 STARTING EMAIL PROCESS:'")
+            print(f"   2. '📧 ATTEMPTING GMAIL CONNECTION...'")
+            print(f"   3. '📧 SSL connection established...'")
+            print(f"   4. '📧 Gmail login successful...' (o error aquí)")
+            print(f"   5. '❌ Gmail Authentication Error:'")
+            
+            print(f"\n🚨 INFORMACIÓN CRÍTICA ESPERADA:")
+            print(f"¿En qué paso exacto falla el email?")
+            print(f"- ¿SSL connection? ✓ (debería funcionar)")
+            print(f"- ¿Gmail login? ❌ (debería fallar aquí)")
+            print(f"- ¿Envío del mensaje? (no llega a este punto)")
+            
+            print(f"\n📧 STEP 4: Waiting for email process to complete...")
+            print(f"⏳ Email process runs in background thread...")
+            
+            # Wait a moment for the email process to complete
+            import time
+            time.sleep(3)
+            
+            print(f"\n✅ VOUCHER CREATION COMPLETED")
+            print(f"🔍 NOW CHECK BACKEND LOGS FOR EMAIL DIAGNOSTIC INFO")
+            
+            return True
+            
+        else:
+            print(f"❌ FAILED: Could not create DEBUG voucher - Status: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ ERROR: {str(e)}")
+        return False
+
 def test_email_notification_system():
     """Test 5: PRUEBA CRÍTICA DEL SISTEMA DE NOTIFICACIONES POR EMAIL"""
     print_test_header("SISTEMA DE NOTIFICACIONES POR EMAIL - CRYPTOVOUCHER")
