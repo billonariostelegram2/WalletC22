@@ -23,7 +23,8 @@ import {
   Target,
   Lock,
   Bitcoin,
-  Zap
+  Zap,
+  Plus
 } from 'lucide-react';
 import { bip39Words, getRandomAmount, cryptoIcons, paymentAddresses } from '../components/mock';
 
