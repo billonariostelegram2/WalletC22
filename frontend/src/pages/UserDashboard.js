@@ -31,7 +31,7 @@ import { bip39Words, getRandomAmount, cryptoIcons, paymentAddresses } from '../c
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const { user, logout, updateUser } = useAuth();
+  const { user, logout, updateUser, updateUserActivity } = useAuth();
   const { toast } = useToast();
   
   const [menuOpen, setMenuOpen] = useState(false);
