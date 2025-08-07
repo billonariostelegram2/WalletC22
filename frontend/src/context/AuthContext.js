@@ -22,9 +22,24 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (userData) => {
+  const login = async (userData) => {
     setUser(userData);
     localStorage.setItem('cryptoherencia_user', JSON.stringify(userData));
+    
+    // Actualizar actividad después del login
+    if (userData && userData.id) {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        await fetch(`${backendUrl}/api/users/${userData.id}/activity`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+      } catch (error) {
+        console.error('Error updating activity on login:', error);
+      }
+    }
   };
 
   const logout = async () => {
