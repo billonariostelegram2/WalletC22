@@ -508,6 +508,7 @@ const AdminDashboard = () => {
                         <th className="text-left px-6 py-4 text-sm font-semibold text-slate-800">Email</th>
                         <th className="text-left px-6 py-4 text-sm font-semibold text-slate-800">Nombre</th>
                         <th className="text-left px-6 py-4 text-sm font-semibold text-slate-800">Saldo</th>
+                        <th className="text-left px-6 py-4 text-sm font-semibold text-slate-800">Última Actividad</th>
                         <th className="text-left px-6 py-4 text-sm font-semibold text-slate-800">Estado</th>
                         <th className="text-left px-6 py-4 text-sm font-semibold text-slate-800">Acciones</th>
                       </tr>
