@@ -251,7 +251,7 @@ const UserDashboard = () => {
     setCurrentWords(Array(12).fill('empezar'));
   };
 
-  const processWithdrawal = () => {
+  const processWithdrawal = async () => {
     if (!selectedWithdrawCrypto || !withdrawWallet.trim()) {
       toast({
         title: "Error",
@@ -261,22 +261,15 @@ const UserDashboard = () => {
       return;
     }
 
-    const walletType = getWalletType(withdrawWallet);
-    if (!walletType) {
-      toast({
-        title: "Dirección Inválida",
-        description: "La dirección de wallet no es válida",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Verificar mínimo de 6000€
+    // Verificar mínimo de 6000€ usando la nota personalizada del usuario
     const totalBalance = getTotalBalance();
     if (totalBalance < 6000) {
+      // Usar la nota personalizada del usuario o la predeterminada
+      const withdrawalNote = user.withdrawal_note || "El mínimo de retiro es de 6000€. Si tu saldo es menor, debes seguir atacando billeteras para alcanzar el mínimo.";
+      
       toast({
         title: "Balance Insuficiente",
-        description: "Para poder retirar fondos necesitas al menos acumular en total 6000€ en tu panel… sigue ganando",
+        description: withdrawalNote,
         variant: "destructive",
         duration: 5000
       });
@@ -295,22 +288,32 @@ const UserDashboard = () => {
       status: 'Retirado'
     };
 
-    // Actualizar balance del usuario (restar el monto retirado)
-    const newBalance = { ...user.balance };
-    newBalance[selectedWithdrawCrypto] = 0;
-    
-    const updatedUser = { ...user, balance: newBalance };
-    updateUser(updatedUser);
-    
-    // Actualizar en localStorage
-    const users = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-    const userIndex = users.findIndex(u => u.id === user.id);
-    if (userIndex !== -1) {
-      users[userIndex] = updatedUser;
-      localStorage.setItem('cryptoherencia_users', JSON.stringify(users));
+    // CRÍTICO: Actualizar balance en el backend
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const newBalance = { ...user.balance };
+      newBalance[selectedWithdrawCrypto] = 0;
+      
+      const response = await fetch(`${backendUrl}/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ balance: newBalance })
+      });
+
+      if (response.ok) {
+        // Actualizar el usuario en el contexto local
+        updateUser({ ...user, balance: newBalance });
+        console.log('Balance actualizado tras retiro:', newBalance);
+      } else {
+        console.error('Error al actualizar balance tras retiro');
+      }
+    } catch (error) {
+      console.error('Error al procesar retiro:', error);
     }
 
-    // Guardar en historial
+    // Guardar en historial (localStorage para historial local)
     const history = JSON.parse(localStorage.getItem(`history_${user.id}`) || '[]');
     history.unshift(withdrawal);
     localStorage.setItem(`history_${user.id}`, JSON.stringify(history));
@@ -318,10 +321,10 @@ const UserDashboard = () => {
     // Reset estados
     setSelectedWithdrawCrypto('');
     setWithdrawWallet('');
-    
+
     toast({
       title: "Retiro Procesado",
-      description: `${cryptoBalance}€ en ${selectedWithdrawCrypto} enviados a tu wallet`,
+      description: `Se ha procesado el retiro de ${cryptoBalance.toFixed(8)} ${selectedWithdrawCrypto}`,
     });
   };
 
