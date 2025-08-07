@@ -621,23 +621,19 @@ const UserDashboard = () => {
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
               <div className="relative mb-6">
-                {/* Animated Gradient Border */}
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-lg blur-sm opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-                
-                {/* Moving Border Effect */}
+                {/* Single Animated Border - Clean Implementation */}
                 <div 
-                  className="absolute inset-0 rounded-lg"
+                  className="absolute inset-0 rounded-lg p-[2px]"
                   style={{
                     background: `conic-gradient(from 0deg, 
-                      #3b82f6, #8b5cf6, #3b82f6, #8b5cf6, #3b82f6)`,
-                    animation: 'spin 4s linear infinite',
-                    padding: '2px'
+                      #3b82f6, #8b5cf6, #6366f1, #3b82f6)`,
+                    animation: 'spin 3s linear infinite'
                   }}
                 >
-                  <div className="w-full h-full bg-white rounded-lg"></div>
+                  <div className="w-full h-full bg-white rounded-[6px]"></div>
                 </div>
                 
-                <Card className="relative bg-white shadow-sm border-0 z-10">
+                <Card className="relative bg-white shadow-sm border-0">
                   <CardHeader className="border-b border-gray-100">
                     <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
                   </CardHeader>
