@@ -346,25 +346,41 @@ def test_email_notification_system():
 
 def main():
     """Main testing function"""
-    print("🚀 STARTING BACKEND API TESTING - EMAIL NOTIFICATION SYSTEM")
+    print("🚨 STARTING URGENT EMAIL DIAGNOSTIC TEST")
     print(f"Backend URL: {BACKEND_URL}")
     print(f"Test Time: {datetime.now()}")
     
-    # PRUEBA CRÍTICA: Sistema de notificaciones por email
-    email_test_result = test_email_notification_system()
+    # PRUEBA URGENTE: Diagnóstico específico del problema de email
+    print("\n" + "="*80)
+    print("🚨 PRUEBA URGENTE PARA DIAGNOSTICAR PROBLEMA DE EMAIL")
+    print("="*80)
     
-    if email_test_result:
-        print(f"\n✅ EMAIL NOTIFICATION TEST COMPLETED")
-        print(f"📧 Next steps:")
-        print(f"1. Check backend logs for email confirmation messages")
-        print(f"2. Verify no errors in email sending process")
-        print(f"3. Confirm send_email_async function executed")
+    diagnostic_result = test_email_diagnostic_urgent()
+    
+    if diagnostic_result:
+        print(f"\n✅ DIAGNOSTIC TEST COMPLETED")
+        print(f"\n📧 NEXT STEPS - CHECK BACKEND LOGS:")
+        print(f"1. Look for messages starting with '📧'")
+        print(f"2. Identify exact failure point:")
+        print(f"   - SSL connection (should work)")
+        print(f"   - Gmail login (expected to fail)")
+        print(f"   - Message sending (won't reach this)")
+        print(f"3. Confirm Authentication Error due to invalid App Password")
+        
+        print(f"\n🔍 EXPECTED FINDINGS:")
+        print(f"- GMAIL_EMAIL: descifrab@gmail.com ✓")
+        print(f"- GMAIL_APP_PASSWORD: cacadevaca (10 chars) ❌")
+        print(f"- NOTIFICATION_EMAIL: descifrab@gmail.com ✓")
+        print(f"- ERROR: Gmail Authentication Error (535 BadCredentials)")
+        print(f"- CAUSE: 'cacadevaca' is not a valid 16-character Gmail App Password")
+        
     else:
-        print(f"\n❌ EMAIL NOTIFICATION TEST FAILED")
+        print(f"\n❌ DIAGNOSTIC TEST FAILED")
+        print(f"Could not create test voucher for email diagnosis")
     
-    print(f"\n{'='*60}")
-    print("🏁 EMAIL NOTIFICATION TESTING COMPLETED")
-    print(f"{'='*60}")
+    print(f"\n{'='*80}")
+    print("🏁 URGENT EMAIL DIAGNOSTIC COMPLETED")
+    print(f"{'='*80}")
 
 if __name__ == "__main__":
     main()
