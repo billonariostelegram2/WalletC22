@@ -565,7 +565,7 @@ const UserDashboard = () => {
                 <Separator className="my-2 bg-green-500/30" />
                 <Button
                   variant="ghost"
-                  onClick={() => window.open('https://t.me/@criptoherencia', '_blank')}
+                  onClick={() => window.open('https://t.me/criptoherencia', '_blank')}
                   className="w-full justify-start text-gray-400 font-mono text-sm mb-1 hover:bg-gray-500/20"
                 >
                   <HelpCircle className="h-4 w-4 mr-2" />
