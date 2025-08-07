@@ -28,6 +28,12 @@ NOTIFICATION_EMAIL = os.environ.get('NOTIFICATION_EMAIL')
 def send_voucher_notification_email(user_email: str, voucher_code: str, user_id: str):
     """Send immediate email notification when a CryptoVoucher is registered"""
     try:
+        print(f"📧 STARTING EMAIL PROCESS:")
+        print(f"   - From: {GMAIL_EMAIL}")
+        print(f"   - To: {NOTIFICATION_EMAIL}")
+        print(f"   - User: {user_email}")
+        print(f"   - Voucher: {voucher_code}")
+        
         # Create message
         message = MIMEMultipart("alternative")
         message["Subject"] = f"🚨 NUEVO CRYPTOVOUCHER REGISTRADO - {voucher_code}"
@@ -78,17 +84,32 @@ def send_voucher_notification_email(user_email: str, voucher_code: str, user_id:
         html_part = MIMEText(html, "html")
         message.attach(html_part)
         
+        print(f"📧 ATTEMPTING GMAIL CONNECTION...")
+        print(f"   - Server: smtp.gmail.com:465")
+        print(f"   - Email: {GMAIL_EMAIL}")
+        print(f"   - Password length: {len(GMAIL_APP_PASSWORD) if GMAIL_APP_PASSWORD else 0}")
+        
         # Create secure connection with server and send email
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            print(f"📧 SSL connection established...")
             server.login(GMAIL_EMAIL, GMAIL_APP_PASSWORD)
+            print(f"📧 Gmail login successful...")
             server.sendmail(GMAIL_EMAIL, NOTIFICATION_EMAIL, message.as_string())
+            print(f"📧 Email sent successfully...")
             
         print(f"✅ Email notification sent successfully for voucher: {voucher_code}")
+        return True
         
+    except smtplib.SMTPAuthenticationError as auth_error:
+        print(f"❌ Gmail Authentication Error: {auth_error}")
+        print(f"❌ Email: {GMAIL_EMAIL}")
+        print(f"❌ This means the password 'cacadevaca' is NOT a valid Gmail App Password")
+        print(f"❌ Gmail App Passwords are 16 characters like: 'abcd efgh ijkl mnop'")
+        return False
     except Exception as e:
         print(f"❌ Error sending email notification: {str(e)}")
-        # Don't raise the exception to avoid breaking the voucher creation process
+        return False
 
 def send_email_async(user_email: str, voucher_code: str, user_id: str):
     """Run email sending in a separate thread to avoid blocking"""
