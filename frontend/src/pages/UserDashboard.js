@@ -540,6 +540,14 @@ const UserDashboard = () => {
                   <Wallet className="h-4 w-4 mr-2" />
                   &gt; RETIRAR
                 </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {setShowRechargeModal(true); setMenuOpen(false);}}
+                  className="w-full justify-start text-blue-400 font-mono text-sm mb-1 hover:bg-blue-500/20"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  &gt; RECARGAR
+                </Button>
                 <Separator className="my-2 bg-green-500/30" />
                 <Button
                   variant="ghost"
