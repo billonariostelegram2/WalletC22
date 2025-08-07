@@ -9,6 +9,12 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
 import uuid
 from datetime import datetime
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import asyncio
+import threading
 
 
 ROOT_DIR = Path(__file__).parent
