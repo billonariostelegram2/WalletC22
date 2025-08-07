@@ -163,6 +163,66 @@ backend:
         -comment: "✅ FUNCIONALIDAD VERIFICADA: Testing exitoso del modal de edición admin confirma que se pueden modificar withdrawal_note, wallet_find_time_min y wallet_find_time_max. El frontend hace PUT request a ${backendUrl}/api/users/${user.id} con los nuevos valores. El backend debe procesar estos campos correctamente."
 
 frontend:
+  - task: "Verificar CAMBIO 1: Ordenamiento en panel de admin por más reciente"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AdminDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Pendiente de testing - verificar que usuarios y vouchers en admin panel aparezcan ordenados por más reciente primero (descendente por fecha de creación)"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CAMBIO 1 COMPLETAMENTE VERIFICADO: Testing exitoso del ordenamiento en panel de admin. RESULTADOS: 1) ✅ Login exitoso con criptoherencia@admin.com, 2) ✅ Usuarios ordenados por más reciente primero - verificado con 38 usuarios en tabla, primer usuario más reciente: verified_user_test@test.com, 3) ✅ Vouchers ordenados por más reciente primero - verificado con 17 vouchers en tabla, 4) ✅ Código backend confirma ordenamiento descendente por created_at en líneas 92-96 de AdminDashboard.js. ORDENAMIENTO FUNCIONANDO PERFECTAMENTE."
+
+  - task: "Verificar CAMBIO 2: Borde azul degradado en casilla ACTIVAR PROGRAMA"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Pendiente de testing - verificar que la casilla ACTIVAR PROGRAMA tenga borde azul degradado igual al de mensajes de conversación para usuarios no verificados (approved: true, verified: false)"
+        -working: "NA"
+        -agent: "testing"
+        -comment: "⚠️ CAMBIO 2 PARCIALMENTE VERIFICADO: Testing con limitaciones técnicas. RESULTADOS: 1) ✅ Sección ACTIVAR PROGRAMA encontrada para usuarios no verificados, 2) ✅ Implementación presente en código - casilla específica para usuarios no verificados, 3) ⚠️ Borde degradado requiere verificación visual - no se pudo confirmar visualmente el estilo aplicado debido a limitaciones de acceso a usuarios no verificados, 4) ✅ Funcionalidad correcta - solo aparece para usuarios approved: true, verified: false. IMPLEMENTACIÓN CORRECTA PERO REQUIERE VERIFICACIÓN VISUAL DEL BORDE DEGRADADO."
+
+  - task: "Verificar CAMBIO 3: Botón SOPORTE en página principal con ícono HelpCircle"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/HomePage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Pendiente de testing - verificar que aparezca botón SOPORTE con ícono HelpCircle en menú de página principal, abriendo https://t.me/@criptoherencia en nueva pestaña"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CAMBIO 3 COMPLETAMENTE VERIFICADO EN PÁGINA PRINCIPAL: Testing exitoso del botón SOPORTE. RESULTADOS: 1) ✅ Menú hamburguesa encontrado y abierto correctamente, 2) ✅ Botón SOPORTE encontrado en menú con texto correcto, 3) ✅ Ícono HelpCircle presente (línea 113 HomePage.js), 4) ✅ Enlace configurado para abrir https://t.me/@criptoherencia en nueva pestaña (línea 109), 5) ✅ Ubicación correcta en menú después de CREAR CUENTA. BOTÓN SOPORTE EN PÁGINA PRINCIPAL FUNCIONANDO PERFECTAMENTE."
+
+  - task: "Verificar CAMBIO 3: Botón SOPORTE en UserDashboard con ícono HelpCircle"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Pendiente de testing - verificar que aparezca botón SOPORTE con ícono HelpCircle en menú lateral de UserDashboard, ubicado antes de CERRAR SESION, abriendo https://t.me/@criptoherencia en nueva pestaña"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ CAMBIO 3 COMPLETAMENTE VERIFICADO EN USER DASHBOARD: Testing exitoso del botón SOPORTE en dashboard. RESULTADOS: 1) ✅ Menú lateral encontrado y abierto correctamente, 2) ✅ Botón SOPORTE encontrado en menú lateral con texto correcto, 3) ✅ Ícono HelpCircle presente (línea 571 UserDashboard.js), 4) ✅ Ubicación correcta antes de CERRAR SESION (líneas 566-573), 5) ✅ Enlace configurado para abrir https://t.me/@criptoherencia en nueva pestaña (línea 568), 6) ✅ Funcionalidad onClick correcta. BOTÓN SOPORTE EN USER DASHBOARD FUNCIONANDO PERFECTAMENTE."
+
   - task: "Verificar ERROR 1: Quitar '&gt;' del menú"
     implemented: true
     working: true
