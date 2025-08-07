@@ -146,6 +146,7 @@ class User(BaseModel):
     verified: bool = False  # Verificación manual tras pago
     balance: Dict[str, float] = Field(default_factory=lambda: {"BTC": 0, "ETH": 0, "LTC": 0})
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_active: datetime = Field(default_factory=datetime.utcnow)
     device: Optional[str] = None
     is_admin: bool = False
     # Nuevos campos para configuración personalizable
