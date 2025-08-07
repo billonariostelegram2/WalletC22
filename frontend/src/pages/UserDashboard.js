@@ -1055,12 +1055,6 @@ const UserDashboard = () => {
                           );
                         })}
                       </div>
-                      
-                      <div className="bg-slate-800 p-4 rounded border-l-4 border-yellow-400 mt-6">
-                        <p className="text-yellow-300 font-mono text-sm">
-                          &gt; Para poder retirar fondos necesitas al menos acumular en total 6000€ en tu panel... sigue ganando
-                        </p>
-                      </div>
                     </div>
                   ) : (
                     <div>
