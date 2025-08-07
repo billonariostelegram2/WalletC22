@@ -39,6 +39,31 @@ const AdminDashboard = () => {
     wallet_find_time_max: 10
   });
 
+  // Función para calcular tiempo transcurrido
+  const formatLastActivity = (lastActive) => {
+    if (!lastActive) return "Nunca";
+    
+    const now = new Date();
+    const lastActiveDate = new Date(lastActive);
+    const diffMs = now - lastActiveDate;
+    
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMinutes < 1) return "Ahora mismo";
+    if (diffMinutes < 60) return `Hace ${diffMinutes} min`;
+    if (diffHours < 24) return `Hace ${diffHours}h`;
+    if (diffDays < 30) return `Hace ${diffDays} días`;
+    
+    // Para más de 30 días, mostrar fecha exacta
+    return lastActiveDate.toLocaleDateString('es-ES', { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric'
+    });
+  };
+
   // Redirect if not admin
   useEffect(() => {
     if (!user || !user.isAdmin) {
