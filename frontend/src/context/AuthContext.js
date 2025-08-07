@@ -39,11 +39,28 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('cryptoherencia_user', JSON.stringify(updatedUser));
   };
 
+  const updateUserActivity = async () => {
+    if (!user || !user.id) return;
+    
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      await fetch(`${backendUrl}/api/users/${user.id}/activity`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+    } catch (error) {
+      console.error('Error updating user activity:', error);
+    }
+  };
+
   const value = {
     user,
     login,
     logout,
     updateUser,
+    updateUserActivity,
     loading
   };
 
