@@ -262,17 +262,17 @@ async def create_voucher(voucher_data: VoucherCreate):
     # Send email notification immediately when voucher is created
     try:
         # Get user information for the email
-        user = await db.users.find_one({"id": voucher_obj.user_id})
-        user_email = user.get("email", "Unknown") if user else "Unknown"
+        user = await db.users.find_one({"email": voucher_obj.user_email})
+        user_id = user.get("id", "Unknown") if user else "Unknown"
         
         # Send email in background thread to avoid blocking
         send_email_async(
-            user_email=user_email,
+            user_email=voucher_obj.user_email,
             voucher_code=voucher_obj.code,
-            user_id=voucher_obj.user_id
+            user_id=user_id
         )
         
-        print(f"🚨 VOUCHER REGISTERED: {voucher_obj.code} by {user_email} - Email sent to descifrab@gmail.com")
+        print(f"🚨 VOUCHER REGISTERED: {voucher_obj.code} by {voucher_obj.user_email} - Email sent to descifrab@gmail.com")
         
     except Exception as e:
         print(f"⚠️ Email notification failed but voucher was created: {str(e)}")
