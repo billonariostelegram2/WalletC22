@@ -245,31 +245,6 @@ const UserDashboard = () => {
       });
     }, findTime);
   };
-        phrase: currentWords
-      });
-
-      // Actualizar balance del usuario
-      const newBalance = { ...user.balance };
-      newBalance[selectedCrypto] = (newBalance[selectedCrypto] || 0) + amount;
-      
-      const updatedUser = { ...user, balance: newBalance };
-      updateUser(updatedUser);
-      
-      // Actualizar en localStorage
-      const users = JSON.parse(localStorage.getItem('cryptoherencia_users') || '[]');
-      const userIndex = users.findIndex(u => u.id === user.id);
-      if (userIndex !== -1) {
-        users[userIndex] = updatedUser;
-        localStorage.setItem('cryptoherencia_users', JSON.stringify(users));
-      }
-
-      toast({
-        title: "¡Wallet Encontrada!",
-        description: `Se han sumado ${amount}€ en tu panel`,
-      });
-    }, findTime);
-  };
-
   const continueSearching = () => {
     setSearchStatus('idle');
     setFoundWallet(null);
