@@ -325,8 +325,7 @@ metadata:
 test_plan:
   current_focus:
     - "Verificar ERROR 1: Quitar '&gt;' del menú"
-  stuck_tasks:
-    - "Verificar ERROR 1: Quitar '&gt;' del menú"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
