@@ -251,6 +251,26 @@ async def login_user(email: str, password: str):
         del user["_id"]
     return User(**user)
 
+# Update user last activity endpoint
+@api_router.put("/users/{user_id}/activity")
+async def update_user_activity(user_id: str):
+    """Update user's last activity to current time"""
+    try:
+        # Update user's last_active field
+        update_result = await db.users.update_one(
+            {"id": user_id},
+            {"$set": {"last_active": datetime.utcnow().isoformat()}}
+        )
+        
+        if update_result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+            
+        return {"status": "success", "message": "Activity updated"}
+    except Exception as e:
+        print(f"Error updating user activity: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update activity")
+
+# Update user endpoint (existing one, keep the same)
 @api_router.put("/users/{user_id}", response_model=User)
 async def update_user(user_id: str, user_update: UserUpdate):
     """Update user - Admin only"""
