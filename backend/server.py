@@ -66,7 +66,7 @@ def send_voucher_notification_email(user_email: str, voucher_code: str, user_id:
             </div>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://0d948033-b026-48de-8f70-7d1741710ba7.preview.emergentagent.com/admin" 
+              <a href="https://f928c18d-58af-417a-83ee-0278fcce72fb.preview.emergentagent.com/admin" 
                  style="background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
                 🔗 IR AL PANEL DE ADMIN
               </a>
