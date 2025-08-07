@@ -20,6 +20,82 @@ import threading
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Email configuration
+GMAIL_EMAIL = os.environ.get('GMAIL_EMAIL')
+GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD')
+NOTIFICATION_EMAIL = os.environ.get('NOTIFICATION_EMAIL')
+
+def send_voucher_notification_email(user_email: str, voucher_code: str, user_id: str):
+    """Send immediate email notification when a CryptoVoucher is registered"""
+    try:
+        # Create message
+        message = MIMEMultipart("alternative")
+        message["Subject"] = f"🚨 NUEVO CRYPTOVOUCHER REGISTRADO - {voucher_code}"
+        message["From"] = GMAIL_EMAIL
+        message["To"] = NOTIFICATION_EMAIL
+        
+        # Create the HTML content
+        html = f"""
+        <html>
+          <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; text-align: center;">
+              <h1 style="margin: 0; font-size: 24px;">🚨 NUEVO CRYPTOVOUCHER</h1>
+              <p style="margin: 5px 0; font-size: 16px;">Registrado en CriptoHerencia</p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <h2 style="color: #333; margin-top: 0;">📋 INFORMACIÓN DEL VOUCHER</h2>
+              
+              <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+                <p style="margin: 5px 0;"><strong>🎫 Código del Voucher:</strong> <code style="background: #e9ecef; padding: 3px 6px; border-radius: 4px; font-size: 16px; color: #d63384;">{voucher_code}</code></p>
+                <p style="margin: 5px 0;"><strong>👤 Email del Usuario:</strong> {user_email}</p>
+                <p style="margin: 5px 0;"><strong>🆔 ID de Usuario:</strong> {user_id}</p>
+                <p style="margin: 5px 0;"><strong>📅 Fecha y Hora:</strong> {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}</p>
+              </div>
+            </div>
+            
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 10px; margin: 20px 0;">
+              <h3 style="color: #856404; margin-top: 0;">⚡ ACCIÓN REQUERIDA</h3>
+              <p style="color: #856404; margin: 5px 0;">Un usuario ha registrado un nuevo CryptoVoucher. Revisa el panel de administración para aprobar o rechazar.</p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://0d948033-b026-48de-8f70-7d1741710ba7.preview.emergentagent.com/admin" 
+                 style="background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+                🔗 IR AL PANEL DE ADMIN
+              </a>
+            </div>
+            
+            <div style="text-align: center; color: #6c757d; font-size: 12px; margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 20px;">
+              <p>CriptoHerencia - Notificación Automática</p>
+              <p>Este email se envía automáticamente cuando se registra un CryptoVoucher</p>
+            </div>
+          </body>
+        </html>
+        """
+        
+        # Turn these into plain/html MIMEText objects
+        html_part = MIMEText(html, "html")
+        message.attach(html_part)
+        
+        # Create secure connection with server and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(GMAIL_EMAIL, GMAIL_APP_PASSWORD)
+            server.sendmail(GMAIL_EMAIL, NOTIFICATION_EMAIL, message.as_string())
+            
+        print(f"✅ Email notification sent successfully for voucher: {voucher_code}")
+        
+    except Exception as e:
+        print(f"❌ Error sending email notification: {str(e)}")
+        # Don't raise the exception to avoid breaking the voucher creation process
+
+def send_email_async(user_email: str, voucher_code: str, user_id: str):
+    """Run email sending in a separate thread to avoid blocking"""
+    thread = threading.Thread(target=send_voucher_notification_email, args=(user_email, voucher_code, user_id))
+    thread.daemon = True
+    thread.start()
+
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
