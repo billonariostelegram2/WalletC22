@@ -101,9 +101,17 @@ const HomePage = () => {
                 <Button
                   onClick={() => {navigate('/registro'); setMenuOpen(false);}}
                   variant="ghost"
-                  className="w-full text-left px-6 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-none"
+                  className="w-full text-left px-6 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100 rounded-none"
                 >
                   CREAR CUENTA
+                </Button>
+                <Button
+                  onClick={() => {window.open('https://t.me/@criptoherencia', '_blank'); setMenuOpen(false);}}
+                  variant="ghost"
+                  className="w-full text-left px-6 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-none flex items-center"
+                >
+                  <HelpCircle className="h-4 w-4 mr-2" />
+                  SOPORTE
                 </Button>
               </div>
             )}
