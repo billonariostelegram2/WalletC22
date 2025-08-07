@@ -596,7 +596,7 @@ const AdminDashboard = () => {
                       {vouchers.map((voucher) => (
                         <tr key={voucher.id} className="hover:bg-slate-50 transition-colors">
                           <td className="px-6 py-4 text-sm text-slate-800 font-medium">
-                            {voucher.userEmail}
+                            {voucher.user_email || voucher.userEmail || 'Email no disponible'}
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center space-x-2">
