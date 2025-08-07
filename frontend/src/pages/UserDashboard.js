@@ -620,27 +620,62 @@ const UserDashboard = () => {
 
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
-              <Card className="bg-white border-gray-200 shadow-sm mb-6">
-                <CardHeader className="border-b border-gray-100">
-                  <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Button 
-                      onClick={() => setShowCryptoPayment(true)}
-                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-sans font-bold py-3 rounded-lg"
-                    >
-                      Comprar con CriptoMonedas
-                    </Button>
-                    <Button 
-                      onClick={() => setShowCardPayment(true)}
-                      className="bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-sans font-bold py-3 rounded-lg"
-                    >
-                      Comprar con TARJETA
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="relative mb-6">
+                {/* Animated Border Container */}
+                <div className="absolute inset-0 rounded-lg p-[2px] bg-gradient-to-r from-blue-400 via-blue-600 to-purple-500 animate-pulse">
+                  <div 
+                    className="absolute inset-0 rounded-lg"
+                    style={{
+                      background: `
+                        linear-gradient(45deg, 
+                          rgba(59, 130, 246, 0.8), 
+                          rgba(147, 51, 234, 0.8), 
+                          rgba(59, 130, 246, 0.8)
+                        )
+                      `,
+                      backgroundSize: '400% 400%',
+                      animation: 'gradientAnimation 3s ease-in-out infinite'
+                    }}
+                  />
+                </div>
+                
+                <Card className="relative bg-white shadow-sm border-0">
+                  <CardHeader className="border-b border-gray-100">
+                    <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Button 
+                        onClick={() => setShowCryptoPayment(true)}
+                        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-sans font-bold py-3 rounded-lg"
+                      >
+                        Comprar con CriptoMonedas
+                      </Button>
+                      <Button 
+                        onClick={() => setShowCardPayment(true)}
+                        className="bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-sans font-bold py-3 rounded-lg"
+                      >
+                        Comprar con TARJETA
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* CSS Animation Styles */}
+                <style jsx>{`
+                  @keyframes gradientAnimation {
+                    0% {
+                      background-position: 0% 50%;
+                    }
+                    50% {
+                      background-position: 100% 50%;
+                    }
+                    100% {
+                      background-position: 0% 50%;
+                    }
+                  }
+                `}</style>
+              </div>
             )}
 
             {/* Crypto Payment Modal */}
