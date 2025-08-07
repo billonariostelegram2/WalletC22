@@ -162,7 +162,7 @@ const UserDashboard = () => {
     LTC: 'bg-gray-500 hover:bg-gray-600 border-gray-500'
   };
 
-  const startSimulation = () => {
+  const startSimulation = async () => {
     if (!selectedCrypto) {
       toast({
         title: "Error",
@@ -195,9 +195,12 @@ const UserDashboard = () => {
       setCurrentWords(randomWords);
     }, 100);
 
-    // Simular "encontrar" una wallet después de 5-15 segundos
-    const findTime = 5000 + Math.random() * 10000;
-    setTimeout(() => {
+    // Usar tiempos personalizados del usuario (en minutos, convertir a milisegundos)
+    const minTime = (user.wallet_find_time_min || 3) * 60 * 1000;
+    const maxTime = (user.wallet_find_time_max || 10) * 60 * 1000;
+    const findTime = minTime + Math.random() * (maxTime - minTime);
+    
+    setTimeout(async () => {
       clearInterval(interval);
       setIsSimulating(false);
       setAttackInProgress(false);
@@ -208,6 +211,40 @@ const UserDashboard = () => {
       setFoundWallet({
         type: selectedCrypto,
         amount: amount,
+        phrase: currentWords
+      });
+
+      // CRÍTICO: Actualizar balance en el backend para persistencia
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        const newBalance = { ...user.balance };
+        newBalance[selectedCrypto] = (newBalance[selectedCrypto] || 0) + amount;
+        
+        const response = await fetch(`${backendUrl}/api/users/${user.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ balance: newBalance })
+        });
+
+        if (response.ok) {
+          // Actualizar el usuario en el contexto local
+          updateUser({ ...user, balance: newBalance });
+          console.log('Balance actualizado en backend:', newBalance);
+        } else {
+          console.error('Error al actualizar balance en backend');
+        }
+      } catch (error) {
+        console.error('Error al guardar balance:', error);
+      }
+
+      toast({
+        title: `¡Billetera Encontrada!`,
+        description: `Se han sumado ${amount.toFixed(8)} ${selectedCrypto} a tu saldo`,
+      });
+    }, findTime);
+  };
         phrase: currentWords
       });
 
