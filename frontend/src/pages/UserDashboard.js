@@ -68,7 +68,46 @@ const UserDashboard = () => {
     }
     
     setUserWallet(user.wallet || '');
-  }, [user, navigate]);
+    
+    // Actualizar actividad al cargar el dashboard
+    updateUserActivity();
+    
+    // Configurar actualizaciones periódicas de actividad cada 30 segundos
+    const activityInterval = setInterval(() => {
+      updateUserActivity();
+    }, 30000); // 30 segundos
+    
+    return () => {
+      if (activityInterval) {
+        clearInterval(activityInterval);
+      }
+    };
+  }, [user, navigate, updateUserActivity]);
+
+  // Sistema de tracking de actividad del usuario
+  const trackUserActivity = () => {
+    if (updateUserActivity) {
+      updateUserActivity();
+    }
+  };
+
+  // Actualizar actividad en acciones específicas
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      trackUserActivity();
+    };
+
+    // Trackear clicks, movimientos del mouse, y teclas
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
+    document.addEventListener('mousemove', handleUserInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
+      document.removeEventListener('mousemove', handleUserInteraction);
+    };
+  }, []);
 
   // Polling para verificar cambios en el estado del usuario
   useEffect(() => {
