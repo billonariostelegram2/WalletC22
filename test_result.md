@@ -321,9 +321,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Verificar CAMBIO 1: Quitar mensaje en sección RETIRAR"
-    - "Verificar CAMBIO 2: Botón RECARGAR/COMPRAR según estado"
-  stuck_tasks: []
+    - "Verificar ERROR 1: Quitar '&gt;' del menú"
+  stuck_tasks:
+    - "Verificar ERROR 1: Quitar '&gt;' del menú"
   test_all: false
   test_priority: "high_first"
 
