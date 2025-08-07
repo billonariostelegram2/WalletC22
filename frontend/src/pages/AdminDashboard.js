@@ -29,6 +29,15 @@ const AdminDashboard = () => {
   const [currentView, setCurrentView] = useState('users');
   const [users, setUsers] = useState([]);
   const [vouchers, setVouchers] = useState([]);
+  
+  // Estados para modal de edición
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [editForm, setEditForm] = useState({
+    withdrawal_note: '',
+    wallet_find_time_min: 3,
+    wallet_find_time_max: 10
+  });
 
   // Redirect if not admin
   useEffect(() => {
