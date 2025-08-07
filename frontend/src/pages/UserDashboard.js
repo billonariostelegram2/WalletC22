@@ -543,11 +543,22 @@ const UserDashboard = () => {
                 </Button>
                 <Button
                   variant="ghost"
-                  onClick={() => {setShowRechargeModal(true); setMenuOpen(false);}}
-                  className="w-full justify-start text-blue-400 font-mono text-sm mb-1 hover:bg-blue-500/20"
+                  onClick={() => {
+                    if (user.verified) {
+                      setShowRechargeModal(true);
+                    } else {
+                      setShowCryptoPayment(true);
+                    }
+                    setMenuOpen(false);
+                  }}
+                  className={`w-full justify-start font-mono text-sm mb-1 ${
+                    user.verified 
+                      ? 'text-blue-400 hover:bg-blue-500/20' 
+                      : 'text-purple-400 hover:bg-purple-500/20'
+                  }`}
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  &gt; RECARGAR
+                  {user.verified ? '&gt; RECARGAR' : '&gt; COMPRAR'}
                 </Button>
                 <Separator className="my-2 bg-green-500/30" />
                 <Button
