@@ -420,45 +420,117 @@ def test_final_email_system_with_correct_credentials():
         print(f"❌ ERROR: {str(e)}")
         return False
 
+def test_urgent_email_intermittency_diagnosis():
+    """🚨 DIAGNÓSTICO URGENTE: PROBLEMA INTERMITENTE DE EMAIL REPORTADO POR USUARIO"""
+    print_test_header("🚨 DIAGNÓSTICO URGENTE - PROBLEMA INTERMITENTE DE EMAIL")
+    
+    try:
+        print("🚨 SITUACIÓN CRÍTICA REPORTADA:")
+        print("- Durante tests anteriores SÍ llegaron emails (usuario confirma recibió 3 emails)")
+        print("- Después cuando el usuario probó personalmente, NO llegaron emails")
+        print("- Esto indica problema intermitente que necesita resolución inmediata")
+        
+        print(f"\n📧 STEP 1: Verificando configuración actual después de restart...")
+        print(f"Configuración esperada en backend/.env:")
+        print(f"- GMAIL_EMAIL: 'descifrab@gmail.com'")
+        print(f"- GMAIL_APP_PASSWORD: 'ucda imqo cndg ujca' (16 chars)")
+        print(f"- NOTIFICATION_EMAIL: 'exodus.ayuda@gmail.com' (CAMBIADO)")
+        
+        print(f"\n📧 STEP 2: Creando voucher de prueba urgente...")
+        voucher_data = {
+            "code": "URGENT-FIX-TEST-2025",
+            "user_email": "urgent_fix@test.com",
+            "device": "urgent_diagnosis"
+        }
+        
+        print(f"Voucher data: {json.dumps(voucher_data, indent=2)}")
+        print(f"🎯 OBJETIVO: Confirmar que el email se envíe a exodus.ayuda@gmail.com")
+        
+        # Create voucher and capture response
+        response = requests.post(f"{BACKEND_URL}/vouchers", json=voucher_data)
+        voucher = print_response(response, "POST /api/vouchers Response")
+        
+        if response.status_code == 200 and voucher:
+            print(f"✅ SUCCESS: Voucher URGENT-FIX-TEST-2025 creado exitosamente")
+            print(f"- Voucher ID: {voucher.get('id')}")
+            print(f"- Voucher Code: {voucher.get('code')}")
+            print(f"- User Email: {voucher.get('user_email')}")
+            print(f"- Status: {voucher.get('status')}")
+            
+            print(f"\n📧 STEP 3: Capturando logs detallados del proceso de email...")
+            print(f"🔍 LOGS CRÍTICOS A VERIFICAR:")
+            print(f"   1. '📧 STARTING EMAIL PROCESS:' - ¿Se inicia el proceso?")
+            print(f"   2. '📧 ATTEMPTING GMAIL CONNECTION...' - ¿Se intenta conexión?")
+            print(f"   3. '📧 SSL connection established...' - ¿SSL funciona?")
+            print(f"   4. '📧 Gmail login successful...' - ¿Login exitoso?")
+            print(f"   5. '📧 Email sent successfully...' - ¿Email enviado?")
+            print(f"   6. '✅ Email notification sent successfully' - ¿Confirmación final?")
+            
+            print(f"\n🚨 IDENTIFICAR CAUSA DE INTERMITENCIA:")
+            print(f"¿Variables de entorno no cargándose después de restart?")
+            print(f"¿Problema de threading en send_email_async?")
+            print(f"¿Rate limiting de Gmail?")
+            print(f"¿Conexión SSL intermitente?")
+            print(f"¿Cambio de NOTIFICATION_EMAIL no aplicado?")
+            
+            print(f"\n📧 STEP 4: Esperando proceso completo de email...")
+            import time
+            time.sleep(5)  # Wait for email process
+            
+            print(f"\n✅ VOUCHER URGENT-FIX-TEST-2025 PROCESADO")
+            print(f"🎯 RESULTADO ESPERADO: Email debe llegar a exodus.ayuda@gmail.com")
+            print(f"🔍 VERIFICAR LOGS BACKEND PARA DIAGNÓSTICO COMPLETO")
+            
+            return True
+            
+        else:
+            print(f"❌ FAILED: No se pudo crear voucher urgente - Status: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ ERROR: {str(e)}")
+        return False
+
 def main():
-    """Main testing function"""
-    print("🚨 STARTING FINAL EMAIL SYSTEM TEST WITH CORRECT CREDENTIALS")
+    """Main testing function - DIAGNÓSTICO URGENTE DE EMAIL"""
+    print("🚨 DIAGNÓSTICO URGENTE: PROBLEMA INTERMITENTE DE EMAIL REPORTADO POR USUARIO")
     print(f"Backend URL: {BACKEND_URL}")
     print(f"Test Time: {datetime.now()}")
     
-    # PRUEBA FINAL: Sistema de email con credenciales correctas
+    # DIAGNÓSTICO URGENTE: Problema intermitente de email
     print("\n" + "="*80)
-    print("🚨 PRUEBA FINAL COMPLETA DEL SISTEMA DE NOTIFICACIONES POR EMAIL")
+    print("🚨 DIAGNÓSTICO URGENTE - PROBLEMA INTERMITENTE DE EMAIL")
     print("="*80)
     
-    final_test_result = test_final_email_system_with_correct_credentials()
+    urgent_test_result = test_urgent_email_intermittency_diagnosis()
     
-    if final_test_result:
-        print(f"\n✅ FINAL EMAIL TEST COMPLETED")
-        print(f"\n📧 VERIFICACIÓN COMPLETA - CHECK BACKEND LOGS:")
-        print(f"1. Look for messages starting with '📧'")
-        print(f"2. Confirm COMPLETE success process:")
-        print(f"   - SSL connection ✅")
-        print(f"   - Gmail login ✅ (NO authentication error)")
-        print(f"   - Email sent ✅")
-        print(f"   - Success confirmation ✅")
+    if urgent_test_result:
+        print(f"\n✅ DIAGNÓSTICO URGENTE COMPLETADO")
+        print(f"\n📧 VERIFICACIÓN CRÍTICA - CHECK BACKEND LOGS:")
+        print(f"1. Buscar mensajes que empiecen con '📧'")
+        print(f"2. Confirmar proceso completo o identificar punto de falla:")
+        print(f"   - ¿Se carga configuración correctamente?")
+        print(f"   - ¿Variables de entorno disponibles?")
+        print(f"   - ¿Proceso de email se ejecuta?")
+        print(f"   - ¿Conexión SSL exitosa?")
+        print(f"   - ¿Login Gmail exitoso?")
+        print(f"   - ¿Email enviado a exodus.ayuda@gmail.com?")
         
-        print(f"\n🔍 EXPECTED SUCCESSFUL FINDINGS:")
-        print(f"- GMAIL_EMAIL: descifrab@gmail.com ✅")
-        print(f"- GMAIL_APP_PASSWORD: ucda imqo cndg ujca (16 chars) ✅")
-        print(f"- NOTIFICATION_EMAIL: descifrab@gmail.com ✅")
-        print(f"- SUCCESS: Gmail login successful ✅")
-        print(f"- SUCCESS: Email sent to descifrab@gmail.com ✅")
-        print(f"- CONFIRMATION: '✅ Email notification sent successfully for voucher: FINAL-EMAIL-TEST-2025' ✅")
+        print(f"\n🔍 CONFIGURACIÓN ESPERADA:")
+        print(f"- GMAIL_EMAIL: descifrab@gmail.com")
+        print(f"- GMAIL_APP_PASSWORD: ucda imqo cndg ujca (16 chars)")
+        print(f"- NOTIFICATION_EMAIL: exodus.ayuda@gmail.com (NUEVO DESTINO)")
         
-        print(f"\n🎯 Si todo funciona, confirma que el sistema está completamente operativo.")
+        print(f"\n🎯 RESULTADO CRÍTICO:")
+        print(f"Email con código URGENT-FIX-TEST-2025 debe llegar a exodus.ayuda@gmail.com")
+        print(f"Si no llega, identificar exactamente en qué paso falla el proceso")
         
     else:
-        print(f"\n❌ FINAL EMAIL TEST FAILED")
-        print(f"Could not create test voucher for final email verification")
+        print(f"\n❌ DIAGNÓSTICO URGENTE FALLÓ")
+        print(f"No se pudo crear voucher de prueba para diagnóstico")
     
     print(f"\n{'='*80}")
-    print("🏁 FINAL EMAIL SYSTEM TEST COMPLETED")
+    print("🏁 DIAGNÓSTICO URGENTE DE EMAIL COMPLETADO")
     print(f"{'='*80}")
 
 if __name__ == "__main__":
