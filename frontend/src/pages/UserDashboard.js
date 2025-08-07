@@ -548,7 +548,7 @@ const UserDashboard = () => {
                     if (user.verified) {
                       setShowRechargeModal(true);
                     } else {
-                      setShowCryptoPayment(true);
+                      setShowPurchaseModal(true);
                     }
                     setMenuOpen(false);
                   }}
