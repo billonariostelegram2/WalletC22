@@ -24,7 +24,8 @@ import {
   Lock,
   Bitcoin,
   Zap,
-  Plus
+  Plus,
+  HelpCircle
 } from 'lucide-react';
 import { bip39Words, getRandomAmount, cryptoIcons, paymentAddresses } from '../components/mock';
 
