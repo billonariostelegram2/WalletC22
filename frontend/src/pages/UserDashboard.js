@@ -568,7 +568,7 @@ const UserDashboard = () => {
                   className="w-full justify-start text-red-400 hover:text-red-300 font-mono text-sm hover:bg-red-500/20"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
-                  &gt; CERRAR SESION
+                  CERRAR SESION
                 </Button>
               </div>
             </div>
