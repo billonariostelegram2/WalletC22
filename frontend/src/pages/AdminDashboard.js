@@ -548,6 +548,7 @@ const AdminDashboard = () => {
                                 </Button>
                               )}
                               <Button
+                                onClick={() => openEditModal(user)}
                                 size="sm"
                                 variant="outline"
                                 className="border-slate-300 text-slate-600 hover:bg-slate-50 px-3 py-1 text-xs"
