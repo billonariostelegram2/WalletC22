@@ -620,25 +620,24 @@ const UserDashboard = () => {
 
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
-              <div className="relative mb-6">
-                {/* Correct Animated Border - Subtle gradient movement */}
+              <div className="relative mb-6 p-[2px] rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-pulse">
+                {/* Animated border background */}
                 <div 
-                  className="absolute inset-0 rounded-lg p-[2px] opacity-70"
+                  className="absolute inset-0 rounded-lg opacity-80"
                   style={{
                     background: `linear-gradient(45deg, 
-                      #3b82f6, #8b5cf6, #6366f1, #3b82f6, #8b5cf6)`,
-                    backgroundSize: '300% 300%',
-                    animation: 'gradientShift 4s ease-in-out infinite'
+                      #3b82f6, #8b5cf6, #6366f1, #3b82f6, #8b5cf6, #3b82f6)`,
+                    backgroundSize: '400% 400%',
+                    animation: 'gradientShift 3s ease-in-out infinite'
                   }}
-                >
-                  <div className="w-full h-full bg-white rounded-[6px]"></div>
-                </div>
+                />
                 
-                <Card className="relative bg-white shadow-sm border-0">
+                {/* Content card with proper z-index */}
+                <Card className="relative bg-white shadow-sm border-0 rounded-[6px] z-10">
                   <CardHeader className="border-b border-gray-100">
                     <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-6 space-y-4">
+                  <CardContent className="p-4 sm:p-6 space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Button 
                         onClick={() => setShowCryptoPayment(true)}
