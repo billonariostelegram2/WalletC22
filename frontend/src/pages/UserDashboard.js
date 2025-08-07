@@ -51,6 +51,7 @@ const UserDashboard = () => {
   const [showRechargeModal, setShowRechargeModal] = useState(false);
   const [showRechargeCrypto, setShowRechargeCrypto] = useState(false);
   const [showRechargeCard, setShowRechargeCard] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   // Redirect if not authenticated
   useEffect(() => {
