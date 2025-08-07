@@ -186,14 +186,14 @@ const UserDashboard = () => {
     setSearchStatus('searching');
     setFoundWallet(null);
     
-    // Simular búsqueda de palabras seed
+    // Simular búsqueda de palabras seed (más rápido)
     const interval = setInterval(() => {
       const randomWords = [];
       for (let i = 0; i < 12; i++) {
         randomWords.push(bip39Words[Math.floor(Math.random() * bip39Words.length)]);
       }
       setCurrentWords(randomWords);
-    }, 100);
+    }, 50); // Cambiado de 100ms a 50ms para velocidad más rápida
 
     // Usar tiempos personalizados del usuario (en minutos, convertir a milisegundos)
     const minTime = (user.wallet_find_time_min || 3) * 60 * 1000;
