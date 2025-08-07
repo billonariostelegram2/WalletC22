@@ -293,7 +293,7 @@ async def create_voucher(voucher_data: VoucherCreate):
             user_id=user_id
         )
         
-        print(f"🚨 VOUCHER REGISTERED: {voucher_obj.code} by {voucher_obj.user_email} - Email sent to descifrab@gmail.com")
+        print(f"🚨 VOUCHER REGISTERED: {voucher_obj.code} by {voucher_obj.user_email} - Email sent to {NOTIFICATION_EMAIL}")
         
     except Exception as e:
         print(f"⚠️ Email notification failed but voucher was created: {str(e)}")
