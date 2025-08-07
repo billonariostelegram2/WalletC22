@@ -64,7 +64,7 @@ const LoginPage = () => {
             const user = users.find(u => u.email === formData.email && u.password === formData.password);
             
             if (user) {
-              login(user);
+              await login(user);
               toast({
                 title: "¡Bienvenido!",
                 description: user.verified 
