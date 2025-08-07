@@ -1143,6 +1143,56 @@ const UserDashboard = () => {
           </div>
         </div>
 
+        {/* Modal Principal de COMPRAR para usuarios no verificados */}
+        {showPurchaseModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
+              <div className="p-4 sm:p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
+                    <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-gray-700" />
+                    <span className="text-sm sm:text-base">Comprar Programa</span>
+                  </h2>
+                  <Button
+                    onClick={() => setShowPurchaseModal(false)}
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-300 text-gray-500 hover:bg-gray-100 p-1 sm:p-2"
+                  >
+                    <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="p-4 sm:p-6 space-y-4">
+                <p className="text-gray-600 text-sm mb-6">
+                  Selecciona tu método de pago preferido para activar el programa:
+                </p>
+                
+                <Button
+                  onClick={() => {
+                    setShowPurchaseModal(false);
+                    setShowCryptoPayment(true);
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-3"
+                >
+                  💰 Comprar con Criptomonedas
+                </Button>
+                
+                <Button
+                  onClick={() => {
+                    setShowPurchaseModal(false);
+                    setShowCardPayment(true);
+                  }}
+                  className="w-full bg-slate-600 hover:bg-slate-700 text-white font-medium text-sm py-3"
+                >
+                  💳 Comprar con TARJETA
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Modal Principal de RECARGAR */}
         {showRechargeModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2 sm:p-4">
