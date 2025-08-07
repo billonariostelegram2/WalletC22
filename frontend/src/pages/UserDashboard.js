@@ -558,7 +558,7 @@ const UserDashboard = () => {
                   }`}
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  {user.verified ? '&gt; RECARGAR' : '&gt; COMPRAR'}
+                  {user.verified ? 'RECARGAR' : 'COMPRAR'}
                 </Button>
                 <Separator className="my-2 bg-green-500/30" />
                 <Button
