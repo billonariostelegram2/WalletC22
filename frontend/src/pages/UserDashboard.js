@@ -47,6 +47,9 @@ const UserDashboard = () => {
   const [selectedWithdrawCrypto, setSelectedWithdrawCrypto] = useState('');
   const [withdrawWallet, setWithdrawWallet] = useState('');
   const [userStatusPolling, setUserStatusPolling] = useState(null);
+  const [showRechargeModal, setShowRechargeModal] = useState(false);
+  const [showRechargeCrypto, setShowRechargeCrypto] = useState(false);
+  const [showRechargeCard, setShowRechargeCard] = useState(false);
 
   // Redirect if not authenticated
   useEffect(() => {
