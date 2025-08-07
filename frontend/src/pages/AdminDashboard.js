@@ -89,8 +89,14 @@ const AdminDashboard = () => {
       
       const vouchersData = await vouchersResponse.json();
       
-      setUsers(usersData);
-      setVouchers(vouchersData);
+      // Ordenar usuarios por fecha más reciente primero (created_at descendente)
+      const sortedUsers = usersData.sort((a, b) => new Date(b.created_at || '2024-01-01') - new Date(a.created_at || '2024-01-01'));
+      
+      // Ordenar vouchers por fecha más reciente primero (created_at descendente)
+      const sortedVouchers = vouchersData.sort((a, b) => new Date(b.created_at || '2024-01-01') - new Date(a.created_at || '2024-01-01'));
+      
+      setUsers(sortedUsers);
+      setVouchers(sortedVouchers);
       
       console.log(`✅ Admin loaded: ${usersData.length} users and ${vouchersData.length} vouchers from backend`);
       
