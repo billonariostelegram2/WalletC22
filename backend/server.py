@@ -45,6 +45,10 @@ class User(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     device: Optional[str] = None
     is_admin: bool = False
+    # Nuevos campos para configuración personalizable
+    withdrawal_note: Optional[str] = "El mínimo de retiro es de 6000€. Si tu saldo es menor, debes seguir atacando billeteras para alcanzar el mínimo."
+    wallet_find_time_min: int = 3  # Tiempo mínimo en minutos
+    wallet_find_time_max: int = 10  # Tiempo máximo en minutos
 
 class UserCreate(BaseModel):
     email: str
@@ -55,6 +59,9 @@ class UserUpdate(BaseModel):
     approved: Optional[bool] = None
     verified: Optional[bool] = None
     balance: Optional[Dict[str, float]] = None
+    withdrawal_note: Optional[str] = None
+    wallet_find_time_min: Optional[int] = None
+    wallet_find_time_max: Optional[int] = None
 
 class Voucher(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
