@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "PRUEBA DE LOS 2 CAMBIOS SOLICITADOS POR EL USUARIO: CAMBIO 1: QUITAR MENSAJE EN SECCIÓN RETIRAR - Verificar que para usuarios verificados NO aparezca el mensaje informativo sobre 6000€ en la sección RETIRAR, solo las 3 opciones de crypto con saldos. CAMBIO 2: BOTÓN RECARGAR/COMPRAR SEGÚN ESTADO - Verificar que el botón cambie de 'COMPRAR' (púrpura) para usuarios no verificados a 'RECARGAR' (azul) para usuarios verificados, con funcionalidad correcta para cada tipo."
+user_problem_statement: "VERIFICACIÓN COMPLETA DE LOS 3 CAMBIOS IMPLEMENTADOS SEGÚN SOLICITUD DEL USUARIO: CAMBIO 1: ORDENAMIENTO EN PANEL DE ADMIN - Verificar que usuarios y vouchers aparezcan ordenados por más reciente primero (descendente por fecha de creación). CAMBIO 2: BORDE AZUL DEGRADADO EN ACTIVAR PROGRAMA - Verificar que la casilla ACTIVAR PROGRAMA tenga borde azul degradado igual al de mensajes de conversación para usuarios no verificados. CAMBIO 3: BOTÓN SOPORTE EN AMBAS PÁGINAS - Verificar que aparezca SOPORTE con ícono HelpCircle en página principal y UserDashboard, abriendo https://t.me/@criptoherencia en nueva pestaña."
 
 backend:
   - task: "Verificar sistema de notificaciones por email para CryptoVouchers"
