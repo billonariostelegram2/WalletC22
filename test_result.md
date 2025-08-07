@@ -166,6 +166,21 @@ frontend:
         -agent: "testing"
         -comment: "✅ IMPLEMENTACIÓN VERIFICADA: Análisis del código en UserDashboard.js líneas 218-240 confirma que cuando se encuentra una billetera, el balance se actualiza en el backend via PUT /api/users/${user.id} con el nuevo balance, y se actualiza el contexto local. El sistema está diseñado para persistir el saldo correctamente. Aunque no se pudo completar test end-to-end por limitaciones de credenciales, la implementación es correcta."
 
+  - task: "Prueba completa end-to-end del sistema de notificaciones por email"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/UserDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Prueba específica solicitada: registrar usuario 'email_test@test.com', login, registrar voucher 'EMAIL-TEST-2025', verificar logs backend y panel admin"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ PRUEBA END-TO-END COMPLETADA EXITOSAMENTE: 1) ✅ Usuario 'email_test@test.com' registrado y logueado correctamente, 2) ✅ Modal 'Pago con Tarjeta' abierto, voucher input encontrado, 3) ✅ Voucher 'EMAIL-TEST-2025' enviado via POST /api/vouchers (200 OK), 4) ✅ Log backend confirmado: '🚨 VOUCHER REGISTERED: EMAIL-TEST-2025 by email_test@test.com - Email sent to descifrab@gmail.com', 5) ✅ Voucher aparece en panel admin con estado PENDIENTE, 6) ✅ Sistema send_email_async ejecutado correctamente. FLUJO COMPLETO FUNCIONA PERFECTAMENTE - email notification system working as expected."
+
   - task: "Verificar tiempos personalizados en simulador"
     implemented: true
     working: true
