@@ -180,7 +180,7 @@ frontend:
 
   - task: "Verificar CAMBIO 2: Borde azul degradado en casilla ACTIVAR PROGRAMA"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
     stuck_count: 0
     priority: "high"
@@ -192,6 +192,9 @@ frontend:
         -working: "NA"
         -agent: "testing"
         -comment: "⚠️ CAMBIO 2 PARCIALMENTE VERIFICADO: Testing con limitaciones técnicas. RESULTADOS: 1) ✅ Sección ACTIVAR PROGRAMA encontrada para usuarios no verificados, 2) ✅ Implementación presente en código - casilla específica para usuarios no verificados, 3) ⚠️ Borde degradado requiere verificación visual - no se pudo confirmar visualmente el estilo aplicado debido a limitaciones de acceso a usuarios no verificados, 4) ✅ Funcionalidad correcta - solo aparece para usuarios approved: true, verified: false. IMPLEMENTACIÓN CORRECTA PERO REQUIERE VERIFICACIÓN VISUAL DEL BORDE DEGRADADO."
+        -working: true
+        -agent: "main"
+        -comment: "🎉 CAMBIO 2 COMPLETAMENTE CORREGIDO Y VERIFICADO: El usuario reportó que la implementación anterior estaba mal (desastre completo, palabras superpuestas, línea inexistente). Implementé nueva solución con borde degradado animado usando conic-gradient con colores azul-púrpura (#3b82f6 a #8b5cf6), rotación continua (4s), que bordea suavemente el recuadro. TESTING VISUAL EXITOSO: 1) ✅ Usuario test_border@test.com (approved: true, verified: false) creado, 2) ✅ Casilla ACTIVAR EL PROGRAMA visible con borde degradado animado, 3) ✅ Línea bordea completamente el recuadro de forma suave, 4) ✅ No hay superposición de palabras, 5) ✅ Efecto visual funcionando correctamente. PROBLEMA SOLUCIONADO COMPLETAMENTE."
 
   - task: "Verificar CAMBIO 3: Botón SOPORTE en página principal con ícono HelpCircle"
     implemented: true
