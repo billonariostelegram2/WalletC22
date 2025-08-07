@@ -610,27 +610,31 @@ const UserDashboard = () => {
 
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
-              <Card className="bg-white border-gray-200 shadow-sm mb-6">
-                <CardHeader className="border-b border-gray-100">
-                  <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Button 
-                      onClick={() => setShowCryptoPayment(true)}
-                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-sans font-bold py-3 rounded-lg"
-                    >
-                      Comprar con CriptoMonedas
-                    </Button>
-                    <Button 
-                      onClick={() => setShowCardPayment(true)}
-                      variant="outline"
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-sans font-bold py-3 rounded-lg"
-                    >
-                      Comprar con TARJETA
-                    </Button>
+              <Card className="bg-white border-gray-200 shadow-sm mb-6 relative">
+                {/* Borde degradado azul como los mensajes */}
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 p-[2px]">
+                  <div className="bg-white rounded-[6px] h-full w-full">
+                    <CardHeader className="border-b border-gray-100">
+                      <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Button 
+                          onClick={() => setShowCryptoPayment(true)}
+                          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-sans font-bold py-3 rounded-lg"
+                        >
+                          Comprar con CriptoMonedas
+                        </Button>
+                        <Button 
+                          onClick={() => setShowCardPayment(true)}
+                          className="bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-sans font-bold py-3 rounded-lg"
+                        >
+                          Comprar con TARJETA
+                        </Button>
+                      </div>
+                    </CardContent>
                   </div>
-                </CardContent>
+                </div>
               </Card>
             )}
 
