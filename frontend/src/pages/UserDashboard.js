@@ -751,20 +751,6 @@ const UserDashboard = () => {
                         </div>
                       </div>
                     </div>
-
-                    {/* Ventajas y beneficios */}
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
-                      <h3 className="font-semibold text-green-800 mb-2 flex items-center text-sm sm:text-base">
-                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                        ¿Por qué elegir CryptoVoucher?
-                      </h3>
-                      <ul className="text-green-700 text-xs sm:text-sm space-y-1">
-                        <li>✅ <strong>Activación inmediata</strong> - No esperas 24 horas</li>
-                        <li>✅ <strong>100% Seguro</strong> - Compra con tu tarjeta habitual</li>
-                        <li>✅ <strong>Sin registros complicados</strong> - Solo necesitas el código</li>
-                        <li>✅ <strong>Soporte 24/7</strong> - Ayuda disponible siempre</li>
-                      </ul>
-                    </div>
                     
                     <div className="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded-lg">
                       <p className="text-blue-800 text-xs sm:text-sm">
