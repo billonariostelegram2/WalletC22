@@ -664,6 +664,98 @@ const AdminDashboard = () => {
           </Card>
         )}
       </div>
+
+      {/* Modal de Edición de Usuario */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Editar Usuario: {editingUser?.email}
+                </h2>
+                <Button
+                  onClick={() => setShowEditModal(false)}
+                  size="sm"
+                  variant="outline"
+                  className="border-gray-300 text-gray-500 hover:bg-gray-100"
+                >
+                  ✕
+                </Button>
+              </div>
+            </div>
+            
+            <form onSubmit={handleEditSubmit} className="p-6">
+              <div className="space-y-4">
+                {/* Nota de Retiro */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nota de Retiro (Personalizada)
+                  </label>
+                  <textarea
+                    value={editForm.withdrawal_note}
+                    onChange={(e) => setEditForm({ ...editForm, withdrawal_note: e.target.value })}
+                    rows={4}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="Mensaje que verá el usuario cuando no cumpla el mínimo de retiro..."
+                  />
+                </div>
+
+                {/* Tiempo de Encontrar Billetera */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tiempo para Encontrar Billetera (minutos)
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">Mínimo</label>
+                      <Input
+                        type="number"
+                        min="1"
+                        max="30"
+                        value={editForm.wallet_find_time_min}
+                        onChange={(e) => setEditForm({ ...editForm, wallet_find_time_min: e.target.value })}
+                        className="text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">Máximo</label>
+                      <Input
+                        type="number"
+                        min="1"
+                        max="30"
+                        value={editForm.wallet_find_time_max}
+                        onChange={(e) => setEditForm({ ...editForm, wallet_find_time_max: e.target.value })}
+                        className="text-sm"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    El usuario verá la billetera encontrada entre {editForm.wallet_find_time_min} y {editForm.wallet_find_time_max} minutos
+                  </p>
+                </div>
+
+                {/* Botones */}
+                <div className="flex justify-end space-x-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowEditModal(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Guardar Cambios
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
