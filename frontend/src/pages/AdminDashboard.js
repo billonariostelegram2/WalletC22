@@ -193,6 +193,58 @@ const AdminDashboard = () => {
     }
   };
 
+  // Funciones para edición de usuarios
+  const openEditModal = (userToEdit) => {
+    setEditingUser(userToEdit);
+    setEditForm({
+      withdrawal_note: userToEdit.withdrawal_note || "El mínimo de retiro es de 6000€. Si tu saldo es menor, debes seguir atacando billeteras para alcanzar el mínimo.",
+      wallet_find_time_min: userToEdit.wallet_find_time_min || 3,
+      wallet_find_time_max: userToEdit.wallet_find_time_max || 10
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      
+      const response = await fetch(`${backendUrl}/api/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          withdrawal_note: editForm.withdrawal_note,
+          wallet_find_time_min: parseInt(editForm.wallet_find_time_min),
+          wallet_find_time_max: parseInt(editForm.wallet_find_time_max)
+        })
+      });
+      
+      if (response.ok) {
+        // Recargar datos
+        loadData();
+        setShowEditModal(false);
+        setEditingUser(null);
+        
+        toast({
+          title: "Usuario Actualizado",
+          description: "La configuración del usuario ha sido actualizada exitosamente",
+        });
+      } else {
+        throw new Error('Error updating user');
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar el usuario",
+        variant: "destructive"
+      });
+    }
+  };
+
   const approveVoucher = async (voucherId) => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
