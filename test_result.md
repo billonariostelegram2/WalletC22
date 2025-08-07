@@ -163,20 +163,20 @@ backend:
         -comment: "✅ FUNCIONALIDAD VERIFICADA: Testing exitoso del modal de edición admin confirma que se pueden modificar withdrawal_note, wallet_find_time_min y wallet_find_time_max. El frontend hace PUT request a ${backendUrl}/api/users/${user.id} con los nuevos valores. El backend debe procesar estos campos correctamente."
 
 frontend:
-  - task: "Verificar CAMBIO 1: Quitar mensaje en sección RETIRAR"
+  - task: "Verificar ERROR 1: Quitar '&gt;' del menú"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/pages/UserDashboard.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
         -working: "NA"
         -agent: "testing"
-        -comment: "Pendiente de testing - verificar que para usuarios verificados NO aparezca mensaje informativo sobre 6000€ en sección RETIRAR, solo las 3 opciones de crypto con saldos"
-        -working: true
+        -comment: "Pendiente de testing - verificar que botones RECARGAR y COMPRAR aparezcan sin '&gt;' prefix en menú lateral"
+        -working: false
         -agent: "testing"
-        -comment: "✅ CAMBIO 1 COMPLETAMENTE VERIFICADO: Testing exhaustivo confirma que la sección RETIRAR está limpia sin mensaje informativo inicial. RESULTADOS: 1) ✅ NO aparece mensaje 'Para poder retirar fondos necesitas al menos acumular en total 6000€' en la sección RETIRAR, 2) ✅ Solo aparecen las 3 opciones de crypto (BTC, ETH, LTC) con sus saldos respectivos, 3) ✅ El mensaje personalizable SOLO aparece cuando se presiona el botón 'PROCESAR RETIRO' final, tal como se solicitó. La implementación es correcta según especificaciones del usuario."
+        -comment: "⚠️ ERROR 1 PARCIALMENTE CORREGIDO: Testing exhaustivo revela que el botón COMPRAR/RECARGAR SÍ aparece sin '&gt;' prefix (✅ 'COMPRAR' sin '&gt;'), PERO otros elementos del menú SIGUEN teniendo el prefix '&gt;': '> ATACAR', '> HISTORIAL', '> RETIRAR', '> CERRAR SESION'. La corrección fue aplicada solo al botón específico COMPRAR/RECARGAR pero no a los demás elementos del menú. REQUIERE corrección adicional para eliminar '&gt;' de todos los elementos del menú lateral."
 
   - task: "Verificar CAMBIO 2: Botón RECARGAR/COMPRAR según estado"
     implemented: true
