@@ -621,13 +621,14 @@ const UserDashboard = () => {
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
               <div className="relative mb-6">
-                {/* Single Animated Border - Clean Implementation */}
+                {/* Correct Animated Border - Subtle gradient movement */}
                 <div 
-                  className="absolute inset-0 rounded-lg p-[2px]"
+                  className="absolute inset-0 rounded-lg p-[2px] opacity-70"
                   style={{
-                    background: `conic-gradient(from 0deg, 
-                      #3b82f6, #8b5cf6, #6366f1, #3b82f6)`,
-                    animation: 'spin 3s linear infinite'
+                    background: `linear-gradient(45deg, 
+                      #3b82f6, #8b5cf6, #6366f1, #3b82f6, #8b5cf6)`,
+                    backgroundSize: '300% 300%',
+                    animation: 'gradientShift 4s ease-in-out infinite'
                   }}
                 >
                   <div className="w-full h-full bg-white rounded-[6px]"></div>
@@ -654,6 +655,15 @@ const UserDashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
+                
+                {/* CSS for smooth gradient animation */}
+                <style>{`
+                  @keyframes gradientShift {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                  }
+                `}</style>
               </div>
             )}
 
