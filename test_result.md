@@ -321,7 +321,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Sistema de notificaciones por email para CryptoVouchers"
+    - "Verificar CAMBIO 1: Quitar mensaje en sección RETIRAR"
+    - "Verificar CAMBIO 2: Botón RECARGAR/COMPRAR según estado"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
