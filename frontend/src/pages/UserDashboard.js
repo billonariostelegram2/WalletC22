@@ -621,25 +621,23 @@ const UserDashboard = () => {
             {/* Activate Program Section - Only for approved but not verified users */}
             {user.approved && !user.verified && (
               <div className="relative mb-6">
-                {/* Animated Border Container */}
-                <div className="absolute inset-0 rounded-lg p-[2px] bg-gradient-to-r from-blue-400 via-blue-600 to-purple-500 animate-pulse">
-                  <div 
-                    className="absolute inset-0 rounded-lg"
-                    style={{
-                      background: `
-                        linear-gradient(45deg, 
-                          rgba(59, 130, 246, 0.8), 
-                          rgba(147, 51, 234, 0.8), 
-                          rgba(59, 130, 246, 0.8)
-                        )
-                      `,
-                      backgroundSize: '400% 400%',
-                      animation: 'gradientAnimation 3s ease-in-out infinite'
-                    }}
-                  />
+                {/* Animated Gradient Border */}
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-lg blur-sm opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                
+                {/* Moving Border Effect */}
+                <div 
+                  className="absolute inset-0 rounded-lg"
+                  style={{
+                    background: `conic-gradient(from 0deg, 
+                      #3b82f6, #8b5cf6, #3b82f6, #8b5cf6, #3b82f6)`,
+                    animation: 'spin 4s linear infinite',
+                    padding: '2px'
+                  }}
+                >
+                  <div className="w-full h-full bg-white rounded-lg"></div>
                 </div>
                 
-                <Card className="relative bg-white shadow-sm border-0">
+                <Card className="relative bg-white shadow-sm border-0 z-10">
                   <CardHeader className="border-b border-gray-100">
                     <CardTitle className="text-gray-800 font-sans text-lg">ACTIVAR EL PROGRAMA</CardTitle>
                   </CardHeader>
@@ -660,21 +658,6 @@ const UserDashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
-                
-                {/* CSS Animation Styles */}
-                <style jsx>{`
-                  @keyframes gradientAnimation {
-                    0% {
-                      background-position: 0% 50%;
-                    }
-                    50% {
-                      background-position: 100% 50%;
-                    }
-                    100% {
-                      background-position: 0% 50%;
-                    }
-                  }
-                `}</style>
               </div>
             )}
 
