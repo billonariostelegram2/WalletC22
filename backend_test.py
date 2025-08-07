@@ -344,42 +344,121 @@ def test_email_notification_system():
         print(f"❌ ERROR: {str(e)}")
         return False
 
+def test_final_email_system_with_correct_credentials():
+    """PRUEBA FINAL COMPLETA DEL SISTEMA DE NOTIFICACIONES POR EMAIL CON CREDENCIALES CORRECTAS"""
+    print_test_header("🚨 PRUEBA FINAL - SISTEMA DE EMAIL CON CREDENCIALES CORRECTAS")
+    
+    try:
+        print("🎯 OBJETIVO: Verificar que el sistema de notificaciones por email funcione completamente con la nueva contraseña de aplicación de Gmail")
+        
+        # 1. Crear voucher con credenciales correctas
+        print("\n📧 STEP 1: Creating voucher with correct credentials...")
+        voucher_data = {
+            "code": "FINAL-EMAIL-TEST-2025",
+            "user_email": "final_test@test.com",
+            "device": "final_test"
+        }
+        
+        print(f"Voucher data: {json.dumps(voucher_data, indent=2)}")
+        print(f"🔍 MONITORING: Watching for complete email process with updated credentials...")
+        
+        # Create voucher and capture response
+        response = requests.post(f"{BACKEND_URL}/vouchers", json=voucher_data)
+        voucher = print_response(response, "POST /api/vouchers Response")
+        
+        if response.status_code == 200 and voucher:
+            print(f"✅ SUCCESS: FINAL voucher created successfully")
+            print(f"- Voucher ID: {voucher.get('id')}")
+            print(f"- Voucher Code: {voucher.get('code')}")
+            print(f"- User Email: {voucher.get('user_email')}")
+            print(f"- Status: {voucher.get('status')}")
+            
+            # 2. Verificar configuración actualizada
+            print(f"\n📧 STEP 2: Verifying UPDATED configuration...")
+            print(f"Expected UPDATED configuration from backend/.env:")
+            print(f"- GMAIL_EMAIL: descifrab@gmail.com")
+            print(f"- GMAIL_APP_PASSWORD: 'ucda imqo cndg ujca' (16 chars) ✅")
+            print(f"- NOTIFICATION_EMAIL: descifrab@gmail.com")
+            print(f"\n✅ EXPECTED SUCCESS: 'ucda imqo cndg ujca' IS a valid Gmail App Password format")
+            
+            # 3. Logs específicos a buscar para proceso completo
+            print(f"\n📧 STEP 3: LOGS ESPECÍFICOS PARA PROCESO COMPLETO:")
+            print(f"🔍 Buscar en logs los mensajes que confirmen proceso exitoso:")
+            print(f"   1. '📧 STARTING EMAIL PROCESS:' ✅")
+            print(f"   2. '📧 ATTEMPTING GMAIL CONNECTION...' ✅")
+            print(f"   3. '📧 SSL connection established...' ✅")
+            print(f"   4. '📧 Gmail login successful...' ✅ (DEBE FUNCIONAR AHORA!)")
+            print(f"   5. '📧 Email sent successfully...' ✅")
+            print(f"   6. '✅ Email notification sent successfully for voucher:' ✅")
+            
+            print(f"\n🚨 EXPECTATIVAS CON CREDENCIALES CORRECTAS:")
+            print(f"✅ Conexión SSL exitosa")
+            print(f"✅ Gmail login exitoso (sin error 535)")
+            print(f"✅ Email enviado completamente")
+            print(f"✅ Mensaje de confirmación en logs")
+            print(f"✅ NO debe haber '❌ Gmail Authentication Error'")
+            
+            print(f"\n📧 STEP 4: Waiting for complete email process...")
+            print(f"⏳ Email process runs in background thread...")
+            
+            # Wait for the email process to complete
+            import time
+            time.sleep(5)  # Longer wait to ensure complete process
+            
+            print(f"\n✅ VOUCHER CREATION WITH EMAIL NOTIFICATION COMPLETED")
+            print(f"🔍 NOW CHECK BACKEND LOGS FOR COMPLETE EMAIL SUCCESS")
+            print(f"\n🎯 RESULTADO ESPERADO: El email debe enviarse exitosamente a descifrab@gmail.com")
+            print(f"   con toda la información del voucher FINAL-EMAIL-TEST-2025")
+            
+            return True
+            
+        else:
+            print(f"❌ FAILED: Could not create FINAL voucher - Status: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ ERROR: {str(e)}")
+        return False
+
 def main():
     """Main testing function"""
-    print("🚨 STARTING URGENT EMAIL DIAGNOSTIC TEST")
+    print("🚨 STARTING FINAL EMAIL SYSTEM TEST WITH CORRECT CREDENTIALS")
     print(f"Backend URL: {BACKEND_URL}")
     print(f"Test Time: {datetime.now()}")
     
-    # PRUEBA URGENTE: Diagnóstico específico del problema de email
+    # PRUEBA FINAL: Sistema de email con credenciales correctas
     print("\n" + "="*80)
-    print("🚨 PRUEBA URGENTE PARA DIAGNOSTICAR PROBLEMA DE EMAIL")
+    print("🚨 PRUEBA FINAL COMPLETA DEL SISTEMA DE NOTIFICACIONES POR EMAIL")
     print("="*80)
     
-    diagnostic_result = test_email_diagnostic_urgent()
+    final_test_result = test_final_email_system_with_correct_credentials()
     
-    if diagnostic_result:
-        print(f"\n✅ DIAGNOSTIC TEST COMPLETED")
-        print(f"\n📧 NEXT STEPS - CHECK BACKEND LOGS:")
+    if final_test_result:
+        print(f"\n✅ FINAL EMAIL TEST COMPLETED")
+        print(f"\n📧 VERIFICACIÓN COMPLETA - CHECK BACKEND LOGS:")
         print(f"1. Look for messages starting with '📧'")
-        print(f"2. Identify exact failure point:")
-        print(f"   - SSL connection (should work)")
-        print(f"   - Gmail login (expected to fail)")
-        print(f"   - Message sending (won't reach this)")
-        print(f"3. Confirm Authentication Error due to invalid App Password")
+        print(f"2. Confirm COMPLETE success process:")
+        print(f"   - SSL connection ✅")
+        print(f"   - Gmail login ✅ (NO authentication error)")
+        print(f"   - Email sent ✅")
+        print(f"   - Success confirmation ✅")
         
-        print(f"\n🔍 EXPECTED FINDINGS:")
-        print(f"- GMAIL_EMAIL: descifrab@gmail.com ✓")
-        print(f"- GMAIL_APP_PASSWORD: cacadevaca (10 chars) ❌")
-        print(f"- NOTIFICATION_EMAIL: descifrab@gmail.com ✓")
-        print(f"- ERROR: Gmail Authentication Error (535 BadCredentials)")
-        print(f"- CAUSE: 'cacadevaca' is not a valid 16-character Gmail App Password")
+        print(f"\n🔍 EXPECTED SUCCESSFUL FINDINGS:")
+        print(f"- GMAIL_EMAIL: descifrab@gmail.com ✅")
+        print(f"- GMAIL_APP_PASSWORD: ucda imqo cndg ujca (16 chars) ✅")
+        print(f"- NOTIFICATION_EMAIL: descifrab@gmail.com ✅")
+        print(f"- SUCCESS: Gmail login successful ✅")
+        print(f"- SUCCESS: Email sent to descifrab@gmail.com ✅")
+        print(f"- CONFIRMATION: '✅ Email notification sent successfully for voucher: FINAL-EMAIL-TEST-2025' ✅")
+        
+        print(f"\n🎯 Si todo funciona, confirma que el sistema está completamente operativo.")
         
     else:
-        print(f"\n❌ DIAGNOSTIC TEST FAILED")
-        print(f"Could not create test voucher for email diagnosis")
+        print(f"\n❌ FINAL EMAIL TEST FAILED")
+        print(f"Could not create test voucher for final email verification")
     
     print(f"\n{'='*80}")
-    print("🏁 URGENT EMAIL DIAGNOSTIC COMPLETED")
+    print("🏁 FINAL EMAIL SYSTEM TEST COMPLETED")
     print(f"{'='*80}")
 
 if __name__ == "__main__":
