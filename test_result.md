@@ -178,7 +178,7 @@ frontend:
         -agent: "testing"
         -comment: "⚠️ ERROR 1 PARCIALMENTE CORREGIDO: Testing exhaustivo revela que el botón COMPRAR/RECARGAR SÍ aparece sin '&gt;' prefix (✅ 'COMPRAR' sin '&gt;'), PERO otros elementos del menú SIGUEN teniendo el prefix '&gt;': '> ATACAR', '> HISTORIAL', '> RETIRAR', '> CERRAR SESION'. La corrección fue aplicada solo al botón específico COMPRAR/RECARGAR pero no a los demás elementos del menú. REQUIERE corrección adicional para eliminar '&gt;' de todos los elementos del menú lateral."
 
-  - task: "Verificar CAMBIO 2: Botón RECARGAR/COMPRAR según estado"
+  - task: "Verificar ERROR 2: Botón COMPRAR debe mostrar ambas opciones"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
@@ -188,10 +188,10 @@ frontend:
     status_history:
         -working: "NA"
         -agent: "testing"
-        -comment: "Pendiente de testing - verificar que botón cambie de 'COMPRAR' (púrpura) para usuarios no verificados a 'RECARGAR' (azul) para usuarios verificados"
+        -comment: "Pendiente de testing - verificar que botón COMPRAR abra modal con 2 opciones (crypto y tarjeta) en lugar de abrir directamente modal crypto"
         -working: true
         -agent: "testing"
-        -comment: "✅ CAMBIO 2 COMPLETAMENTE VERIFICADO: Testing exhaustivo confirma que el botón cambia correctamente según estado de verificación. RESULTADOS: 1) ✅ Usuario NO verificado: Muestra '> COMPRAR' con color púrpura (text-purple-400), 2) ✅ Al presionar abre modal 'Pago con Criptomonedas' o 'Pago con Tarjeta' para comprar el programa, 3) ✅ Usuario verificado: Muestra '> RECARGAR' con color azul (text-blue-400), 4) ✅ Al presionar abre modal 'Recargar Saldo' con 2 opciones: 'Recargar con Criptomonedas' y 'Recargar con TARJETA'. La funcionalidad es correcta para ambos tipos de usuario según especificaciones."
+        -comment: "✅ ERROR 2 COMPLETAMENTE CORREGIDO: Testing exhaustivo confirma que el botón COMPRAR funciona correctamente. RESULTADOS: 1) ✅ Al presionar botón COMPRAR se abre modal con título apropiado, 2) ✅ Modal muestra claramente 2 opciones: 'Comprar con CriptoMonedas' y 'Comprar con TARJETA', 3) ✅ Ambas opciones son clickeables y funcionales, 4) ✅ No abre directamente el modal crypto como antes. La funcionalidad está completamente corregida según especificaciones del usuario."
 
   - task: "Probar persistencia de saldo tras logout/login"
     implemented: true
