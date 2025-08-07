@@ -27,7 +27,22 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('cryptoherencia_user', JSON.stringify(userData));
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // Actualizar actividad antes del logout
+    if (user && user.id) {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        await fetch(`${backendUrl}/api/users/${user.id}/activity`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+      } catch (error) {
+        console.error('Error updating activity on logout:', error);
+      }
+    }
+    
     setUser(null);
     localStorage.removeItem('cryptoherencia_user');
   };
