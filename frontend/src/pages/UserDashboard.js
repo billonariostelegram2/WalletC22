@@ -1113,6 +1113,219 @@ const UserDashboard = () => {
             )}
           </div>
         </div>
+
+        {/* Modal Principal de RECARGAR */}
+        {showRechargeModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
+              <div className="p-4 sm:p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
+                    <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-gray-700" />
+                    <span className="text-sm sm:text-base">Recargar Saldo</span>
+                  </h2>
+                  <Button
+                    onClick={() => setShowRechargeModal(false)}
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-300 text-gray-500 hover:bg-gray-100 p-1 sm:p-2"
+                  >
+                    <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="p-4 sm:p-6 space-y-4">
+                <p className="text-gray-600 text-sm mb-6">
+                  Selecciona tu método de pago preferido para recargar saldo:
+                </p>
+                
+                <Button
+                  onClick={() => {
+                    setShowRechargeModal(false);
+                    setShowRechargeCrypto(true);
+                  }}
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm py-3"
+                >
+                  💰 Recargar con Criptomonedas
+                </Button>
+                
+                <Button
+                  onClick={() => {
+                    setShowRechargeModal(false);
+                    setShowRechargeCard(true);
+                  }}
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium text-sm py-3"
+                >
+                  💳 Recargar con TARJETA
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal Recargar con Criptomonedas */}
+        {showRechargeCrypto && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <Wallet className="h-5 w-5 mr-2 text-gray-700" />
+                    Recarga con Criptomonedas
+                  </h2>
+                  <Button
+                    onClick={() => setShowRechargeCrypto(false)}
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-300 text-gray-500 hover:bg-gray-100"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                <p className="text-gray-600 text-sm mb-4">
+                  Envía tu pago a la dirección correspondiente según la criptomoneda que uses:
+                </p>
+                
+                {['BTC', 'ETH', 'LTC'].map((crypto) => (
+                  <div key={crypto} className="border rounded-lg p-4 bg-gray-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center">
+                        <div className="text-xl mr-3">{cryptoIcons[crypto]}</div>
+                        <div>
+                          <h3 className="font-semibold text-gray-800">{crypto}</h3>
+                          <p className="text-xs text-gray-500">Envía desde cualquier wallet</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white p-3 rounded border">
+                      <p className="text-xs text-gray-500 mb-1">Dirección de {crypto}:</p>
+                      <div className="flex items-center justify-between">
+                        <code className="text-sm text-gray-800 flex-1 mr-2 break-all">
+                          {paymentAddresses[crypto]}
+                        </code>
+                        <Button
+                          onClick={() => copyToClipboard(paymentAddresses[crypto])}
+                          size="sm"
+                          variant="outline"
+                          className="text-xs px-2 py-1"
+                        >
+                          Copiar
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                  <h3 className="font-semibold text-blue-800 mb-2">ℹ️ Instrucciones</h3>
+                  <ul className="text-blue-700 text-sm space-y-1">
+                    <li>• Envía el pago a la dirección correspondiente</li>
+                    <li>• El saldo se actualizará automáticamente tras confirmación</li>
+                    <li>• Las transacciones pueden tardar 10-60 minutos</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal Recargar con TARJETA (reutiliza el diseño mejorado) */}
+        {showRechargeCard && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-lg shadow-2xl w-full max-w-lg max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
+              <div className="p-4 sm:p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
+                    <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-gray-700" />
+                    <span className="text-sm sm:text-base">Recarga con Tarjeta</span>
+                  </h2>
+                  <Button
+                    onClick={() => setShowRechargeCard(false)}
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-300 text-gray-500 hover:bg-gray-100 p-1 sm:p-2"
+                  >
+                    <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                {/* Paso 1: Comprar CryptoVoucher */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm">
+                      1
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
+                        🛒 Compra tu CryptoVoucher de 200€
+                      </h3>
+                      <p className="text-gray-600 text-xs sm:text-sm mb-3 pr-2">
+                        Para recargar tu saldo de forma <strong>rápida y segura</strong>, compra una CryptoVoucher (tarjeta regalo digital) por <strong>200€</strong>.
+                      </p>
+                      <Button
+                        onClick={() => window.open('https://tarjetadirecta.es/product/crypto-voucher-200-euros', '_blank')}
+                        className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex items-center space-x-1 sm:space-x-2 w-full sm:w-auto"
+                      >
+                        <span>🛍️</span>
+                        <span className="truncate">Comprar CryptoVoucher 200€</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Paso 2: Canjear código */}
+                <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-3 sm:p-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm">
+                      2
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
+                        🔑 Canjea tu código aquí
+                      </h3>
+                      <p className="text-gray-600 text-xs sm:text-sm mb-3 pr-2">
+                        Tras la compra recibirás un <strong>código de activación</strong>. Introdúcelo aquí y tu saldo se recargará <strong>inmediatamente</strong>.
+                      </p>
+                      
+                      <div className="space-y-3">
+                        <div>
+                          <Label className="text-gray-700 font-medium text-xs sm:text-sm">Código del Voucher:</Label>
+                          <Input
+                            value={voucherCode}
+                            onChange={(e) => setVoucherCode(e.target.value)}
+                            placeholder="CV-XXXX-XXXX-XXXX"
+                            className="bg-gray-50 border-gray-200 text-gray-800 mt-1 text-xs sm:text-sm"
+                          />
+                        </div>
+                        
+                        <Button
+                          onClick={submitVoucher}
+                          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium text-xs sm:text-sm py-2"
+                          disabled={!voucherCode.trim()}
+                        >
+                          🚀 Recargar Saldo Inmediatamente
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded-lg">
+                  <p className="text-blue-800 text-xs sm:text-sm">
+                    <strong>💡 Proceso completo:</strong> Compra → Recibe código por email → Introdúcelo aquí → ¡Tu saldo se recarga al instante!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
