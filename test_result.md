@@ -177,15 +177,18 @@ frontend:
 
   - task: "Probar funcionalidad botón Editar del admin"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/AdminDashboard.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         -working: "NA"
         -agent: "testing"
         -comment: "Pendiente de testing - login como admin, presionar botón Editar de usuario, verificar modal con campos: Nota de Retiro (textarea), Tiempo para Encontrar Billetera (min/max en minutos), valores predeterminados 3 y 10 min, guardar cambios"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ FUNCIONALIDAD COMPLETAMENTE VERIFICADA: Testing exitoso con admin criptoherencia@admin.com. RESULTADOS: 1) ✅ Login admin exitoso, 2) ✅ 24 botones 'Editar' encontrados en lista de usuarios, 3) ✅ Modal aparece correctamente al presionar 'Editar', 4) ✅ Campo 'Nota de Retiro (Personalizada)' presente como textarea con valor predeterminado, 5) ✅ Campos 'Tiempo para Encontrar Billetera' presentes (Mínimo/Máximo) como inputs numéricos, 6) ✅ Valores predeterminados correctos: 3 min y 10 min, 7) ✅ Modificación de valores funcional, 8) ✅ Botón 'Guardar Cambios' operativo, 9) ✅ Modal se cierra después de guardar. OBJETIVO CUMPLIDO: Funcionalidad botón Editar del admin funciona perfectamente."
 
 metadata:
   created_by: "main_agent"
