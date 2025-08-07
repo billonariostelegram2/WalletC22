@@ -384,7 +384,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Verificar ERROR 1: Quitar '&gt;' del menú"
+    - "Verificar CAMBIO 1: Ordenamiento en panel de admin por más reciente"
+    - "Verificar CAMBIO 2: Borde azul degradado en casilla ACTIVAR PROGRAMA"
+    - "Verificar CAMBIO 3: Botón SOPORTE en página principal con ícono HelpCircle"
+    - "Verificar CAMBIO 3: Botón SOPORTE en UserDashboard con ícono HelpCircle"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
