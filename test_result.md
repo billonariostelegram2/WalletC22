@@ -147,15 +147,18 @@ frontend:
 
   - task: "Verificar tiempos personalizados en simulador"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/UserDashboard.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         -working: "NA"
         -agent: "testing"
         -comment: "Pendiente de testing - verificar que simulador usa tiempos personalizados del usuario (predeterminado 3-10 minutos) definidos en wallet_find_time_min y wallet_find_time_max"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ IMPLEMENTACIÓN VERIFICADA: Análisis del código en UserDashboard.js líneas 198-201 confirma que el simulador usa tiempos personalizados del usuario: const minTime = (user.wallet_find_time_min || 3) * 60 * 1000; const maxTime = (user.wallet_find_time_max || 10) * 60 * 1000; con valores predeterminados de 3-10 minutos convertidos a milisegundos. La implementación es correcta."
 
   - task: "Probar mensaje de retiro personalizado"
     implemented: true
