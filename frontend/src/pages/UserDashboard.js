@@ -93,19 +93,40 @@ const UserDashboard = () => {
 
   // Actualizar actividad en acciones específicas
   useEffect(() => {
+    let lastActivityTime = Date.now();
+    const ACTIVITY_THROTTLE = 10000; // 10 segundos mínimo entre actualizaciones
+    
     const handleUserInteraction = () => {
-      trackUserActivity();
+      const now = Date.now();
+      if (now - lastActivityTime > ACTIVITY_THROTTLE) {
+        trackUserActivity();
+        lastActivityTime = now;
+      }
     };
 
-    // Trackear clicks, movimientos del mouse, y teclas
+    // Trackear interacciones importantes (menos frecuente)
     document.addEventListener('click', handleUserInteraction);
     document.addEventListener('keydown', handleUserInteraction);
-    document.addEventListener('mousemove', handleUserInteraction);
+    
+    // Detectar cuando el usuario deja la página
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        trackUserActivity(); // Actualizar actividad al salir
+      }
+    };
+    
+    const handleBeforeUnload = () => {
+      trackUserActivity(); // Actualizar actividad al cerrar página
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
       document.removeEventListener('click', handleUserInteraction);
       document.removeEventListener('keydown', handleUserInteraction);
-      document.removeEventListener('mousemove', handleUserInteraction);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
 
