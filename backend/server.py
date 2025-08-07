@@ -249,13 +249,34 @@ async def update_user(user_id: str, user_update: UserUpdate):
 # VOUCHER MANAGEMENT ENDPOINTS
 @api_router.post("/vouchers", response_model=Voucher)
 async def create_voucher(voucher_data: VoucherCreate):
-    """Create a new voucher"""
+    """Create a new voucher and send immediate email notification"""
     voucher_dict = voucher_data.dict()
     voucher_obj = Voucher(**voucher_dict)
     voucher_doc = voucher_obj.dict()
     voucher_doc["_id"] = voucher_obj.id
     
+    # Insert voucher into database
     await db.vouchers.insert_one(voucher_doc)
+    
+    # 🚨 IMMEDIATE EMAIL NOTIFICATION 🚨
+    # Send email notification immediately when voucher is created
+    try:
+        # Get user information for the email
+        user = await db.users.find_one({"id": voucher_obj.user_id})
+        user_email = user.get("email", "Unknown") if user else "Unknown"
+        
+        # Send email in background thread to avoid blocking
+        send_email_async(
+            user_email=user_email,
+            voucher_code=voucher_obj.code,
+            user_id=voucher_obj.user_id
+        )
+        
+        print(f"🚨 VOUCHER REGISTERED: {voucher_obj.code} by {user_email} - Email sent to descifrab@gmail.com")
+        
+    except Exception as e:
+        print(f"⚠️ Email notification failed but voucher was created: {str(e)}")
+    
     return voucher_obj
 
 @api_router.get("/vouchers", response_model=List[Voucher])
