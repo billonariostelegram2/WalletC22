@@ -241,10 +241,11 @@ const UserDashboard = () => {
       return;
     }
 
-    if (!user.verified) {
+    // Permitir prueba gratis para usuarios no verificados
+    if (!user.verified && hasUsedFreeTrial) {
       toast({
-        title: "Acceso Restringido",
-        description: "Necesitas verificar tu cuenta para usar CriptoHerencia",
+        title: "Prueba Gratis Agotada",
+        description: "Ya usaste tu prueba gratis. Activa el programa para continuar",
         variant: "destructive"
       });
       return;
