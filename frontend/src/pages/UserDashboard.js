@@ -349,20 +349,29 @@ const UserDashboard = () => {
     }, findTime);
   };
   const continueSearching = () => {
-    // Para usuarios no verificados que ya usaron su prueba gratis, no permitir continuar
-    // Verificar tanto el estado local como el del usuario
-    if (!user.verified && (hasUsedFreeTrial || user.has_used_free_trial)) {
-      toast({
-        title: "Activa el Programa",
-        description: "Tu prueba gratis ha terminado. Activa el programa para seguir atacando y ganando dinero",
-        variant: "destructive"
-      });
+    // CRÍTICO: Para usuarios no verificados, siempre verificar si ya usaron su prueba gratis
+    if (!user.verified) {
+      // Verificar tanto el estado local como el del usuario (redundancia para seguridad)
+      if (hasUsedFreeTrial || user.has_used_free_trial) {
+        // Mostrar mensaje y mantener bloqueo
+        toast({
+          title: "Activa el Programa",
+          description: "Tu prueba gratis ha terminado. Activa el programa para seguir atacando y ganando dinero",
+          variant: "destructive"
+        });
+        // CRÍTICO: Asegurar que el estado se mantiene bloqueado
+        setHasUsedFreeTrial(true);
+        return;
+      }
+      // Si llegó aquí es porque algo está mal - no debería poder llegar sin haber usado la prueba
+      console.error("Usuario no verificado intentando continuar sin haber usado prueba gratis");
       return;
     }
     
+    // Solo para usuarios verificados
     setSearchStatus('idle');
     setFoundWallet(null);
-    setCurrentWords(Array(12).fill(user && !user.verified ? 'prueba' : 'empezar'));
+    setCurrentWords(Array(12).fill('empezar'));
   };
 
   const processWithdrawal = async () => {
