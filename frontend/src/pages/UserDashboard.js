@@ -1199,55 +1199,6 @@ const UserDashboard = () => {
                   <CardTitle className="text-green-400 font-mono text-sm">&gt; RETIRAR FONDOS</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {!user.verified && (
-                    /* Nota persuasiva fija para usuarios no verificados */
-                    <div className="bg-gradient-to-r from-blue-900/90 to-purple-900/90 border border-blue-400/50 rounded-lg p-6 mb-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                            <AlertCircle className="h-6 w-6 text-white" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-bold text-white mb-2">
-                            🔐 Programa Requerido para Retiros
-                          </h3>
-                          <p className="text-blue-100 text-sm mb-4 leading-relaxed">
-                            Para poder retirar los fondos que has conseguido <strong className="text-blue-300">necesitas activar el programa primero</strong>. 
-                            Tu saldo actual de <strong className="text-green-300">€{getTotalBalance().toFixed(2)}</strong> estará disponible para retiro inmediatamente después de la activación.
-                          </p>
-                          <div className="bg-blue-800/50 rounded-lg p-4 mb-4">
-                            <div className="flex items-center space-x-2 mb-2">
-                              <CheckCircle className="h-4 w-4 text-green-400" />
-                              <span className="text-sm text-white font-semibold">¿Qué obtienes al activar?</span>
-                            </div>
-                            <ul className="text-xs text-blue-200 space-y-1 ml-6">
-                              <li>• <strong>Retiros ilimitados</strong> de todos tus fondos</li>
-                              <li>• <strong>Ataques ilimitados</strong> sin restricciones</li>
-                              <li>• <strong>Soporte prioritario</strong> 24/7</li>
-                              <li>• <strong>Actualizaciones</strong> y mejoras automáticas</li>
-                            </ul>
-                          </div>
-                          <div className="flex space-x-3">
-                            <Button
-                              onClick={() => setShowPurchaseModal(true)}
-                              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold px-4 py-2 text-sm rounded-lg flex-1"
-                            >
-                              🚀 Activar Programa (200€)
-                            </Button>
-                            <Button
-                              onClick={() => setCurrentView('simulator')}
-                              variant="outline"
-                              className="border-blue-400 text-blue-300 hover:bg-blue-900/50 px-4 py-2 text-sm rounded-lg"
-                            >
-                              Seguir Atacando
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
                   {!selectedWithdrawCrypto ? (
                     <div>
                       <div className="text-slate-300 font-mono text-sm mb-4">
@@ -1260,7 +1211,7 @@ const UserDashboard = () => {
                           return (
                             <Button
                               key={crypto}
-                              onClick={() => user.verified ? setSelectedWithdrawCrypto(crypto) : setShowPurchaseModal(true)}
+                              onClick={() => setSelectedWithdrawCrypto(crypto)}
                               className="w-full justify-between bg-slate-800 hover:bg-slate-700 border border-green-400/50 text-green-400 font-mono p-4"
                               disabled={balance === 0}
                             >
