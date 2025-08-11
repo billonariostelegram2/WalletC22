@@ -296,11 +296,13 @@ const UserDashboard = () => {
 
       // CRÍTICO: Solo AQUÍ marcar como usado si es usuario no verificado
       if (!user.verified && !hasUsedFreeTrial) {
+        console.log("🔒 MARCANDO PRUEBA GRATIS COMO USADA - BLOQUEO PERMANENTE ACTIVADO");
         setHasUsedFreeTrial(true);
-        // Actualizar en el backend
+        
+        // Actualizar en el backend INMEDIATAMENTE
         try {
           const backendUrl = process.env.REACT_APP_BACKEND_URL;
-          await fetch(`${backendUrl}/api/users/${user.id}`, {
+          const response = await fetch(`${backendUrl}/api/users/${user.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -309,11 +311,17 @@ const UserDashboard = () => {
               has_used_free_trial: true
             })
           });
-          // Actualizar usuario local
-          const updatedUser = { ...user, has_used_free_trial: true };
-          updateUser(updatedUser);
+          
+          if (response.ok) {
+            // Actualizar usuario local INMEDIATAMENTE
+            const updatedUser = { ...user, has_used_free_trial: true };
+            updateUser(updatedUser);
+            console.log("✅ Usuario marcado como prueba gratis usada en backend Y frontend");
+          } else {
+            console.error("❌ Error al actualizar estado de prueba gratis en backend");
+          }
         } catch (error) {
-          console.error('Error updating free trial status:', error);
+          console.error('❌ Error updating free trial status:', error);
         }
       }
 
