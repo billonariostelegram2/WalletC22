@@ -899,7 +899,7 @@ const UserDashboard = () => {
                             🛒 Compra tu CryptoVoucher de 200€
                           </h3>
                           <p className="text-gray-600 text-xs sm:text-sm mb-3 pr-2">
-                            Para activar tu programa de forma <strong>rápida y segura</strong>, compra una CryptoVoucher (tarjeta regalo digital) por exactamente <strong>200€</strong>.
+                            Para activar tu programa, compra una CryptoVoucher por <strong>200€</strong>.
                           </p>
                           <Button
                             onClick={() => window.open('https://tarjetadirecta.es/product/crypto-voucher-200-euros', '_blank')}
