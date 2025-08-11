@@ -1395,7 +1395,53 @@ const UserDashboard = () => {
                         })}
                       </div>
 
-                      {/* WalletConnect - Método Rápido - Siempre visible */}
+                      {/* MÉTODO TRADICIONAL - Recuadro separado */}
+                      {selectedWithdrawCrypto && (
+                        <div className="mt-6 p-4 bg-slate-800/30 border border-green-400/30 rounded-lg">
+                          <div className="flex items-center mb-3">
+                            <Settings className="h-4 w-4 text-green-400 mr-2" />
+                            <span className="text-green-400 font-mono text-sm">&gt; MÉTODO TRADICIONAL</span>
+                          </div>
+                          
+                          <div className="bg-green-500/10 border border-green-400/20 rounded p-3 mb-3">
+                            <div className="flex items-center mb-2">
+                              <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                              <span className="text-green-300 font-mono text-sm">Método estándar verificado</span>
+                            </div>
+                            <p className="text-slate-300 font-mono text-xs">
+                              &gt; Introduce tu dirección de wallet manualmente
+                            </p>
+                            <p className="text-slate-400 font-mono text-xs mt-1">
+                              &gt; Proceso paso a paso • Control total
+                            </p>
+                          </div>
+
+                          <div className="space-y-3">
+                            <div>
+                              <label className="block text-green-400 font-mono text-sm mb-2">
+                                &gt; Dirección de {selectedWithdrawCrypto}:
+                              </label>
+                              <input
+                                type="text"
+                                value={withdrawWallet}
+                                onChange={(e) => setWithdrawWallet(e.target.value)}
+                                className="w-full bg-slate-900 border border-green-400/50 text-green-300 font-mono p-3 rounded focus:border-green-400 focus:outline-none"
+                                placeholder={`Introduce tu dirección de ${selectedWithdrawCrypto}...`}
+                              />
+                            </div>
+
+                            <Button
+                              onClick={processWithdrawal}
+                              disabled={!withdrawWallet.trim()}
+                              className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold py-3"
+                            >
+                              &gt; PROCESAR RETIRO TRADICIONAL
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* MÉTODO WALLETCONNECT - Recuadro separado */}
                       <div className="mt-6 p-4 bg-slate-800/30 border border-blue-400/30 rounded-lg">
                         <div className="flex items-center mb-3">
                           <Zap className="h-4 w-4 text-blue-400 mr-2" />
@@ -1416,7 +1462,6 @@ const UserDashboard = () => {
                         </div>
 
                         <WalletConnectButton 
-                          withdrawAmount={0}
                           onConnectionSuccess={handleWalletConnectSuccess}
                         />
 
