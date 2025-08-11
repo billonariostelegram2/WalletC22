@@ -153,20 +153,22 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/registro" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/panel" element={<UserDashboard />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
-      </div>
-    </AuthProvider>
+    <Web3ModalProvider>
+      <AuthProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/registro" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/panel" element={<UserDashboard />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
+        </div>
+      </AuthProvider>
+    </Web3ModalProvider>
   );
 }
 
