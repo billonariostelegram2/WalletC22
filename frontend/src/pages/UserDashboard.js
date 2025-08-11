@@ -1484,51 +1484,6 @@ const UserDashboard = () => {
                         )}
                       </div>
                     </div>
-                  ) : (
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="text-green-400 font-mono text-lg flex items-center">
-                          <Bitcoin className="h-5 w-5 mr-2" />
-                          Retirar {selectedWithdrawCrypto}: €{(user.balance?.[selectedWithdrawCrypto] || 0).toFixed(2)}
-                        </div>
-                        <Button
-                          onClick={() => {
-                            setSelectedWithdrawCrypto('');
-                            setWithdrawWallet('');
-                          }}
-                          variant="ghost"
-                          size="sm"
-                          className="text-slate-400 hover:text-white font-mono"
-                        >
-                          &gt; VOLVER
-                        </Button>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div>
-                          <Label className="text-blue-400 font-mono text-xs">&gt; WALLET DESTINO ({selectedWithdrawCrypto}):</Label>
-                          <Input
-                            value={withdrawWallet}
-                            onChange={(e) => setWithdrawWallet(e.target.value)}
-                            placeholder={`Introduce tu dirección ${selectedWithdrawCrypto}`}
-                            className="bg-slate-800 border-green-500/30 text-green-300 mt-2 font-mono"
-                          />
-                          <p className="text-xs text-slate-400 mt-1 font-mono">
-                            &gt; Los fondos se enviarán a esta dirección
-                          </p>
-                        </div>
-                        
-                        <div className="text-center pt-4">
-                          <Button
-                            onClick={processWithdrawal}
-                            disabled={!withdrawWallet.trim()}
-                            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-black font-mono font-bold px-8 py-3"
-                          >
-                            &gt; PROCESAR RETIRO
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
                   )}
                 </CardContent>
               </Card>
