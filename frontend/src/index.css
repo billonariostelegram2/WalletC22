@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* PREVENT ZOOM ON INPUT FIELDS - iOS/Mobile Fix */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="search"], 
+input[type="tel"], 
+input[type="url"],
+textarea {
+  font-size: 16px !important;
+  font-size: max(16px, 1rem) !important;
+  transform-origin: left top;
+  zoom: 1 !important;
+}
+
+/* Additional mobile-specific zoom prevention */
+@media screen and (max-width: 767px) {
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  input[type="search"], 
+  input[type="tel"], 
+  input[type="url"],
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
 /* ULTRA AGGRESSIVE approach to hide Emergent notifications instantly */
 /* Prevent any flash of notification by hiding from the start */
 * {
