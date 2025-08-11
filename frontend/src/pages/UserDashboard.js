@@ -1185,7 +1185,7 @@ const UserDashboard = () => {
             {currentView === 'history' && (
               <Card className="bg-slate-900/80 border-green-400/50">
                 <CardHeader>
-                  <CardTitle className="text-green-400 font-mono text-sm">&gt; HISTORIAL RETIROS</CardTitle>
+                  <CardTitle className="text-green-400 font-mono text-sm">&gt; HISTORIAL DE RETIROS</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -1196,21 +1196,93 @@ const UserDashboard = () => {
                       </div>
                     ) : (
                       getHistory().map((item) => (
-                        <div key={item.id} className="flex items-center justify-between p-4 bg-slate-800 rounded border border-slate-700">
-                          <div>
-                            <div className="text-green-400 font-bold font-mono">
-                              {cryptoIcons[item.type]} €{item.amount} {item.type}
+                        <div key={item.id} className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+                          {/* Header del retiro */}
+                          <div className="flex items-center justify-between p-4 border-b border-slate-700">
+                            <div className="flex items-center space-x-3">
+                              <div className="text-green-400 font-bold font-mono text-lg">
+                                {cryptoIcons[item.type]} €{item.amount?.toFixed(2)} {item.type}
+                              </div>
+                              <Badge 
+                                variant="outline" 
+                                className={
+                                  item.status === 'PAUSADO' 
+                                    ? "border-orange-500 text-orange-400 bg-orange-500/10 font-mono" 
+                                    : "border-green-400 text-green-400 bg-green-400/10 font-mono"
+                                }
+                              >
+                                {item.status}
+                              </Badge>
                             </div>
                             <div className="text-sm text-slate-400 font-mono">
-                              {new Date(item.date).toLocaleDateString('es-ES')}
-                            </div>
-                            <div className="text-xs text-blue-400 font-mono break-all">
-                              &gt; {item.wallet}
+                              {new Date(item.date).toLocaleDateString('es-ES', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
                             </div>
                           </div>
-                          <Badge variant="outline" className="border-green-400 text-green-400 font-mono">
-                            {item.status}
-                          </Badge>
+                          
+                          {/* Detalles del retiro */}
+                          <div className="p-4 space-y-3">
+                            <div>
+                              <div className="text-xs text-slate-500 font-mono uppercase tracking-wide mb-1">
+                                DIRECCIÓN DESTINO
+                              </div>
+                              <div className="text-xs text-blue-400 font-mono break-all bg-slate-900 p-2 rounded border">
+                                {item.wallet}
+                              </div>
+                            </div>
+                            
+                            {item.status === 'PAUSADO' && (
+                              <>
+                                <div>
+                                  <div className="text-xs text-slate-500 font-mono uppercase tracking-wide mb-1">
+                                    COMISIÓN ADMINISTRATIVA
+                                  </div>
+                                  <div className="text-sm text-orange-400 font-mono bg-orange-500/10 p-2 rounded border border-orange-500/20">
+                                    5% = €{item.commission?.toFixed(2)}
+                                  </div>
+                                </div>
+                                
+                                <div>
+                                  <div className="text-xs text-slate-500 font-mono uppercase tracking-wide mb-1">
+                                    ESTADO DEL PROCESO
+                                  </div>
+                                  <div className="text-xs text-slate-300 bg-slate-900 p-3 rounded border leading-relaxed">
+                                    <div className="text-orange-400 font-semibold mb-2">⏸️ RETIRO PAUSADO</div>
+                                    <p className="mb-2">{item.processingNote}</p>
+                                    <div className="text-yellow-400 font-mono text-xs">
+                                      ⚠️ ACCIÓN REQUERIDA: {item.statusNote}
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div className="bg-blue-900/20 border border-blue-500/30 rounded p-3">
+                                  <div className="text-blue-400 font-mono text-xs font-semibold mb-2">
+                                    💡 INFORMACIÓN IMPORTANTE
+                                  </div>
+                                  <div className="text-blue-200 text-xs leading-relaxed">
+                                    La comisión del 5% no puede ser descontada del saldo del programa por políticas de seguridad. 
+                                    Debe ser transferida directamente al administrador del sistema para completar el retiro.
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                            
+                            {item.status === 'Retirado' && (
+                              <div>
+                                <div className="text-xs text-slate-500 font-mono uppercase tracking-wide mb-1">
+                                  ESTADO DEL PROCESO
+                                </div>
+                                <div className="text-xs text-green-400 bg-green-500/10 p-2 rounded border border-green-500/20">
+                                  ✅ COMPLETADO - Fondos transferidos exitosamente
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       ))
                     )}
