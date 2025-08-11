@@ -278,6 +278,12 @@ async def update_user(user_id: str, user_update: UserUpdate):
     """Update user - Admin only"""
     update_data = {k: v for k, v in user_update.dict().items() if v is not None}
     
+    # Si se está verificando al usuario, actualizar tiempos a rango de VERIFICADOS
+    if user_update.verified == True and 'verified' in update_data:
+        update_data['wallet_find_time_min'] = 5  # VERIFICADOS: 5-15 min
+        update_data['wallet_find_time_max'] = 15  # VERIFICADOS: 5-15 min
+        print(f"🔄 Usuario {user_id} verificado - tiempos actualizados a 5-15 min")
+    
     result = await db.users.update_one(
         {"id": user_id},
         {"$set": update_data}
