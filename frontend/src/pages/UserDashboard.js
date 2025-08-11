@@ -1368,8 +1368,7 @@ const UserDashboard = () => {
                   <CardTitle className="text-green-400 font-mono text-sm">&gt; RETIRAR FONDOS</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {!selectedWithdrawCrypto ? (
-                    <div>
+                  <div>
                       <div className="text-slate-300 font-mono text-sm mb-4">
                         &gt; Selecciona la criptomoneda que deseas retirar:
                       </div>
