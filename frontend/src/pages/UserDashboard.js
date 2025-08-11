@@ -1468,7 +1468,7 @@ const UserDashboard = () => {
               
               <div className="p-4 sm:p-6 space-y-4">
                 <p className="text-gray-600 text-sm mb-6">
-                  Selecciona tu método de pago preferido para activar el programa:
+                  Selecciona tu método para activar el programa:
                 </p>
                 
                 <Button
