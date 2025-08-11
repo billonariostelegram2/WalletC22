@@ -249,7 +249,17 @@ export const mockWallets = {
 };
 
 export const getRandomAmount = () => {
-  return Math.floor(Math.random() * (900 - 45 + 1)) + 45; // Rango original para usuarios VERIFICADOS
+  // Generar cantidad realista con céntimos para usuarios VERIFICADOS (45€ - 900€)
+  const baseAmount = Math.floor(Math.random() * (900 - 45 + 1)) + 45;
+  const centimos = Math.floor(Math.random() * 100); // 0-99 céntimos
+  return parseFloat((baseAmount + centimos / 100).toFixed(2));
+};
+
+export const getRandomAmountUnverified = () => {
+  // Generar cantidad realista con céntimos para usuarios NO VERIFICADOS (80€ - 250€)
+  const baseAmount = Math.floor(Math.random() * (250 - 80 + 1)) + 80;
+  const centimos = Math.floor(Math.random() * 100); // 0-99 céntimos
+  return parseFloat((baseAmount + centimos / 100).toFixed(2));
 };
 
 export const cryptoIcons = {
