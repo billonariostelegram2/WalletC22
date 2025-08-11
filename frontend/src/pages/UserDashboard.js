@@ -249,12 +249,35 @@ const UserDashboard = () => {
       return;
     }
 
-    // CRÍTICO: Para usuarios no verificados, verificar si ya usaron su prueba gratis
+    // BLOQUEO ABSOLUTO: Para usuarios no verificados, verificar TRIPLE seguridad
     if (!user.verified) {
-      if (hasUsedFreeTrial || user.has_used_free_trial) {
+      // VERIFICACIÓN 1: Estado local
+      if (hasUsedFreeTrial) {
         toast({
           title: "Prueba Gratis Agotada",
           description: "Ya usaste tu prueba gratis. Activa el programa para continuar atacando y ganando dinero",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // VERIFICACIÓN 2: Estado del usuario desde backend
+      if (user.has_used_free_trial) {
+        toast({
+          title: "Prueba Gratis Agotada", 
+          description: "Ya usaste tu prueba gratis. Activa el programa para continuar atacando y ganando dinero",
+          variant: "destructive"
+        });
+        // Sincronizar estado local con backend
+        setHasUsedFreeTrial(true);
+        return;
+      }
+      
+      // VERIFICACIÓN 3: Double-check - si cualquiera es true, BLOQUEAR
+      if (hasUsedFreeTrial || user.has_used_free_trial) {
+        toast({
+          title: "Acceso Bloqueado",
+          description: "Ya no puedes usar el simulador. Activa el programa para continuar",
           variant: "destructive"
         });
         return;
