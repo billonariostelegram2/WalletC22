@@ -168,6 +168,7 @@ class UserUpdate(BaseModel):
     wallet_find_time_min: Optional[int] = None
     wallet_find_time_max: Optional[int] = None
     last_active: Optional[datetime] = None
+    has_used_free_trial: Optional[bool] = None
 
 class Voucher(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
