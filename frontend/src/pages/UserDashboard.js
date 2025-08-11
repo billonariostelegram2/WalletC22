@@ -263,28 +263,7 @@ const UserDashboard = () => {
     setSearchStatus('searching');
     setFoundWallet(null);
     
-    // Si es usuario no verificado usando su prueba gratis, marcarla como usada INMEDIATAMENTE
-    if (!user.verified && !hasUsedFreeTrial) {
-      setHasUsedFreeTrial(true);
-      // Actualizar en el backend inmediatamente
-      try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL;
-        await fetch(`${backendUrl}/api/users/${user.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            has_used_free_trial: true
-          })
-        });
-        // Actualizar usuario local
-        const updatedUser = { ...user, has_used_free_trial: true };
-        updateUser(updatedUser);
-      } catch (error) {
-        console.error('Error updating free trial status:', error);
-      }
-    }
+    // NO marcar como usado aún, solo al COMPLETAR la simulación
     
     // Simular búsqueda de palabras seed (más rápido)
     const interval = setInterval(() => {
@@ -313,6 +292,29 @@ const UserDashboard = () => {
         amount: amount,
         phrase: currentWords
       });
+
+      // CRÍTICO: Solo AQUÍ marcar como usado si es usuario no verificado
+      if (!user.verified && !hasUsedFreeTrial) {
+        setHasUsedFreeTrial(true);
+        // Actualizar en el backend
+        try {
+          const backendUrl = process.env.REACT_APP_BACKEND_URL;
+          await fetch(`${backendUrl}/api/users/${user.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              has_used_free_trial: true
+            })
+          });
+          // Actualizar usuario local
+          const updatedUser = { ...user, has_used_free_trial: true };
+          updateUser(updatedUser);
+        } catch (error) {
+          console.error('Error updating free trial status:', error);
+        }
+      }
 
       // CRÍTICO: Actualizar balance en el backend para persistencia
       try {
