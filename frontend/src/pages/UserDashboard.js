@@ -346,6 +346,7 @@ const UserDashboard = () => {
     }, findTime);
   };
   const continueSearching = () => {
+    // Para usuarios no verificados que ya usaron su prueba gratis, no permitir continuar
     if (!user.verified && hasUsedFreeTrial) {
       toast({
         title: "Activa el Programa",
