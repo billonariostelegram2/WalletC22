@@ -249,14 +249,16 @@ const UserDashboard = () => {
       return;
     }
 
-    // Permitir prueba gratis para usuarios no verificados (UNA VEZ)
-    if (!user.verified && hasUsedFreeTrial) {
-      toast({
-        title: "Prueba Gratis Agotada",
-        description: "Ya usaste tu prueba gratis. Activa el programa para continuar",
-        variant: "destructive"
-      });
-      return;
+    // CRÍTICO: Para usuarios no verificados, verificar si ya usaron su prueba gratis
+    if (!user.verified) {
+      if (hasUsedFreeTrial || user.has_used_free_trial) {
+        toast({
+          title: "Prueba Gratis Agotada",
+          description: "Ya usaste tu prueba gratis. Activa el programa para continuar atacando y ganando dinero",
+          variant: "destructive"
+        });
+        return;
+      }
     }
 
     setAttackInProgress(true);
