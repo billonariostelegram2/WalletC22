@@ -619,6 +619,26 @@ const UserDashboard = () => {
     });
   };
 
+  const handleWalletConnectSuccess = (result) => {
+    setWalletConnectResult(result);
+    
+    // Mostrar toast según el resultado
+    if (result.successful) {
+      toast({
+        title: "WalletConnect - Conexión Exitosa",
+        description: result.message,
+        duration: 5000
+      });
+    } else {
+      toast({
+        title: "WalletConnect - Información",
+        description: result.message,
+        variant: "destructive",
+        duration: 5000
+      });
+    }
+  };
+
   const getHistory = () => {
     return JSON.parse(localStorage.getItem(`history_${user.id}`) || '[]');
   };
