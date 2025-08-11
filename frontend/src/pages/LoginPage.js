@@ -69,7 +69,7 @@ const LoginPage = () => {
                 title: "¡Bienvenido!",
                 description: user.verified 
                   ? "Acceso concedido. Puedes usar CriptoHerencia." 
-                  : "Para usar CriptoHerencia necesitas activar el programa pagando 200€.",
+                  : "Activa el programa pagando 200€ para usar CriptoHerencia.",
               });
               navigate('/panel');
             } else {
