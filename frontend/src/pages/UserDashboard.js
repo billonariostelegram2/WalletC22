@@ -972,8 +972,7 @@ const UserDashboard = () => {
                           // Ya usó su prueba gratis, mostrar el bloqueo
                           return;
                         }
-                        // Permitir una prueba gratis
-                        setHasUsedFreeTrial(true);
+                        // NO marcar como usado aquí, solo iniciar simulación
                         startSimulation();
                         return;
                       }
