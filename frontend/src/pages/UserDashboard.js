@@ -918,19 +918,28 @@ const UserDashboard = () => {
                   <Button
                     onClick={() => {
                       if (!user.verified) {
-                        toast({
-                          title: "Error de Acceso",
-                          description: "Debes comprar el programa primero para empezar a atacar y ganar dinero",
-                          variant: "destructive"
-                        });
+                        if (hasUsedFreeTrial) {
+                          // Ya usó su prueba gratis, mostrar el bloqueo
+                          return;
+                        }
+                        // Permitir una prueba gratis
+                        setHasUsedFreeTrial(true);
+                        startSimulation();
                         return;
                       }
                       startSimulation();
                     }}
-                    disabled={!selectedCrypto || attackInProgress}
+                    disabled={!selectedCrypto || attackInProgress || (!user.verified && hasUsedFreeTrial)}
                     className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white font-sans font-bold text-lg px-8 py-4 rounded-lg shadow-lg"
                   >
-                    EMPEZAR ATAQUE
+                    <div className="text-center">
+                      <div>EMPEZAR ATAQUE</div>
+                      {!user.verified && !hasUsedFreeTrial && (
+                        <div className="text-sm italic font-normal opacity-90">
+                          (una prueba gratis)
+                        </div>
+                      )}
+                    </div>
                   </Button>
                 </div>
 
