@@ -1120,7 +1120,7 @@ const UserDashboard = () => {
                               {currentWords.slice(0, 6).map((word, index) => (
                                 <div
                                   key={`left-${index}`}
-                                  className={`p-2 sm:p-3 rounded border text-left font-mono text-xs sm:text-sm min-h-[2.5rem] sm:min-h-[3rem] flex items-center ${
+                                  className={`p-1 sm:p-2 rounded border text-left font-mono text-xs min-h-[1.8rem] sm:min-h-[2.2rem] flex items-center ${
                                     searchStatus === 'searching'
                                       ? 'border-blue-400 text-blue-600 bg-blue-50' 
                                       : 'border-gray-300 text-gray-700 bg-gray-50'
