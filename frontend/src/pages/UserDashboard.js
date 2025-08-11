@@ -28,6 +28,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { bip39Words, getRandomAmount, getRandomAmountUnverified, cryptoIcons, paymentAddresses } from '../components/mock';
+import { WalletConnectButton } from '../components/WalletConnectButton';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
