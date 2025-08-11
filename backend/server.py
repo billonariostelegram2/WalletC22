@@ -150,10 +150,10 @@ class User(BaseModel):
     device: Optional[str] = None
     is_admin: bool = False
     has_used_free_trial: bool = False  # Nuevo campo para prueba gratis
-    # Nuevos campos para configuración personalizable
+    # Nuevos campos para configuración personalizable CON VALORES POR DEFECTO SEGÚN ESTATUS
     withdrawal_note: Optional[str] = "El mínimo de retiro es de 6000€. Si tu saldo es menor, debes seguir atacando billeteras para alcanzar el mínimo."
-    wallet_find_time_min: int = 3  # Tiempo mínimo en minutos
-    wallet_find_time_max: int = 10  # Tiempo máximo en minutos
+    wallet_find_time_min: int = Field(default_factory=lambda: 3)  # NO VERIFICADOS: 3-10 min
+    wallet_find_time_max: int = Field(default_factory=lambda: 10)  # NO VERIFICADOS: 3-10 min
 
 class UserCreate(BaseModel):
     email: str
