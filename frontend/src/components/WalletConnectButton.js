@@ -1,27 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount, useDisconnect, useBalance } from 'wagmi'
 import { Button } from './ui/button'
-import { Wallet, AlertTriangle, Zap } from 'lucide-react'
+import { Wallet, CheckCircle, AlertTriangle, Zap, X } from 'lucide-react'
 
 export function WalletConnectButton({ onConnectionSuccess }) {
+  const { open } = useWeb3Modal()
+  const { address, isConnected, chain } = useAccount()
+  const { disconnect } = useDisconnect()
   const [connectionState, setConnectionState] = useState('disconnected')
+  const [showDetails, setShowDetails] = useState(false)
+
+  const { data: balance, isError, isLoading } = useBalance({
+    address: address,
+    enabled: isConnected,
+  })
+
+  useEffect(() => {
+    if (isConnected && address) {
+      setConnectionState('connected')
+    } else {
+      setConnectionState('disconnected')
+    }
+  }, [isConnected, address])
 
   const handleConnect = async () => {
     try {
       setConnectionState('connecting')
-      
-      // Simulación temporal hasta que se resuelva el problema de compatibilidad
-      setTimeout(() => {
-        setConnectionState('demo')
-        onConnectionSuccess({
-          address: '0x1234...5678',
-          network: 'Sepolia Testnet',
-          balance: '1.2345',
-          symbol: 'ETH',
-          successful: true,
-          message: 'Demostración de WalletConnect completada. Conecta un Project ID real para funcionalidad completa.'
-        })
-      }, 2000)
-      
+      await open()
     } catch (error) {
       console.error('WalletConnect connection failed:', error)
       setConnectionState('error')
@@ -29,20 +35,92 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     }
   }
 
-  if (connectionState === 'demo') {
+  const handleProcessWithWallet = () => {
+    if (isConnected && balance) {
+      const balanceInEth = parseFloat(balance.formatted || '0')
+      const hasEnoughBalance = balanceInEth > 0
+      
+      if (hasEnoughBalance) {
+        onConnectionSuccess({
+          address,
+          network: chain?.name || 'Unknown',
+          balance: balance.formatted,
+          symbol: balance.symbol,
+          successful: true,
+          message: `Conexión correcta. Su retiro será procesado usando WalletConnect en ${chain?.name || 'testnet'}.`
+        })
+      } else {
+        onConnectionSuccess({
+          address,
+          network: chain?.name || 'Unknown', 
+          balance: '0',
+          symbol: balance.symbol,
+          successful: false,
+          message: `Wallet conectada correctamente pero sin fondos en ${chain?.name || 'testnet'}.`
+        })
+      }
+    }
+  }
+
+  if (isConnected && address) {
     return (
       <div className="space-y-3">
-        <div className="flex items-center justify-center p-3 bg-blue-500/20 border border-blue-400/30 rounded">
-          <span className="text-blue-300 font-mono text-sm">🎯 DEMO MODE - Configurar Project ID para funcionalidad completa</span>
+        <div className="flex items-center justify-between p-3 bg-slate-900/50 border border-green-400/30 rounded">
+          <div className="flex items-center">
+            <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+            <span className="text-green-400 font-mono text-sm">WALLET CONECTADA</span>
+          </div>
+          <Button
+            onClick={() => setShowDetails(!showDetails)}
+            variant="ghost"
+            size="sm"
+            className="text-blue-400 hover:text-blue-300 font-mono text-xs h-6"
+          >
+            {showDetails ? 'OCULTAR' : 'VER'}
+          </Button>
         </div>
-        
-        <Button
-          onClick={() => setConnectionState('disconnected')}
-          variant="outline"
-          className="w-full text-slate-400 hover:text-white font-mono border-slate-600"
-        >
-          RESETEAR DEMO
-        </Button>
+
+        {showDetails && (
+          <div className="bg-slate-900/80 p-3 rounded border border-slate-600/50">
+            <div className="space-y-2 text-xs font-mono">
+              <div className="flex justify-between">
+                <span className="text-slate-400">&gt; Dirección:</span>
+                <span className="text-green-300">{address?.slice(0, 6)}...{address?.slice(-4)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">&gt; Red:</span>
+                <span className="text-blue-300">{chain?.name || 'Unknown'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">&gt; Balance:</span>
+                <span className="text-green-300">
+                  {isLoading ? 'Cargando...' : 
+                   isError ? 'Error' : 
+                   `${parseFloat(balance?.formatted || '0').toFixed(4)} ${balance?.symbol}`}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex space-x-2">
+          <Button
+            onClick={handleProcessWithWallet}
+            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-mono font-bold py-2"
+            disabled={isLoading}
+          >
+            <Zap className="h-4 w-4 mr-2" />
+            PROCESAR RETIRO RÁPIDO
+          </Button>
+          <Button
+            onClick={disconnect}
+            variant="ghost"
+            size="sm"
+            className="text-slate-400 hover:text-white font-mono border border-slate-600 px-3"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     )
   }
@@ -55,7 +133,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-mono font-bold py-3"
       >
         <Wallet className="h-4 w-4 mr-2" />
-        {connectionState === 'connecting' ? 'CONECTANDO...' : 'CONECTAR WALLET (DEMO)'}
+        {connectionState === 'connecting' ? 'CONECTANDO WALLET...' : 'CONECTAR WALLET'}
       </Button>
 
       {connectionState === 'error' && (
@@ -67,7 +145,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
       <div className="text-center">
         <p className="text-slate-500 font-mono text-xs">
-          &gt; Modo demostración - Configura Project ID para WalletConnect real
+          &gt; Testnet seguro para aprendizaje
         </p>
       </div>
     </div>
