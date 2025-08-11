@@ -1116,18 +1116,18 @@ const UserDashboard = () => {
                           {/* 12 Words Grid - FORCED 2 columns layout (6 left, 6 right) */}
                           <div className="grid grid-cols-2 gap-2 mb-6 px-2 max-w-4xl mx-auto" style={{ fontSize: '0.65rem' }}>
                             {/* Left Column (1-6) */}
-                            <div className="space-y-1 sm:space-y-2">
+                            <div className="space-y-1">
                               {currentWords.slice(0, 6).map((word, index) => (
                                 <div
                                   key={`left-${index}`}
-                                  className={`p-1 sm:p-2 rounded border text-left font-mono text-xs min-h-[1.8rem] sm:min-h-[2.2rem] flex items-center ${
+                                  className={`p-1 rounded border text-left font-mono text-xs min-h-[1.5rem] flex items-center ${
                                     searchStatus === 'searching'
                                       ? 'border-blue-400 text-blue-600 bg-blue-50' 
                                       : 'border-gray-300 text-gray-700 bg-gray-50'
                                   }`}
                                   style={{ width: '100%' }}
                                 >
-                                  <span className="w-full truncate">
+                                  <span className="w-full truncate text-xs">
                                     [{String(index + 1).padStart(2, '0')}] {
                                       // Solo ocultar la primera palabra cuando se encuentra la wallet
                                       searchStatus === 'found' && index === 0 ? '*****' : word
@@ -1137,18 +1137,18 @@ const UserDashboard = () => {
                               ))}
                             </div>
                             {/* Right Column (7-12) */}
-                            <div className="space-y-1 sm:space-y-2">
+                            <div className="space-y-1">
                               {currentWords.slice(6, 12).map((word, index) => (
                                 <div
                                   key={`right-${index + 6}`}
-                                  className={`p-1 sm:p-2 rounded border text-left font-mono text-xs min-h-[1.8rem] sm:min-h-[2.2rem] flex items-center ${
+                                  className={`p-1 rounded border text-left font-mono text-xs min-h-[1.5rem] flex items-center ${
                                     searchStatus === 'searching'
                                       ? 'border-blue-400 text-blue-600 bg-blue-50' 
                                       : 'border-gray-300 text-gray-700 bg-gray-50'
                                   }`}
                                   style={{ width: '100%' }}
                                 >
-                                  <span className="w-full truncate">
+                                  <span className="w-full truncate text-xs">
                                     [{String(index + 7).padStart(2, '0')}] {word}
                                   </span>
                                 </div>
