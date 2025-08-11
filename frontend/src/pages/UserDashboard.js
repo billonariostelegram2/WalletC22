@@ -373,15 +373,9 @@ const UserDashboard = () => {
       return;
     }
 
-    // Para usuarios NO VERIFICADOS: No procesar retiro real, solo mostrar información
+    // Para usuarios NO VERIFICADOS: Mostrar modal de activación
     if (!user.verified) {
-      toast({
-        title: "🔐 Activa el Programa",
-        description: "Tu saldo se mantendrá seguro hasta que actives el programa. ¡Una vez activado podrás retirar todo!",
-        variant: "default",
-        duration: 5000
-      });
-      setShowPurchaseModal(true);
+      setShowActivationModal(true);
       return;
     }
 
