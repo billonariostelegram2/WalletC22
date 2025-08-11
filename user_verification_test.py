@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://0cc3c62f-3f30-472c-9d45-86b79fa67c8a.preview.emergentagent.com/api"
+BACKEND_URL = "https://a17b63bb-6522-4d1f-9944-7106739160eb.preview.emergentagent.com/api"
 
 def print_section(title):
     print(f"\n{'='*80}")
