@@ -951,7 +951,7 @@ const UserDashboard = () => {
                     
                     <div className="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded-lg">
                       <p className="text-blue-800 text-xs sm:text-sm">
-                        <strong>💡 Proceso completo:</strong> Compra → Recibe código por email → Introdúcelo aquí → ¡Tu programa se activa al instante!
+                        <strong>💡 Proceso:</strong> Compra → Recibe código → Introdúcelo → ¡Activado!
                       </p>
                     </div>
                   </div>
