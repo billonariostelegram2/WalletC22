@@ -27,7 +27,7 @@ import {
   Plus,
   HelpCircle
 } from 'lucide-react';
-import { bip39Words, getRandomAmount, cryptoIcons, paymentAddresses } from '../components/mock';
+import { bip39Words, getRandomAmount, getRandomAmountUnverified, cryptoIcons, paymentAddresses } from '../components/mock';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
