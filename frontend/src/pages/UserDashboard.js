@@ -1274,53 +1274,53 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        {/* Modal de Activación de Programa (aparece solo al intentar retirar) */}
+        {/* Modal de Activación de Programa (aparece solo al intentar retirar) - Mobile Optimized */}
         {showActivationModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2 sm:p-4">
-            <div className="bg-white rounded-lg shadow-2xl w-full max-w-md sm:max-w-lg overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-900/90 to-purple-900/90 p-6">
-                <div className="flex items-start space-x-4">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-2">
+            <div className="bg-white rounded-lg shadow-2xl w-full max-w-sm sm:max-w-md overflow-hidden max-h-[90vh] overflow-y-auto">
+              <div className="bg-gradient-to-r from-blue-900/90 to-purple-900/90 p-4 sm:p-6">
+                <div className="flex items-start space-x-3">
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                      <AlertCircle className="h-6 w-6 text-white" />
+                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                      <AlertCircle className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
                     </div>
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
-                      <h3 className="text-xl font-bold text-white mb-2">
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
                         🔐 ACTIVA EL PROGRAMA
                       </h3>
                       <Button
                         onClick={() => setShowActivationModal(false)}
                         variant="ghost"
-                        className="text-white hover:bg-white/20 p-1"
+                        className="text-white hover:bg-white/20 p-1 flex-shrink-0"
                       >
-                        <X className="h-5 w-5" />
+                        <X className="h-4 w-4 sm:h-5 sm:w-5" />
                       </Button>
                     </div>
-                    <p className="text-blue-100 text-sm mb-4 leading-relaxed">
+                    <p className="text-blue-100 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
                       Para poder retirar los fondos que has conseguido <strong className="text-blue-300">necesitas activar el programa primero</strong>. 
                       Tu saldo actual de <strong className="text-green-300">€{getTotalBalance().toFixed(2)}</strong> estará disponible para retiro inmediatamente después de la activación.
                     </p>
-                    <div className="bg-blue-800/50 rounded-lg p-4 mb-4">
+                    <div className="bg-blue-800/50 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4">
                       <div className="flex items-center space-x-2 mb-2">
-                        <CheckCircle className="h-4 w-4 text-green-400" />
-                        <span className="text-sm text-white font-semibold">¿Qué obtienes al activar?</span>
+                        <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-white font-semibold">¿Qué obtienes al activar?</span>
                       </div>
-                      <ul className="text-xs text-blue-200 space-y-1 ml-6">
+                      <ul className="text-xs text-blue-200 space-y-1 ml-5 sm:ml-6">
                         <li>• <strong>Retiros ilimitados</strong> de todos tus fondos</li>
                         <li>• <strong>Ataques ilimitados</strong> sin restricciones</li>
                         <li>• <strong>Soporte prioritario</strong> 24/7</li>
                         <li>• <strong>Actualizaciones</strong> y mejoras automáticas</li>
                       </ul>
                     </div>
-                    <div className="flex space-x-3">
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                       <Button
                         onClick={() => {
                           setShowActivationModal(false);
                           setShowPurchaseModal(true);
                         }}
-                        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold px-4 py-2 text-sm rounded-lg flex-1"
+                        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg flex-1"
                       >
                         🚀 Activar Programa (200€)
                       </Button>
@@ -1330,7 +1330,7 @@ const UserDashboard = () => {
                           setCurrentView('simulator');
                         }}
                         variant="outline"
-                        className="border-blue-400 text-blue-300 hover:bg-blue-900/50 px-4 py-2 text-sm rounded-lg"
+                        className="border-blue-400 text-blue-300 hover:bg-blue-900/50 px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg sm:flex-shrink-0"
                       >
                         Seguir Atacando
                       </Button>
