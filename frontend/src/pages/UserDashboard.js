@@ -1049,8 +1049,8 @@ const UserDashboard = () => {
                       </div>
                     ) : (
                       <>
-                        {/* Fixed Static Search Box - Professional White Design */}
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 min-h-[400px] max-h-[400px]">
+                        {/* Fixed Static Search Box - Professional White Design with Better Mobile Layout */}
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-6 min-h-[500px] sm:min-h-[400px] max-h-[500px] sm:max-h-[400px]">
                           {/* Status Text */}
                           <div className="text-center mb-4 h-16 flex flex-col justify-center">
                             {searchStatus === 'idle' && (
