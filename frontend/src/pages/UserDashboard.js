@@ -1019,8 +1019,10 @@ const UserDashboard = () => {
                   <Button
                     onClick={() => {
                       if (!user.verified) {
-                        // VERIFICACIÓN DOBLE: Estado local Y del usuario
-                        if (hasUsedFreeTrial || user.has_used_free_trial) {
+                        // BLOQUEO ABSOLUTO: VERIFICACIÓN TRIPLE para usuarios no verificados
+                        
+                        // VERIFICACIÓN 1: Estado local
+                        if (hasUsedFreeTrial) {
                           toast({
                             title: "Prueba Gratis Agotada",
                             description: "Ya usaste tu prueba gratis. Activa el programa para continuar",
@@ -1028,7 +1030,30 @@ const UserDashboard = () => {
                           });
                           return;
                         }
-                        // Solo permitir si NO ha usado la prueba gratis
+                        
+                        // VERIFICACIÓN 2: Estado del usuario desde backend
+                        if (user.has_used_free_trial) {
+                          toast({
+                            title: "Prueba Gratis Agotada",
+                            description: "Ya usaste tu prueba gratis. Activa el programa para continuar",
+                            variant: "destructive"
+                          });
+                          // Sincronizar estado local
+                          setHasUsedFreeTrial(true);
+                          return;
+                        }
+                        
+                        // VERIFICACIÓN 3: Double-check final
+                        if (hasUsedFreeTrial || user.has_used_free_trial) {
+                          toast({
+                            title: "Acceso Bloqueado",
+                            description: "El simulador está bloqueado. Activa el programa para continuar",
+                            variant: "destructive"
+                          });
+                          return;
+                        }
+                        
+                        // Solo permitir si pasa TODAS las verificaciones
                         startSimulation();
                         return;
                       }
