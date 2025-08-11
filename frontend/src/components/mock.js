@@ -249,7 +249,7 @@ export const mockWallets = {
 };
 
 export const getRandomAmount = () => {
-  return Math.floor(Math.random() * (250 - 80 + 1)) + 80;
+  return Math.floor(Math.random() * (900 - 45 + 1)) + 45; // Rango original para usuarios VERIFICADOS
 };
 
 export const cryptoIcons = {
