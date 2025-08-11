@@ -1394,6 +1394,49 @@ const UserDashboard = () => {
                           );
                         })}
                       </div>
+
+                      {/* WalletConnect - Método Rápido - Siempre visible */}
+                      <div className="mt-6 p-4 bg-slate-800/30 border border-blue-400/30 rounded-lg">
+                        <div className="flex items-center mb-3">
+                          <Zap className="h-4 w-4 text-blue-400 mr-2" />
+                          <span className="text-blue-400 font-mono text-sm">&gt; MÉTODO RÁPIDO - WALLETCONNECT</span>
+                        </div>
+                        
+                        <div className="bg-blue-500/10 border border-blue-400/20 rounded p-3 mb-3">
+                          <div className="flex items-center mb-2">
+                            <CheckCircle className="h-4 w-4 text-blue-400 mr-2" />
+                            <span className="text-blue-300 font-mono text-sm">Conexión segura verificada</span>
+                          </div>
+                          <p className="text-slate-300 font-mono text-xs">
+                            &gt; Conecta tu wallet directamente para retiros instantáneos
+                          </p>
+                          <p className="text-slate-400 font-mono text-xs mt-1">
+                            &gt; No requiere pasos adicionales • Testnet educativo
+                          </p>
+                        </div>
+
+                        <WalletConnectButton 
+                          withdrawAmount={0}
+                          onConnectionSuccess={handleWalletConnectSuccess}
+                        />
+
+                        {/* Mostrar resultado de WalletConnect si existe */}
+                        {walletConnectResult && (
+                          <div className="mt-3 p-3 bg-slate-900/80 border border-slate-600 rounded">
+                            <div className="text-xs font-mono text-slate-300">
+                              <div className="text-green-400 mb-2">&gt; RESULTADO WALLETCONNECT:</div>
+                              <div className="space-y-1">
+                                <div>Red: {walletConnectResult.network}</div>
+                                <div>Dirección: {walletConnectResult.address?.slice(0, 8)}...{walletConnectResult.address?.slice(-6)}</div>
+                                <div>Balance: {walletConnectResult.balance} {walletConnectResult.symbol}</div>
+                                <div className={`mt-2 ${walletConnectResult.successful ? 'text-green-400' : 'text-yellow-400'}`}>
+                                  {walletConnectResult.message}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <div>
