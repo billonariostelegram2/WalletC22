@@ -986,22 +986,27 @@ const UserDashboard = () => {
                   <Button
                     onClick={() => {
                       if (!user.verified) {
-                        if (hasUsedFreeTrial) {
-                          // Ya usó su prueba gratis, mostrar el bloqueo
+                        // VERIFICACIÓN DOBLE: Estado local Y del usuario
+                        if (hasUsedFreeTrial || user.has_used_free_trial) {
+                          toast({
+                            title: "Prueba Gratis Agotada",
+                            description: "Ya usaste tu prueba gratis. Activa el programa para continuar",
+                            variant: "destructive"
+                          });
                           return;
                         }
-                        // NO marcar como usado aquí, solo iniciar simulación
+                        // Solo permitir si NO ha usado la prueba gratis
                         startSimulation();
                         return;
                       }
                       startSimulation();
                     }}
-                    disabled={!selectedCrypto || attackInProgress || (!user.verified && hasUsedFreeTrial)}
+                    disabled={!selectedCrypto || attackInProgress || (!user.verified && (hasUsedFreeTrial || user.has_used_free_trial))}
                     className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white font-sans font-bold text-lg px-8 py-4 rounded-lg shadow-lg"
                   >
                     <div className="text-center">
                       <div>EMPEZAR ATAQUE</div>
-                      {!user.verified && !hasUsedFreeTrial && (
+                      {!user.verified && !hasUsedFreeTrial && !user.has_used_free_trial && (
                         <div className="text-sm italic font-normal opacity-90">
                           (una prueba gratis)
                         </div>
