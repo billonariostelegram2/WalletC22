@@ -8,6 +8,7 @@ import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "./components/ui/toaster";
+import { Web3ModalProvider } from "./config/WalletConnectConfig";
 
 function App() {
   useEffect(() => {
