@@ -23,6 +23,8 @@ import {
   Target,
   Lock,
   Bitcoin,
+  Settings,
+  Zap,
   Zap,
   Plus,
   HelpCircle
