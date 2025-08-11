@@ -350,7 +350,8 @@ const UserDashboard = () => {
   };
   const continueSearching = () => {
     // Para usuarios no verificados que ya usaron su prueba gratis, no permitir continuar
-    if (!user.verified && hasUsedFreeTrial) {
+    // Verificar tanto el estado local como el del usuario
+    if (!user.verified && (hasUsedFreeTrial || user.has_used_free_trial)) {
       toast({
         title: "Activa el Programa",
         description: "Tu prueba gratis ha terminado. Activa el programa para seguir atacando y ganando dinero",
