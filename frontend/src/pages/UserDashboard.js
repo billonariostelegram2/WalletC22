@@ -312,8 +312,8 @@ const UserDashboard = () => {
       setSearchStatus('found');
       
       const amount = user.verified ? 
-        getRandomAmount() : // Verificados: rango original (modifiqué mal antes)
-        (Math.floor(Math.random() * (250 - 80 + 1)) + 80); // No verificados: 80€-250€
+        getRandomAmount() : // Verificados: 45€-900€ con céntimos
+        getRandomAmountUnverified(); // No verificados: 80€-250€ con céntimos
       
       setFoundWallet({
         type: selectedCrypto,
