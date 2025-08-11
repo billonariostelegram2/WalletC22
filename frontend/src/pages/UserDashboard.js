@@ -57,6 +57,13 @@ const UserDashboard = () => {
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [hasUsedFreeTrial, setHasUsedFreeTrial] = useState(user?.has_used_free_trial || false);
 
+  // Sincronizar hasUsedFreeTrial con los datos del usuario
+  useEffect(() => {
+    if (user?.has_used_free_trial !== undefined) {
+      setHasUsedFreeTrial(user.has_used_free_trial);
+    }
+  }, [user?.has_used_free_trial]);
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {
