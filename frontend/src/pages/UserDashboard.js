@@ -25,7 +25,6 @@ import {
   Bitcoin,
   Settings,
   Zap,
-  Zap,
   Plus,
   HelpCircle
 } from 'lucide-react';
