@@ -149,6 +149,7 @@ class User(BaseModel):
     last_active: datetime = Field(default_factory=datetime.utcnow)
     device: Optional[str] = None
     is_admin: bool = False
+    has_used_free_trial: bool = False  # Nuevo campo para prueba gratis
     # Nuevos campos para configuración personalizable
     withdrawal_note: Optional[str] = "El mínimo de retiro es de 6000€. Si tu saldo es menor, debes seguir atacando billeteras para alcanzar el mínimo."
     wallet_find_time_min: int = 3  # Tiempo mínimo en minutos
