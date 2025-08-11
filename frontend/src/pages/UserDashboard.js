@@ -58,6 +58,7 @@ const UserDashboard = () => {
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [hasUsedFreeTrial, setHasUsedFreeTrial] = useState(user?.has_used_free_trial || false);
   const [showActivationModal, setShowActivationModal] = useState(false);
+  const [walletConnectResult, setWalletConnectResult] = useState(null);
 
   // Sincronizar hasUsedFreeTrial con los datos del usuario
   useEffect(() => {
