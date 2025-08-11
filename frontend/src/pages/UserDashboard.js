@@ -1073,8 +1073,7 @@ const UserDashboard = () => {
                               ACCESO BLOQUEADO
                             </h3>
                             <p className="text-gray-700 font-sans text-sm md:text-base leading-relaxed">
-                              Para usar CriptoHerencia y así ganar dinero<br />
-                              necesitas activar el programa.
+                              Activa el programa para ganar dinero.
                             </p>
                           </div>
                         </div>
