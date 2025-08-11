@@ -1484,7 +1484,6 @@ const UserDashboard = () => {
                         )}
                       </div>
                     </div>
-                  )}
                 </CardContent>
               </Card>
             )}
