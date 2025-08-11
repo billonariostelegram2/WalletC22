@@ -1402,8 +1402,8 @@ const UserDashboard = () => {
                       </Button>
                     </div>
                     <p className="text-blue-100 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
-                      Para poder retirar los fondos que has conseguido <strong className="text-blue-300">necesitas activar el programa primero</strong>. 
-                      Tu saldo actual de <strong className="text-green-300">€{getTotalBalance().toFixed(2)}</strong> estará disponible para retiro inmediatamente después de la activación.
+                      Para retirar tus fondos <strong className="text-blue-300">activa el programa</strong>. 
+                      Tu saldo de <strong className="text-green-300">€{getTotalBalance().toFixed(2)}</strong> estará disponible inmediatamente.
                     </p>
                     <div className="bg-blue-800/50 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4">
                       <div className="flex items-center space-x-2 mb-2">
