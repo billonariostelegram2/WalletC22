@@ -1083,7 +1083,7 @@ const UserDashboard = () => {
                           </div>
                           
                           {/* 12 Words Grid - Mobile Responsive, Centered and Static */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 px-2 sm:px-8 max-w-4xl mx-auto">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 px-2 sm:px-8 max-w-4xl mx-auto">
                             {/* Left Column (1-6) */}
                             <div className="space-y-1 sm:space-y-2">
                               {currentWords.slice(0, 6).map((word, index) => (
