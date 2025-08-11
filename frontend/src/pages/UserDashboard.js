@@ -751,7 +751,7 @@ const UserDashboard = () => {
                     <div>
                       <h3 className="font-bold text-gray-800 font-sans">VERIFICACIÓN REQUERIDA</h3>
                       <p className="text-sm text-gray-600 font-sans">
-                        Para usar CriptoHerencia y así ganar dinero necesitas activar el programa.
+                        Activa el programa para ganar dinero.
                       </p>
                     </div>
                   </div>
