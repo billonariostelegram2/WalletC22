@@ -316,9 +316,18 @@ const UserDashboard = () => {
     }, findTime);
   };
   const continueSearching = () => {
+    if (!user.verified && hasUsedFreeTrial) {
+      toast({
+        title: "Activa el Programa",
+        description: "Tu prueba gratis ha terminado. Activa el programa para seguir atacando y ganando dinero",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setSearchStatus('idle');
     setFoundWallet(null);
-    setCurrentWords(Array(12).fill('empezar'));
+    setCurrentWords(Array(12).fill(user && !user.verified ? 'prueba' : 'empezar'));
   };
 
   const processWithdrawal = async () => {
