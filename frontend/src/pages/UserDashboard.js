@@ -1021,7 +1021,7 @@ const UserDashboard = () => {
                     <CardTitle className="text-gray-800 font-sans text-lg">Sistema de Ataque</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6">
-                    {(!user.verified && hasUsedFreeTrial) ? (
+                    {(!user.verified && (hasUsedFreeTrial || user.has_used_free_trial)) ? (
                       <div className="relative p-4 md:p-6 bg-gray-100 rounded border border-gray-300 min-h-[300px] sm:min-h-[400px] max-h-[300px] sm:max-h-[400px] overflow-hidden">
                         {/* Blurred 12 Words Background */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 opacity-20 blur-sm">
