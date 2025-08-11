@@ -1114,8 +1114,8 @@ const UserDashboard = () => {
                             )}
                           </div>
                           
-                          {/* 12 Words Grid - Mobile Responsive, Centered and Static */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 px-2 sm:px-8 max-w-4xl mx-auto">
+                          {/* 12 Words Grid - Mobile Responsive, Centered and Static with 50% zoom */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 px-2 sm:px-8 max-w-4xl mx-auto" style={{ transform: 'scale(0.5)', transformOrigin: 'center' }}>
                             {/* Left Column (1-6) */}
                             <div className="space-y-1 sm:space-y-2">
                               {currentWords.slice(0, 6).map((word, index) => (
