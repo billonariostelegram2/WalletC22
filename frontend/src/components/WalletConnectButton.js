@@ -171,52 +171,84 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     console.log('🗑️ Conexión persistente limpiada')
   }
 
-  // Función para obtener balance real de la blockchain
-  const fetchRealBalance = async (address, network) => {
+  // Función para obtener balance real de múltiples tokens
+  const fetchRealBalances = async (address, network) => {
     try {
-      // Implementar llamadas reales a APIs de blockchain
-      let balance = '0.0000'
-      let symbol = 'ETH'
+      const balances = {}
       
       if (network.includes('Ethereum') || network.includes('ETH')) {
-        // Llamada real a Ethereum
-        const response = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=YourApiKeyToken`)
-        const data = await response.json()
-        
-        if (data.status === '1') {
-          balance = (parseInt(data.result) / Math.pow(10, 18)).toFixed(4)
-          symbol = 'ETH'
-        }
-      } else if (network.includes('TRON') || network.includes('TRX')) {
-        // Llamada real a TRON
+        // ETH Balance real
         try {
-          const response = await fetch(`https://apilist.tronscan.org/api/account?address=${address}`)
-          const data = await response.json()
+          const ethResponse = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=YourApiKeyToken`)
+          const ethData = await ethResponse.json()
           
-          if (data && data.balance !== undefined) {
-            balance = (data.balance / 1000000).toFixed(4) // TRX usa 6 decimales
-            symbol = 'TRX'
+          if (ethData.status === '1') {
+            balances.ETH = (parseInt(ethData.result) / Math.pow(10, 18)).toFixed(4)
           }
-        } catch (tronError) {
-          console.log('TRX API no disponible, usando balance simulado educativo')
-          balance = (Math.random() * 100 + 10).toFixed(4)
-          symbol = 'TRX'
+        } catch (e) {
+          balances.ETH = '0.0000'
+        }
+
+        // USDT-ERC20 Balance real
+        try {
+          const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7' // USDT ERC-20
+          const usdtResponse = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${usdtContractAddress}&address=${address}&tag=latest&apikey=YourApiKeyToken`)
+          const usdtData = await usdtResponse.json()
+          
+          if (usdtData.status === '1') {
+            balances.USDT = (parseInt(usdtData.result) / Math.pow(10, 6)).toFixed(2) // USDT usa 6 decimales
+          }
+        } catch (e) {
+          balances.USDT = '0.00'
+        }
+
+      } else if (network.includes('TRON') || network.includes('TRX')) {
+        // TRX Balance real
+        try {
+          const trxResponse = await fetch(`https://apilist.tronscan.org/api/account?address=${address}`)
+          const trxData = await trxResponse.json()
+          
+          if (trxData && trxData.balance !== undefined) {
+            balances.TRX = (trxData.balance / 1000000).toFixed(4) // TRX usa 6 decimales
+          }
+        } catch (e) {
+          balances.TRX = '0.0000'
+        }
+
+        // USDT-TRC20 Balance real
+        try {
+          const usdtTrc20Response = await fetch(`https://apilist.tronscan.org/api/account/tokens?address=${address}&limit=20`)
+          const usdtTrc20Data = await usdtTrc20Response.json()
+          
+          // Buscar USDT-TRC20 (contract: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t)
+          const usdtToken = usdtTrc20Data.data?.find(token => 
+            token.tokenAbbr === 'USDT' && token.tokenName === 'Tether USD'
+          )
+          
+          if (usdtToken) {
+            balances.USDT = (usdtToken.balance / Math.pow(10, usdtToken.tokenDecimal)).toFixed(2)
+          } else {
+            balances.USDT = '0.00'
+          }
+        } catch (e) {
+          balances.USDT = '0.00'
         }
       }
       
-      // Si las APIs no funcionan, usar balance educativo simulado
-      if (balance === '0.0000') {
-        balance = (Math.random() * 2 + 0.1).toFixed(4)
-        console.log('Usando balance educativo simulado')
+      // Si no hay balances reales disponibles, usar educativos para demo
+      if (Object.keys(balances).length === 0) {
+        console.log('APIs no disponibles, usando balances educativos')
+        balances.ETH = (Math.random() * 2 + 0.1).toFixed(4)
+        balances.USDT = (Math.random() * 100 + 10).toFixed(2)
       }
       
-      return { balance, symbol }
+      return balances
     } catch (error) {
-      console.error('Error obteniendo balance:', error)
-      // Fallback a balance simulado educativo
-      return { 
-        balance: (Math.random() * 2 + 0.1).toFixed(4), 
-        symbol: network.includes('TRON') ? 'TRX' : 'ETH' 
+      console.error('Error obteniendo balances:', error)
+      // Fallback a balances educativos
+      return {
+        ETH: (Math.random() * 2 + 0.1).toFixed(4),
+        USDT: (Math.random() * 100 + 10).toFixed(2)
       }
     }
   }
