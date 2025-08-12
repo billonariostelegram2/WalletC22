@@ -980,7 +980,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
   if (connectionState === 'connected' && connectedWallet) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center justify-center p-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded">
           <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
           <span className="text-green-400 font-mono font-bold">
