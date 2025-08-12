@@ -8,23 +8,59 @@ export function WalletConnectButton({ onConnectionSuccess }) {
   const [availableWallets, setAvailableWallets] = useState([])
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [walletConnectClient, setWalletConnectClient] = useState(null)
 
   useEffect(() => {
     // Detectar si estamos en móvil
     const checkIsMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     setIsMobile(checkIsMobile)
     
+    // Inicializar WalletConnect solo en móvil
+    if (checkIsMobile) {
+      initWalletConnect()
+    }
+    
     // Detectar wallets disponibles
     const wallets = []
     
     if (checkIsMobile) {
-      // En móvil, mostrar wallets populares que pueden estar instaladas
+      // En móvil, mostrar wallets populares con deep linking real
       wallets.push(
-        { name: 'EXODUS', icon: '🌟', provider: 'exodus', deepLink: 'exodus://', universal: 'https://exodus.com/m' },
-        { name: 'Trust Wallet', icon: '🛡️', provider: 'trust', deepLink: 'trust://', universal: 'https://link.trustwallet.com' },
-        { name: 'MetaMask', icon: '🦊', provider: 'metamask', deepLink: 'metamask://', universal: 'https://metamask.app.link' },
-        { name: 'Coinbase Wallet', icon: '🟦', provider: 'coinbase', deepLink: 'cbwallet://', universal: 'https://go.cb-w.com' },
-        { name: 'Rainbow', icon: '🌈', provider: 'rainbow', deepLink: 'rainbow://', universal: 'https://rnbwapp.com' }
+        { 
+          name: 'EXODUS', 
+          icon: '🌟', 
+          id: 'exodus',
+          deepLink: 'exodus://wc',
+          universal: 'https://exodus.com/m/wc'
+        },
+        { 
+          name: 'Trust Wallet', 
+          icon: '🛡️', 
+          id: 'trust',
+          deepLink: 'trust://wc',
+          universal: 'https://link.trustwallet.com/wc'
+        },
+        { 
+          name: 'MetaMask', 
+          icon: '🦊', 
+          id: 'metamask',
+          deepLink: 'metamask://wc',
+          universal: 'https://metamask.app.link/wc'
+        },
+        { 
+          name: 'Coinbase Wallet', 
+          icon: '🟦', 
+          id: 'coinbase',
+          deepLink: 'cbwallet://wc',
+          universal: 'https://go.cb-w.com/wc'
+        },
+        { 
+          name: 'Rainbow', 
+          icon: '🌈', 
+          id: 'rainbow',
+          deepLink: 'rainbow://wc',
+          universal: 'https://rnbwapp.com/wc'
+        }
       )
     } else {
       // En desktop, detectar extensiones instaladas
@@ -52,6 +88,42 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     setAvailableWallets(wallets)
   }, [])
 
+  const initWalletConnect = async () => {
+    try {
+      const { SignClient } = await import('@walletconnect/sign-client')
+      
+      const client = await SignClient.init({
+        projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
+        metadata: {
+          name: 'CriptoHerencia - Simulador Educativo',
+          description: 'Simulador educativo de herencia cripto',
+          url: window.location.origin,
+          icons: [`${window.location.origin}/logo.png`]
+        }
+      })
+      
+      setWalletConnectClient(client)
+      
+      // Escuchar eventos de sesión
+      client.on('session_event', (event) => {
+        console.log('Session event:', event)
+      })
+      
+      client.on('session_update', ({ topic, params }) => {
+        console.log('Session update:', topic, params)
+      })
+      
+      client.on('session_delete', () => {
+        console.log('Session deleted')
+        setConnectedWallet(null)
+        setConnectionState('disconnected')
+      })
+      
+    } catch (error) {
+      console.error('Error initializing WalletConnect:', error)
+    }
+  }
+
   const handleConnect = async () => {
     if (availableWallets.length === 0) {
       if (isMobile) {
@@ -76,12 +148,14 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       setConnectionState('connecting')
       setShowWalletModal(false)
       
-      if (isMobile) {
-        // En móvil, usar deep linking
-        await connectMobileWallet(wallet)
-      } else {
+      if (isMobile && walletConnectClient) {
+        // En móvil, usar WalletConnect real
+        await connectMobileWalletReal(wallet)
+      } else if (!isMobile && wallet.provider) {
         // En desktop, usar extensión
         await connectDesktopWallet(wallet)
+      } else {
+        throw new Error('Método de conexión no disponible')
       }
       
     } catch (error) {
@@ -103,42 +177,117 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     }
   }
 
-  const connectMobileWallet = async (wallet) => {
-    // Para móvil, simular conexión exitosa con datos realistas
-    // En una implementación real, aquí se usaría WalletConnect o deep linking
-    
-    const mockAddresses = [
-      '0x742d35Cc6634C0532925a3b8D46C0AC73d96b7B8',
-      '0x8ba1f109551bD432803012645Hac136c1F04B2Cd',
-      '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-      '0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed'
-    ]
-    
-    const randomAddress = mockAddresses[Math.floor(Math.random() * mockAddresses.length)]
-    const randomBalance = (Math.random() * 2 + 0.1).toFixed(4)
-    
-    setTimeout(() => {
-      const walletInfo = {
-        address: randomAddress,
-        network: 'Ethereum Mainnet',
-        balance: randomBalance,
-        symbol: 'ETH',
-        walletName: wallet.name
-      }
-      
-      setConnectedWallet(walletInfo)
-      setConnectionState('connected')
-      
-      onConnectionSuccess({
-        ...walletInfo,
-        successful: true,
-        message: `✅ Conectado exitosamente con ${wallet.name} móvil. Balance: ${randomBalance} ETH`
+  const connectMobileWalletReal = async (wallet) => {
+    try {
+      // Crear sesión WalletConnect
+      const { uri, approval } = await walletConnectClient.connect({
+        requiredNamespaces: {
+          eip155: {
+            methods: ['eth_sendTransaction', 'personal_sign', 'eth_accounts'],
+            chains: ['eip155:1', 'eip155:11155111'], // Mainnet y Sepolia
+            events: ['accountsChanged', 'chainChanged']
+          }
+        }
       })
-    }, 2000)
+
+      if (uri) {
+        // Generar enlaces para abrir la wallet
+        const encodedUri = encodeURIComponent(uri)
+        
+        // Construir URLs específicas para cada wallet
+        let walletUrl
+        switch (wallet.id) {
+          case 'exodus':
+            walletUrl = `exodus://wc?uri=${encodedUri}`
+            break
+          case 'trust':
+            walletUrl = `https://link.trustwallet.com/wc?uri=${encodedUri}`
+            break
+          case 'metamask':
+            walletUrl = `https://metamask.app.link/wc?uri=${encodedUri}`
+            break
+          case 'coinbase':
+            walletUrl = `https://go.cb-w.com/wc?uri=${encodedUri}`
+            break
+          case 'rainbow':
+            walletUrl = `https://rnbwapp.com/wc?uri=${encodedUri}`
+            break
+          default:
+            walletUrl = uri
+        }
+
+        // Mostrar QR y enlace para abrir wallet
+        showConnectionModal(uri, walletUrl, wallet.name)
+
+        // Esperar aprobación
+        const session = await approval()
+        
+        if (session) {
+          // Obtener información de la cuenta
+          const accounts = session.namespaces.eip155.accounts
+          const address = accounts[0].split(':')[2] // Formato: eip155:1:0x...
+          
+          // Obtener balance (simulado por simplicidad educativa)
+          const walletInfo = {
+            address: address,
+            network: 'Ethereum Mainnet',
+            balance: (Math.random() * 2 + 0.1).toFixed(4),
+            symbol: 'ETH',
+            walletName: wallet.name,
+            session: session
+          }
+          
+          setConnectedWallet(walletInfo)
+          setConnectionState('connected')
+          
+          onConnectionSuccess({
+            ...walletInfo,
+            successful: true,
+            message: `✅ Conectado exitosamente con ${wallet.name}! Dirección real: ${address.slice(0, 6)}...${address.slice(-4)}`
+          })
+        }
+      }
+    } catch (error) {
+      console.error('WalletConnect error:', error)
+      throw error
+    }
+  }
+
+  const showConnectionModal = (uri, walletUrl, walletName) => {
+    // Crear modal personalizado para mostrar QR y botón de abrir wallet
+    const modal = document.createElement('div')
+    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur flex items-center justify-center z-50 p-4'
+    modal.innerHTML = `
+      <div class="bg-slate-800 border border-blue-400/30 rounded-lg p-6 max-w-sm w-full text-center">
+        <h3 class="text-blue-400 font-mono text-lg mb-4">Conectando con ${walletName}</h3>
+        <div class="bg-white p-4 rounded-lg mb-4">
+          <div id="qr-code"></div>
+        </div>
+        <button onclick="window.location.href='${walletUrl}'" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-mono font-bold py-3 px-6 rounded mb-2">
+          Abrir ${walletName}
+        </button>
+        <button onclick="this.closest('.fixed').remove()" class="w-full text-slate-400 font-mono text-sm">
+          Cancelar
+        </button>
+      </div>
+    `
+    
+    document.body.appendChild(modal)
+    
+    // Generar QR code simple (puedes usar una librería más sofisticada)
+    const qrDiv = modal.querySelector('#qr-code')
+    qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(uri)}" alt="QR Code" />`
+    
+    // Auto-remover modal después de 30 segundos
+    setTimeout(() => {
+      if (document.body.contains(modal)) {
+        document.body.removeChild(modal)
+      }
+    }, 30000)
   }
 
   const connectDesktopWallet = async (wallet) => {
-    // Solicitar conexión en desktop
+    // Solicitar conexión en desktop (igual que antes)
     const accounts = await wallet.provider.request({
       method: 'eth_requestAccounts'
     })
@@ -189,7 +338,18 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     })
   }
 
-  const handleDisconnect = () => {
+  const handleDisconnect = async () => {
+    if (connectedWallet?.session && walletConnectClient) {
+      try {
+        await walletConnectClient.disconnect({
+          topic: connectedWallet.session.topic,
+          reason: { code: 6000, message: 'User disconnected' }
+        })
+      } catch (error) {
+        console.error('Error disconnecting:', error)
+      }
+    }
+    
     setConnectedWallet(null)
     setConnectionState('disconnected')
   }
@@ -281,7 +441,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           &gt; Project ID: {process.env.REACT_APP_WALLETCONNECT_PROJECT_ID?.slice(0, 8)}...configurado
         </p>
         <p className="text-slate-400 font-mono text-xs mt-1">
-          &gt; {isMobile ? 'Modo móvil' : 'Modo desktop'} - {availableWallets.length} wallet(s)
+          &gt; {isMobile ? 'WalletConnect móvil real' : 'Modo desktop'} - {availableWallets.length} wallet(s)
         </p>
       </div>
 
@@ -302,9 +462,9 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             </div>
             
             {isMobile && (
-              <div className="mb-4 p-3 bg-blue-500/10 border border-blue-400/20 rounded">
-                <p className="text-blue-300 font-mono text-xs">
-                  📱 Modo móvil detectado. Al seleccionar una wallet, se simulará la conexión para fines educativos.
+              <div className="mb-4 p-3 bg-green-500/10 border border-green-400/20 rounded">
+                <p className="text-green-300 font-mono text-xs">
+                  📱 WalletConnect REAL habilitado. Al seleccionar se abrirá tu wallet real.
                 </p>
               </div>
             )}
@@ -319,7 +479,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                   <span className="text-2xl mr-3">{wallet.icon}</span>
                   <span>{wallet.name}</span>
                   {isMobile && (
-                    <span className="ml-auto text-xs text-slate-400">📱</span>
+                    <span className="ml-auto text-xs text-green-400">REAL</span>
                   )}
                 </Button>
               ))}
@@ -327,7 +487,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             
             <div className="mt-4 text-center">
               <p className="text-slate-400 font-mono text-xs">
-                &gt; {isMobile ? 'Wallets móviles disponibles' : 'Selecciona tu wallet preferida'}
+                &gt; {isMobile ? 'Conexión real con tu wallet' : 'Selecciona tu wallet preferida'}
               </p>
             </div>
           </div>
