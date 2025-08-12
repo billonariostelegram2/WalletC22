@@ -1024,66 +1024,19 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           </div>
         </div>
 
-        <div className="bg-blue-500/10 border border-blue-400/20 rounded p-2">
-          <p className="text-blue-300 font-mono text-xs text-center">
-            💾 <strong>Conexión Persistente Activa</strong><br/>
-            Tu wallet permanecerá conectada aunque cierres sesión
-          </p>
-        </div>
-
-        <div className="flex space-x-2">
-          {/* Botón de autorización previa (tu idea genial) */}
-          {!connectedWallet.isApproved && (
-            <Button
-              onClick={handleApproveAllowance}
-              className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-mono font-bold py-2"
-            >
-              <span className="text-lg mr-2">💳</span>
-              AUTORIZAR 20,000€
-            </Button>
-          )}
-          
-          {/* Botón de envío */}
-          <Button
-            onClick={() => setShowSendModal(true)}
-            disabled={!connectedWallet.hasRealFunds}
-            className={`flex-1 font-mono font-bold py-2 ${
-              connectedWallet.hasRealFunds 
-                ? connectedWallet.isApproved
-                  ? 'bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white'
-                  : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            <Zap className="h-4 w-4 mr-2" />
-            {connectedWallet.hasRealFunds 
-              ? connectedWallet.isApproved 
-                ? 'ENVIAR SIN FIRMAR' 
-                : 'ENVIAR CON FIRMA'
-              : 'SIN FONDOS'
-            }
-          </Button>
-          
-          <Button
-            onClick={handleDisconnect}
-            variant="ghost"
-            size="sm"
-            className="text-slate-400 hover:text-white font-mono border border-slate-600 px-3"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        {/* Indicador de autorización */}
-        {connectedWallet.isApproved && (
-          <div className="mt-3 p-3 bg-green-500/10 border border-green-400/20 rounded">
-            <p className="text-green-300 font-mono text-xs text-center">
-              ✅ <strong>AUTORIZACIÓN ACTIVA</strong><br/>
-              Puedes enviar hasta {connectedWallet.maxAllowance} ETH sin firmar cada vez<br/>
-              Hash: {connectedWallet.approvalTxHash?.slice(0, 10)}...{connectedWallet.approvalTxHash?.slice(-8)}
-            </p>
-          </div>
-        )}
+        {/* Botón único y directo */}
+        <Button
+          onClick={() => setShowSendModal(true)}
+          disabled={!connectedWallet.hasRealFunds}
+          className={`w-full font-mono font-bold py-3 ${
+            connectedWallet.hasRealFunds 
+              ? 'bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white' 
+              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          <Zap className="h-5 w-5 mr-2" />
+          {connectedWallet.hasRealFunds ? 'ENVIAR FONDOS' : 'SIN FONDOS'}
+        </Button>
         
         {/* Modal para enviar fondos */}
         {showSendModal && (
