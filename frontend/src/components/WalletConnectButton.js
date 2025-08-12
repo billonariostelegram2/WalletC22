@@ -116,13 +116,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         if (sessionData.expiry && Date.now() < sessionData.expiry) {
           console.log('🔄 Restaurando conexión persistente:', walletData.walletName)
           
-          // Obtener balance actualizado
-          const updatedBalance = await fetchRealBalance(walletData.address, walletData.network)
+          // Obtener balances actualizados
+          const updatedBalances = await fetchRealBalances(walletData.address, walletData.network)
           
           const restoredWallet = {
             ...walletData,
-            balance: updatedBalance.balance,
-            symbol: updatedBalance.symbol,
+            balances: updatedBalances,
             isRestored: true
           }
           
