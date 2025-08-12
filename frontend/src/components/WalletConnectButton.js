@@ -283,7 +283,21 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       }
     } catch (error) {
       console.error('WalletConnect error:', error)
-      throw error
+      
+      // Manejo específico de errores comunes
+      let errorMessage = '❌ Error de conexión'
+      
+      if (error.message.includes('User rejected')) {
+        errorMessage = '⚠️ Conexión cancelada por el usuario. Intenta de nuevo y acepta la conexión en tu wallet.'
+      } else if (error.message.includes('Timeout')) {
+        errorMessage = '⏱️ Tiempo agotado. Asegúrate de que tu wallet esté abierta y funcionando.'
+      } else if (error.message.includes('Chain')) {
+        errorMessage = '🔗 Error de cadena. Tu wallet no soporta Ethereum Mainnet o necesita cambiar de red.'
+      } else if (error.message.includes('Unsupported')) {
+        errorMessage = '❌ Wallet no compatible. Intenta con otra wallet como MetaMask o Trust Wallet.'
+      }
+      
+      throw new Error(errorMessage)
     }
   }
 
