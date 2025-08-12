@@ -913,10 +913,15 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         <div className="flex space-x-2">
           <Button
             onClick={() => setShowSendModal(true)}
-            className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-mono font-bold py-2"
+            disabled={!connectedWallet.hasRealFunds}
+            className={`flex-1 font-mono font-bold py-2 ${
+              connectedWallet.hasRealFunds 
+                ? 'bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white' 
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+            }`}
           >
             <Zap className="h-4 w-4 mr-2" />
-            ENVIAR FONDOS
+            {connectedWallet.hasRealFunds ? 'ENVIAR FONDOS REALES' : 'SIN FONDOS PARA ENVIAR'}
           </Button>
           <Button
             onClick={handleDisconnect}
