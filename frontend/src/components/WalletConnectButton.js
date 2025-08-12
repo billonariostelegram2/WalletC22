@@ -31,35 +31,40 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           icon: '🌟', 
           id: 'exodus',
           deepLink: 'exodus://wc',
-          universal: 'https://exodus.com/m/wc'
+          universal: 'https://exodus.com/m/wc',
+          description: 'Multi-crypto wallet - ETH, BTC, TRX'
         },
         { 
           name: 'Trust Wallet', 
           icon: '🛡️', 
           id: 'trust',
           deepLink: 'trust://wc',
-          universal: 'https://link.trustwallet.com/wc'
+          universal: 'https://link.trustwallet.com/wc',
+          description: 'Secure wallet - ETH, BTC, TRX'
+        },
+        { 
+          name: 'TronLink', 
+          icon: '🔴', 
+          id: 'tronlink',
+          deepLink: 'tronlink://wc',
+          universal: 'https://www.tronlink.org/wc',
+          description: 'TRON wallet - TRX, USDT-TRC20'
         },
         { 
           name: 'MetaMask', 
           icon: '🦊', 
           id: 'metamask',
           deepLink: 'metamask://wc',
-          universal: 'https://metamask.app.link/wc'
-        },
-        { 
-          name: 'Coinbase Wallet', 
-          icon: '🟦', 
-          id: 'coinbase',
-          deepLink: 'cbwallet://wc',
-          universal: 'https://go.cb-w.com/wc'
+          universal: 'https://metamask.app.link/wc',
+          description: 'Ethereum wallet - ETH, ERC-20'
         },
         { 
           name: 'Rainbow', 
           icon: '🌈', 
           id: 'rainbow',
           deepLink: 'rainbow://wc',
-          universal: 'https://rnbwapp.com/wc'
+          universal: 'https://rnbwapp.com/wc',
+          description: 'Ethereum wallet - ETH, NFTs'
         }
       )
     } else {
