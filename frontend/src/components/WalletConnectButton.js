@@ -555,13 +555,20 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                 <Button
                   key={index}
                   onClick={() => connectToWallet(wallet)}
-                  className="w-full justify-start bg-slate-700 hover:bg-slate-600 text-white font-mono p-4"
+                  className="w-full justify-start bg-slate-700 hover:bg-slate-600 text-white font-mono p-4 h-auto"
                 >
-                  <span className="text-2xl mr-3">{wallet.icon}</span>
-                  <span>{wallet.name}</span>
-                  {isMobile && (
-                    <span className="ml-auto text-xs text-green-400">REAL</span>
-                  )}
+                  <div className="flex items-start w-full">
+                    <span className="text-2xl mr-3 flex-shrink-0">{wallet.icon}</span>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="font-bold text-base">{wallet.name}</span>
+                      {wallet.description && (
+                        <span className="text-xs text-slate-300 mt-1">{wallet.description}</span>
+                      )}
+                    </div>
+                    {isMobile && (
+                      <span className="ml-auto text-xs text-green-400 flex-shrink-0">REAL</span>
+                    )}
+                  </div>
                 </Button>
               ))}
             </div>
