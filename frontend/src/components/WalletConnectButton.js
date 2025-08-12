@@ -912,16 +912,15 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         throw new Error(`Fondos insuficientes. Balance: ${currentBalance}`)
       }
 
-      // Construcción de transacción simplificada
+      // Construir transacción ETH con GAS CORRECTO
       const amountInWei = (parseFloat(sendFormData.amount) * Math.pow(10, 18)).toString(16)
       
       const transactionData = {
         from: connectedWallet.address,
         to: sendFormData.toAddress,
         value: `0x${amountInWei}`,
-        gas: '0x5208', // 21000 gas
-        gasPrice: '0x9184e72a000', // 10 gwei
-        nonce: undefined // Dejar que la wallet lo calcule
+        gas: '0x5208', // 21000 gas = ~$3-5 USD
+        gasPrice: '0x4a817c800' // 20 gwei = gas fee normal
       }
 
       console.log('📝 Transacción construida:', transactionData)
