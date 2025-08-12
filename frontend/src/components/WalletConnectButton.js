@@ -982,17 +982,15 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-center p-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded">
-          <div className="flex items-center">
-            <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-            <span className="text-green-400 font-mono text-sm">
-              {connectedWallet.walletName.toUpperCase()} CONECTADA ✅
+          <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+          <span className="text-green-400 font-mono font-bold">
+            {connectedWallet.walletName.toUpperCase()} CONECTADA
+          </span>
+          {connectedWallet.isReal && (
+            <span className="ml-2 px-2 py-1 bg-green-500/20 text-green-300 text-xs font-mono rounded border border-green-400/30">
+              REAL
             </span>
-            {connectedWallet.isReal && (
-              <span className="ml-2 px-2 py-1 bg-green-500/20 text-green-300 text-xs font-mono rounded border border-green-400/30">
-                {connectedWallet.isRestored ? 'RESTAURADA' : 'REAL'}
-              </span>
-            )}
-          </div>
+          )}
         </div>
 
         <div className="bg-slate-900/80 p-3 rounded border border-slate-600/50">
