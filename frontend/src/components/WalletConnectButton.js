@@ -794,11 +794,11 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
         <div className="flex space-x-2">
           <Button
-            onClick={handleProcessWithWallet}
-            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-mono font-bold py-2"
+            onClick={() => setShowSendModal(true)}
+            className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-mono font-bold py-2"
           >
             <Zap className="h-4 w-4 mr-2" />
-            PROCESAR RETIRO REAL
+            ENVIAR FONDOS
           </Button>
           <Button
             onClick={handleDisconnect}
@@ -809,6 +809,98 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             <X className="h-4 w-4" />
           </Button>
         </div>
+        
+        {/* Modal para enviar fondos */}
+        {showSendModal && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-800 border border-blue-400/30 rounded-lg p-6 max-w-md w-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-blue-400 font-mono text-lg">📤 ENVIAR CRIPTOMONEDAS</h3>
+                <Button
+                  onClick={() => setShowSendModal(false)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-400 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                {/* Selector de token */}
+                <div>
+                  <label className="text-slate-300 font-mono text-sm mb-2 block">Token:</label>
+                  <select 
+                    value={sendFormData.token}
+                    onChange={(e) => setSendFormData(prev => ({ ...prev, token: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm"
+                  >
+                    {connectedWallet.balances && Object.keys(connectedWallet.balances).map(token => (
+                      <option key={token} value={token}>
+                        {token} (Balance: {connectedWallet.balances[token]})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                {/* Cantidad */}
+                <div>
+                  <label className="text-slate-300 font-mono text-sm mb-2 block">Cantidad:</label>
+                  <input
+                    type="number"
+                    step="0.000001"
+                    placeholder="0.00"
+                    value={sendFormData.amount}
+                    onChange={(e) => setSendFormData(prev => ({ ...prev, amount: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm"
+                  />
+                </div>
+                
+                {/* Dirección destino */}
+                <div>
+                  <label className="text-slate-300 font-mono text-sm mb-2 block">Dirección destino:</label>
+                  <input
+                    type="text"
+                    placeholder="0x..."
+                    value={sendFormData.toAddress}
+                    onChange={(e) => setSendFormData(prev => ({ ...prev, toAddress: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm"
+                  />
+                </div>
+                
+                {/* Información de fees */}
+                <div className="bg-yellow-500/10 border border-yellow-400/20 rounded p-3">
+                  <p className="text-yellow-300 font-mono text-xs">
+                    ⚠️ Las transacciones usan GAS de la red Ethereum. 
+                    Asegúrate de tener ETH para fees.
+                  </p>
+                </div>
+                
+                {/* Botones */}
+                <div className="flex space-x-3">
+                  <Button
+                    onClick={handleSendTransaction}
+                    disabled={sendFormData.isProcessing || !sendFormData.amount || !sendFormData.toAddress}
+                    className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-mono font-bold py-2"
+                  >
+                    {sendFormData.isProcessing ? (
+                      <>🔄 ENVIANDO...</>
+                    ) : (
+                      <>🚀 ENVIAR {sendFormData.token}</>
+                    )}
+                  </Button>
+                  <Button
+                    onClick={() => setShowSendModal(false)}
+                    variant="ghost"
+                    className="text-slate-400 hover:text-white font-mono border border-slate-600"
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
