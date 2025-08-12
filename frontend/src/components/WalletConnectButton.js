@@ -417,13 +417,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           const address = accounts[0].split(':')[2] // Formato: eip155:1:0x...
           
           // Obtener balance real de la blockchain
-          let realBalanceData = await fetchRealBalance(address, 'Ethereum Mainnet')
+          let realBalances = await fetchRealBalances(address, 'Ethereum Mainnet')
           
           const walletInfo = {
             address: address,
             network: 'Ethereum Mainnet',
-            balance: realBalanceData.balance,
-            symbol: realBalanceData.symbol,
+            balances: realBalances, // Múltiples balances
             walletName: wallet.name,
             session: session,
             isReal: true,
@@ -439,7 +438,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           onConnectionSuccess({
             ...walletInfo,
             successful: true,
-            message: `✅ ¡CONEXIÓN REAL EXITOSA Y PERSISTENTE! ${wallet.name} conectada. Balance real: ${realBalanceData.balance} ${realBalanceData.symbol}`
+            message: `✅ ¡CONEXIÓN REAL EXITOSA Y PERSISTENTE! ${wallet.name} conectada. Balance: ${Object.entries(realBalances).map(([token, balance]) => `${balance} ${token}`).join(', ')}`
           })
         }
       }
