@@ -545,8 +545,13 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       }
     }
     
+    // Limpiar conexión persistente
+    clearPersistedConnection()
+    
     setConnectedWallet(null)
     setConnectionState('disconnected')
+    
+    console.log('🔌 Wallet desconectada completamente')
   }
 
   const handleProcessWithWallet = () => {
