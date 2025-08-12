@@ -10,6 +10,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
   const [isMobile, setIsMobile] = useState(false)
   const [walletConnectClient, setWalletConnectClient] = useState(null)
 
+  // Claves para localStorage
+  const STORAGE_KEYS = {
+    CONNECTED_WALLET: 'walletconnect_connected_wallet',
+    SESSION_DATA: 'walletconnect_session_data'
+  }
+
   useEffect(() => {
     // Detectar si estamos en móvil
     const checkIsMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
@@ -19,6 +25,9 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     if (checkIsMobile) {
       initWalletConnect()
     }
+    
+    // Restaurar conexión persistente
+    restorePersistedConnection()
     
     // Detectar wallets disponibles
     const wallets = []
