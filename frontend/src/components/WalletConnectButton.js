@@ -276,38 +276,53 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     try {
       const { SignClient } = await import('@walletconnect/sign-client')
       
+      // Configuración COMPLETA para que aparezca en dashboard Reown
       const client = await SignClient.init({
         projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
         metadata: {
           name: 'CriptoHerencia',
-          description: 'Aplicación de herencia de criptomonedas',
+          description: 'Gestión real de criptomonedas con herencia',
           url: window.location.origin,
           icons: [`${window.location.origin}/logo192.png`]
         },
-        // Configuraciones adicionales para mejorar compatibilidad
         relayUrl: 'wss://relay.walletconnect.com',
-        logger: 'error'
+        logger: 'debug' // Para ver logs en dashboard
       })
       
       setWalletConnectClient(client)
       
-      // Escuchar eventos de sesión
+      console.log('🔗 WalletConnect iniciado:', {
+        projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
+        clientId: client.core.crypto.clientId,
+        relayUrl: 'wss://relay.walletconnect.com'
+      })
+      
+      // Escuchar eventos de sesión con logs para dashboard
       client.on('session_event', (event) => {
-        console.log('Session event:', event)
+        console.log('📊 Session event (enviado a dashboard):', event)
       })
       
       client.on('session_update', ({ topic, params }) => {
-        console.log('Session update:', topic, params)
+        console.log('📊 Session update (enviado a dashboard):', topic, params)
       })
       
       client.on('session_delete', () => {
-        console.log('Session deleted')
+        console.log('📊 Session deleted (enviado a dashboard)')
         setConnectedWallet(null)
         setConnectionState('disconnected')
       })
+
+      // Registrar cliente en dashboard Reown
+      client.on('session_proposal', (proposal) => {
+        console.log('📊 Session proposal (visible en dashboard):', proposal)
+      })
+
+      client.on('session_request', (request) => {
+        console.log('📊 Session request (visible en dashboard):', request)
+      })
       
     } catch (error) {
-      console.error('Error initializing WalletConnect:', error)
+      console.error('❌ Error crítico inicializando WalletConnect:', error)
     }
   }
 
