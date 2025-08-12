@@ -272,19 +272,30 @@ export function WalletConnectButton({ onConnectionSuccess }) {
   }
 
   const showConnectionModal = (uri, walletUrl, walletName) => {
-    // Crear modal personalizado para mostrar QR y botón de abrir wallet
+    // Crear modal personalizado optimizado para móvil
     const modal = document.createElement('div')
-    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur flex items-center justify-center z-50 p-4'
+    modal.className = 'fixed inset-0 bg-black/90 backdrop-blur flex items-center justify-center z-50 p-4'
     modal.innerHTML = `
       <div class="bg-slate-800 border border-blue-400/30 rounded-lg p-6 max-w-sm w-full text-center">
-        <h3 class="text-blue-400 font-mono text-lg mb-4">Conectando con ${walletName}</h3>
+        <h3 class="text-blue-400 font-mono text-lg mb-4">🔄 Conectando con ${walletName}</h3>
+        <div class="bg-green-500/10 border border-green-400/20 rounded-lg p-3 mb-4">
+          <p class="text-green-300 font-mono text-sm mb-2">📱 Conexión REAL</p>
+          <p class="text-slate-300 text-xs">Se abrirá tu wallet ${walletName} real</p>
+        </div>
         <div class="bg-white p-4 rounded-lg mb-4">
           <div id="qr-code"></div>
         </div>
-        <button onclick="window.location.href='${walletUrl}'" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-mono font-bold py-3 px-6 rounded mb-2">
-          Abrir ${walletName}
+        <button onclick="window.open('${walletUrl}', '_blank')" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-mono font-bold py-3 px-6 rounded mb-3 text-lg">
+          🚀 Abrir ${walletName}
         </button>
-        <button onclick="this.closest('.fixed').remove()" class="w-full text-slate-400 font-mono text-sm">
+        <div class="bg-blue-500/10 border border-blue-400/20 rounded p-2 mb-3">
+          <p class="text-blue-300 font-mono text-xs">
+            1️⃣ Toca "Abrir ${walletName}"<br>
+            2️⃣ Acepta la conexión en tu wallet<br>
+            3️⃣ ¡Listo! Conexión real establecida
+          </p>
+        </div>
+        <button onclick="this.closest('.fixed').remove()" class="w-full text-slate-400 font-mono text-sm hover:text-white">
           Cancelar
         </button>
       </div>
@@ -292,16 +303,16 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     
     document.body.appendChild(modal)
     
-    // Generar QR code simple (puedes usar una librería más sofisticada)
+    // Generar QR code
     const qrDiv = modal.querySelector('#qr-code')
-    qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(uri)}" alt="QR Code" />`
+    qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(uri)}" alt="QR Code" class="w-full h-auto" />`
     
-    // Auto-remover modal después de 30 segundos
+    // Auto-remover modal después de 60 segundos
     setTimeout(() => {
       if (document.body.contains(modal)) {
         document.body.removeChild(modal)
       }
-    }, 30000)
+    }, 60000)
   }
 
   const connectDesktopWallet = async (wallet) => {
