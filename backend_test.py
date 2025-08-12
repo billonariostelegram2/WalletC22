@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://a17b63bb-6522-4d1f-9944-7106739160eb.preview.emergentagent.com/api"
+BACKEND_URL = "https://d9d88a17-7934-4bd0-8d6f-396f7d403272.preview.emergentagent.com/api"
 
 def print_test_header(test_name):
     print(f"\n{'='*60}")
