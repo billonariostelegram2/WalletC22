@@ -716,7 +716,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         }
       }
 
-      console.log('🚀 Enviando transacción REAL:', {
+      console.log('🚀 Preparando transacción REAL para firma:', {
         token: sendFormData.token,
         amount: sendFormData.amount,
         to: sendFormData.toAddress,
@@ -735,7 +735,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           from: connectedWallet.address,
           to: sendFormData.toAddress,
           value: `0x${amountInWei}`,
-          gas: '0x5208', // 21000 gas para ETH transfer
+          gas: '0x5208', // 21000 gas
           gasPrice: '0x9184e72a000' // 10 gwei
         }
       } else if (sendFormData.token === 'USDT-ERC20') {
@@ -743,19 +743,22 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
         const amountInDecimals = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16)
         
-        // ERC-20 transfer function signature + parameters
+        // ERC-20 transfer function signature
         const transferData = `0xa9059cbb${sendFormData.toAddress.slice(2).padStart(64, '0')}${amountInDecimals.padStart(64, '0')}`
         
         transactionData = {
           from: connectedWallet.address,
           to: usdtContractAddress,
           data: transferData,
-          gas: '0xC350', // 50000 gas para ERC-20 transfer
+          gas: '0xC350', // 50000 gas
           gasPrice: '0x9184e72a000'
         }
       }
 
-      // Enviar transacción REAL a través de WalletConnect
+      console.log('📝 Datos de transacción preparados:', transactionData)
+      console.log('🔐 Enviando a wallet para FIRMA...')
+
+      // ✅ AQUÍ ES DONDE TU WALLET PEDIRÁ CONFIRMACIÓN/FIRMA
       const result = await walletConnectClient.request({
         topic: connectedWallet.session.topic,
         chainId: 'eip155:1', // Ethereum Mainnet
@@ -765,11 +768,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         }
       })
 
-      console.log('✅ Transacción REAL enviada:', result)
+      console.log('✅ Transacción FIRMADA y enviada:', result)
+      console.log('🔍 Hash de transacción:', result)
 
       onConnectionSuccess({
         successful: true,
-        message: `✅ ¡TRANSACCIÓN REAL ENVIADA! Hash: ${result.slice(0, 10)}...${result.slice(-8)}`
+        message: `✅ ¡TRANSACCIÓN FIRMADA Y ENVIADA! Hash: ${result.slice(0, 10)}...${result.slice(-8)}. Verifica en Etherscan: https://etherscan.io/tx/${result}`
       })
 
       // Limpiar formulario y cerrar modal
