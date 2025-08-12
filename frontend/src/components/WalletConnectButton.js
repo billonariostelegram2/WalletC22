@@ -383,16 +383,27 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
   const connectMobileWalletReal = async (wallet) => {
     try {
-      // Configuración ULTRA SIMPLIFICADA para máxima compatibilidad
+      // Configuración para múltiples redes (no solo Ethereum)
       const { uri, approval } = await walletConnectClient.connect({
         requiredNamespaces: {
           eip155: {
             methods: ['eth_sendTransaction', 'personal_sign'],
-            chains: ['eip155:1'], // Solo Ethereum Mainnet
+            chains: ['eip155:1'], // Ethereum Mainnet
+            events: ['accountsChanged', 'chainChanged']
+          }
+        },
+        optionalNamespaces: {
+          eip155: {
+            methods: ['eth_sendTransaction', 'personal_sign', 'eth_getBalance'],
+            chains: [
+              'eip155:56',    // BSC Mainnet
+              'eip155:137',   // Polygon Mainnet  
+              'eip155:43114', // Avalanche
+              'eip155:250'    // Fantom
+            ],
             events: ['accountsChanged', 'chainChanged']
           }
         }
-        // Sin optionalNamespaces para evitar conflictos
       })
 
       if (uri) {
