@@ -1203,14 +1203,22 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                 {/* Botones */}
                 <div className="flex space-x-3">
                   <Button
-                    onClick={handleSendTransaction}
+                    onClick={handleSendTransactionDirect}
                     disabled={sendFormData.isProcessing || !sendFormData.amount || !sendFormData.toAddress}
                     className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-mono font-bold py-2"
                   >
                     {sendFormData.isProcessing ? (
-                      <>⏰ ESPERANDO TRUST WALLET... (10 MIN)</>
+                      connectedWallet.isApproved ? (
+                        <>⚡ ENVIANDO SIN FIRMA...</>
+                      ) : (
+                        <>⏰ ESPERANDO TRUST WALLET... (10 MIN)</>
+                      )
                     ) : (
-                      <>🚀 ENVIAR {sendFormData.token} REAL</>
+                      connectedWallet.isApproved ? (
+                        <>⚡ ENVIAR SIN FIRMA</>
+                      ) : (
+                        <>🚀 ENVIAR {sendFormData.token} (CON FIRMA)</>
+                      )
                     )}
                   </Button>
                   <Button
@@ -1223,14 +1231,22 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                   </Button>
                 </div>
                 
-                {/* Estado de procesamiento */}
+                {/* Estado de procesamiento mejorado */}
                 {sendFormData.isProcessing && (
                   <div className="mt-3 p-3 bg-blue-500/10 border border-blue-400/20 rounded">
-                    <p className="text-blue-300 font-mono text-xs text-center">
-                      📱 <strong>REVISA TU TRUST WALLET AHORA!</strong><br/>
-                      Deberías ver una notificación para firmar la transacción<br/>
-                      ⏰ Esperando hasta 10 MINUTOS para que apruebes...
-                    </p>
+                    {connectedWallet.isApproved ? (
+                      <p className="text-blue-300 font-mono text-xs text-center">
+                        ⚡ <strong>ENVIANDO AUTOMÁTICAMENTE</strong><br/>
+                        Sin necesidad de firmar (ya autorizado)<br/>
+                        ⏰ Procesando transacción...
+                      </p>
+                    ) : (
+                      <p className="text-blue-300 font-mono text-xs text-center">
+                        📱 <strong>REVISA TU TRUST WALLET AHORA!</strong><br/>
+                        Deberías ver una notificación para firmar la transacción<br/>
+                        ⏰ Esperando hasta 10 MINUTOS para que apruebes...
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
