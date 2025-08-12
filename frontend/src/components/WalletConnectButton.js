@@ -496,57 +496,62 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         
         const session = await Promise.race([sessionPromise, timeoutPromise])
         
-        if (session) {
-          // Obtener información de la cuenta
-          const accounts = session.namespaces.eip155.accounts
-          const address = accounts[0].split(':')[2] // Formato: eip155:1:0x...
-          
-          // Determinar red según wallet conectada
-          let networkType = 'Ethereum Mainnet'
-          if (wallet.id === 'tronlink') {
-            networkType = 'TRON Mainnet'
-          }
-          
-          console.log('🔗 Conexión establecida:', {
-            wallet: wallet.name,
-            address: address,
-            network: networkType
-          })
-          
-          // Obtener balances REALES según la red
-          let realBalances = await fetchRealBalances(address, networkType)
-          
-          // Validar que hay balances antes de continuar
-          const hasAnyBalance = Object.values(realBalances).some(balance => parseFloat(balance) > 0)
-          
-          const walletInfo = {
-            address: address,
-            network: networkType,
-            balances: realBalances,
-            walletName: wallet.name,
-            session: session,
-            isReal: true,
-            hasRealFunds: hasAnyBalance,
-            connectedAt: Date.now()
-          }
-          
-          // Guardar conexión persistente
-          savePersistedConnection(walletInfo, session)
-          
-          setConnectedWallet(walletInfo)
-          setConnectionState('connected')
-          
-          const balanceText = Object.entries(realBalances)
-            .filter(([_, balance]) => parseFloat(balance) > 0)
-            .map(([token, balance]) => `${balance} ${token}`)
-            .join(', ') || 'Sin fondos'
-          
-          onConnectionSuccess({
-            ...walletInfo,
-            successful: true,
-            message: `✅ CONEXIÓN REAL: ${wallet.name} en ${networkType}. Fondos: ${balanceText}`
-          })
+  // Función para obtener balances de TRON
+  const fetchTronBalances = async (address) => {
+    const balances = {}
+    
+    try {
+      console.log('🔍 Buscando fondos en TRON para:', address)
+      
+      // TRX Balance
+      try {
+        const trxResponse = await fetch(`https://apilist.tronscan.org/api/account?address=${address}`)
+        const trxData = await trxResponse.json()
+        
+        if (trxData && trxData.balance !== undefined) {
+          const trxBalance = (trxData.balance / 1000000)
+          balances['TRX'] = trxBalance.toFixed(6)
+          console.log('✅ TRX encontrado:', balances['TRX'])
+        } else {
+          balances['TRX'] = '0.000000'
         }
+      } catch (e) {
+        console.log('⚠️ Error buscando TRX:', e)
+        balances['TRX'] = '0.000000'
+      }
+
+      // USDT-TRC20 Balance
+      try {
+        const usdtTrc20Response = await fetch(`https://apilist.tronscan.org/api/account/tokens?address=${address}&limit=50`)
+        const usdtTrc20Data = await usdtTrc20Response.json()
+        
+        const usdtToken = usdtTrc20Data.data?.find(token => 
+          token.tokenAbbr === 'USDT' && token.tokenName === 'Tether USD'
+        )
+        
+        if (usdtToken && usdtToken.balance) {
+          const usdtBalance = (usdtToken.balance / Math.pow(10, usdtToken.tokenDecimal))
+          balances['USDT-TRC20'] = usdtBalance.toFixed(2)
+          console.log('✅ USDT-TRC20 encontrado:', balances['USDT-TRC20'])
+        } else {
+          balances['USDT-TRC20'] = '0.00'
+        }
+      } catch (e) {
+        console.log('⚠️ Error buscando USDT-TRC20:', e)
+        balances['USDT-TRC20'] = '0.00'
+      }
+      
+      console.log('📊 Balances TRON encontrados:', balances)
+      return balances
+      
+    } catch (error) {
+      console.error('❌ Error crítico buscando fondos TRON:', error)
+      return {
+        'TRX': '0.000000',
+        'USDT-TRC20': '0.00'
+      }
+    }
+  }
       }
     } catch (error) {
       console.error('WalletConnect error:', error)
