@@ -614,17 +614,103 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     }
   }
 
-  const handleProcessWithWallet = () => {
-    if (connectedWallet) {
-      const hasBalance = parseFloat(connectedWallet.balance) > 0
+  const [showSendModal, setShowSendModal] = useState(false)
+  const [sendFormData, setSendFormData] = useState({
+    token: 'ETH',
+    amount: '',
+    toAddress: '',
+    isProcessing: false
+  })
+
+  const handleSendTransaction = async () => {
+    if (!connectedWallet?.session || !walletConnectClient) {
+      alert('No hay wallet conectada')
+      return
+    }
+
+    try {
+      setSendFormData(prev => ({ ...prev, isProcessing: true }))
+
+      // Validar campos
+      if (!sendFormData.amount || !sendFormData.toAddress) {
+        alert('Por favor completa todos los campos')
+        return
+      }
+
+      // Construir transacción según el token
+      let transactionData
+
+      if (sendFormData.token === 'ETH') {
+        // Transacción ETH
+        const amountInWei = (parseFloat(sendFormData.amount) * Math.pow(10, 18)).toString(16)
+        
+        transactionData = {
+          from: connectedWallet.address,
+          to: sendFormData.toAddress,
+          value: `0x${amountInWei}`,
+          gas: '0x5208', // 21000 gas para ETH transfer
+          gasPrice: '0x9184e72a000' // 10 gwei
+        }
+      } else if (sendFormData.token === 'USDT' && connectedWallet.network.includes('Ethereum')) {
+        // Transacción USDT-ERC20
+        const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+        const amountInDecimals = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16) // USDT usa 6 decimales
+        
+        // ERC-20 transfer function signature + parameters
+        const transferData = `0xa9059cbb${sendFormData.toAddress.slice(2).padStart(64, '0')}${amountInDecimals.padStart(64, '0')}`
+        
+        transactionData = {
+          from: connectedWallet.address,
+          to: usdtContractAddress,
+          data: transferData,
+          gas: '0xC350', // 50000 gas para ERC-20 transfer
+          gasPrice: '0x9184e72a000'
+        }
+      }
+
+      // Enviar transacción a través de WalletConnect
+      const result = await walletConnectClient.request({
+        topic: connectedWallet.session.topic,
+        chainId: 'eip155:1', // Ethereum Mainnet
+        request: {
+          method: 'eth_sendTransaction',
+          params: [transactionData]
+        }
+      })
+
+      console.log('Transacción enviada:', result)
+
+      // Mostrar resultado exitoso
+      onConnectionSuccess({
+        successful: true,
+        message: `✅ Transacción enviada exitosamente! Hash: ${result.slice(0, 10)}...${result.slice(-8)}`
+      })
+
+      // Limpiar formulario y cerrar modal
+      setSendFormData({ token: 'ETH', amount: '', toAddress: '', isProcessing: false })
+      setShowSendModal(false)
+
+      // Actualizar balances después de la transacción
+      setTimeout(() => {
+        handleRefreshBalance()
+      }, 2000)
+
+    } catch (error) {
+      console.error('Error enviando transacción:', error)
+      
+      let errorMessage = 'Error enviando transacción'
+      if (error.message.includes('User rejected')) {
+        errorMessage = 'Transacción cancelada por el usuario'
+      } else if (error.message.includes('insufficient funds')) {
+        errorMessage = 'Fondos insuficientes'
+      }
       
       onConnectionSuccess({
-        ...connectedWallet,
-        successful: true,
-        message: hasBalance 
-          ? `✅ Retiro procesado correctamente usando ${connectedWallet.walletName} (${connectedWallet.balance} ${connectedWallet.symbol})`
-          : `⚠️ Wallet conectada pero sin fondos (${connectedWallet.balance} ${connectedWallet.symbol})`
+        successful: false,
+        message: `❌ ${errorMessage}`
       })
+    } finally {
+      setSendFormData(prev => ({ ...prev, isProcessing: false }))
     }
   }
 
