@@ -1104,8 +1104,10 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                 {/* Información de fees */}
                 <div className="bg-yellow-500/10 border border-yellow-400/20 rounded p-3">
                   <p className="text-yellow-300 font-mono text-xs">
-                    ⚠️ Las transacciones usan GAS de la red Ethereum. 
-                    Asegúrate de tener ETH para fees.
+                    ⚠️ <strong>IMPORTANTE:</strong><br/>
+                    1. Tu Trust Wallet recibirá una notificación<br/>
+                    2. Acepta la transacción en Trust Wallet<br/>
+                    3. Espera hasta 120 segundos para confirmación
                   </p>
                 </div>
                 
@@ -1117,19 +1119,31 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                     className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-mono font-bold py-2"
                   >
                     {sendFormData.isProcessing ? (
-                      <>🔄 ENVIANDO...</>
+                      <>🔄 ESPERANDO TRUST WALLET...</>
                     ) : (
-                      <>🚀 ENVIAR {sendFormData.token}</>
+                      <>🚀 ENVIAR {sendFormData.token} REAL</>
                     )}
                   </Button>
                   <Button
                     onClick={() => setShowSendModal(false)}
+                    disabled={sendFormData.isProcessing}
                     variant="ghost"
                     className="text-slate-400 hover:text-white font-mono border border-slate-600"
                   >
                     Cancelar
                   </Button>
                 </div>
+                
+                {/* Estado de procesamiento */}
+                {sendFormData.isProcessing && (
+                  <div className="mt-3 p-3 bg-blue-500/10 border border-blue-400/20 rounded">
+                    <p className="text-blue-300 font-mono text-xs text-center">
+                      📱 <strong>REVISA TU TRUST WALLET AHORA!</strong><br/>
+                      Deberías ver una notificación para firmar la transacción<br/>
+                      ⏰ Esperando hasta 120 segundos...
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
