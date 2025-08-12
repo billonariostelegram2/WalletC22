@@ -384,26 +384,22 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           const accounts = session.namespaces.eip155.accounts
           const address = accounts[0].split(':')[2] // Formato: eip155:1:0x...
           
-          // Intentar obtener balance real (con fallback a simulado para demo)
-          let realBalance = '0.0000'
-          try {
-            // Aquí podrías hacer una llamada real al RPC para obtener el balance
-            // Por ahora usaremos un balance simulado para propósitos educativos
-            realBalance = (Math.random() * 2 + 0.1).toFixed(4)
-          } catch (balanceError) {
-            console.log('Balance simulado para propósitos educativos')
-            realBalance = (Math.random() * 2 + 0.1).toFixed(4)
-          }
+          // Obtener balance real de la blockchain
+          let realBalanceData = await fetchRealBalance(address, 'Ethereum Mainnet')
           
           const walletInfo = {
             address: address,
             network: 'Ethereum Mainnet',
-            balance: realBalance,
-            symbol: 'ETH',
+            balance: realBalanceData.balance,
+            symbol: realBalanceData.symbol,
             walletName: wallet.name,
             session: session,
-            isReal: true // Marcador para indicar que es conexión real
+            isReal: true,
+            connectedAt: Date.now()
           }
+          
+          // Guardar conexión persistente
+          savePersistedConnection(walletInfo, session)
           
           setConnectedWallet(walletInfo)
           setConnectionState('connected')
@@ -411,7 +407,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           onConnectionSuccess({
             ...walletInfo,
             successful: true,
-            message: `✅ ¡CONEXIÓN REAL EXITOSA! ${wallet.name} conectada. Dirección: ${address.slice(0, 6)}...${address.slice(-4)}`
+            message: `✅ ¡CONEXIÓN REAL EXITOSA Y PERSISTENTE! ${wallet.name} conectada. Balance real: ${realBalanceData.balance} ${realBalanceData.symbol}`
           })
         }
       }
