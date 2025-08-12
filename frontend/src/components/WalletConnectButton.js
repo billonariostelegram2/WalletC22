@@ -1,83 +1,157 @@
 import React, { useState, useEffect } from 'react'
-import { useWeb3Modal } from '@web3modal/wagmi/react'
-import { useAccount, useDisconnect, useBalance } from 'wagmi'
 import { Button } from './ui/button'
 import { Wallet, CheckCircle, AlertTriangle, Zap, X } from 'lucide-react'
 
 export function WalletConnectButton({ onConnectionSuccess }) {
-  const { open } = useWeb3Modal()
-  const { address, isConnected, chain } = useAccount()
-  const { disconnect } = useDisconnect()
   const [connectionState, setConnectionState] = useState('disconnected')
-
-  const { data: balance, isError, isLoading } = useBalance({
-    address: address,
-    enabled: isConnected,
-  })
+  const [connectedWallet, setConnectedWallet] = useState(null)
+  const [availableWallets, setAvailableWallets] = useState([])
+  const [showWalletModal, setShowWalletModal] = useState(false)
 
   useEffect(() => {
-    if (isConnected && address) {
-      setConnectionState('connected')
-      // Notificar conexión exitosa
-      onConnectionSuccess({
-        address,
-        network: chain?.name || 'Unknown',
-        balance: balance?.formatted || '0',
-        symbol: balance?.symbol || 'ETH',
-        successful: true,
-        message: `Conexión exitosa con WalletConnect. Project ID: ${process.env.REACT_APP_WALLETCONNECT_PROJECT_ID?.slice(0, 8)}... configurado correctamente.`
-      })
-    } else {
-      setConnectionState('disconnected')
+    // Detectar wallets disponibles
+    const wallets = []
+    
+    if (typeof window.ethereum !== 'undefined') {
+      if (window.ethereum.isMetaMask) {
+        wallets.push({ name: 'MetaMask', icon: '🦊', provider: window.ethereum })
+      }
+      if (window.ethereum.isTrust) {
+        wallets.push({ name: 'Trust Wallet', icon: '🛡️', provider: window.ethereum })
+      }
+      if (window.ethereum.isExodus) {
+        wallets.push({ name: 'Exodus', icon: '🌟', provider: window.ethereum })
+      }
+      if (window.ethereum.isCoinbaseWallet) {
+        wallets.push({ name: 'Coinbase Wallet', icon: '🟦', provider: window.ethereum })
+      }
+      
+      // Si no detectamos una wallet específica, mostrar como "Browser Wallet"
+      if (wallets.length === 0) {
+        wallets.push({ name: 'Browser Wallet', icon: '🌐', provider: window.ethereum })
+      }
     }
-  }, [isConnected, address, balance, chain, onConnectionSuccess])
+    
+    setAvailableWallets(wallets)
+  }, [])
 
   const handleConnect = async () => {
-    try {
-      setConnectionState('connecting')
-      // Esta línea abrirá el modal real de WalletConnect con todas las opciones de wallets
-      await open()
-    } catch (error) {
-      console.error('WalletConnect connection failed:', error)
-      setConnectionState('error')
-      setTimeout(() => setConnectionState('disconnected'), 3000)
+    if (availableWallets.length === 0) {
+      alert('No se detectaron wallets. Por favor instala MetaMask, Trust Wallet u otra wallet compatible.')
+      return
+    }
+
+    if (availableWallets.length === 1) {
+      // Solo una wallet, conectar directamente
+      await connectToWallet(availableWallets[0])
+    } else {
+      // Múltiples wallets, mostrar modal de selección
+      setShowWalletModal(true)
     }
   }
 
-  const handleProcessWithWallet = () => {
-    if (isConnected && balance) {
-      const balanceInEth = parseFloat(balance.formatted || '0')
-      const hasEnoughBalance = balanceInEth > 0
+  const connectToWallet = async (wallet) => {
+    try {
+      setConnectionState('connecting')
+      setShowWalletModal(false)
       
-      if (hasEnoughBalance) {
+      // Solicitar conexión
+      const accounts = await wallet.provider.request({
+        method: 'eth_requestAccounts'
+      })
+      
+      if (accounts.length === 0) {
+        throw new Error('No accounts found')
+      }
+
+      // Obtener información de la red
+      const chainId = await wallet.provider.request({
+        method: 'eth_chainId'
+      })
+      
+      // Obtener balance
+      const balance = await wallet.provider.request({
+        method: 'eth_getBalance',
+        params: [accounts[0], 'latest']
+      })
+
+      // Convertir balance de Wei a ETH
+      const balanceInEth = (parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4)
+      
+      // Determinar nombre de la red
+      const networkNames = {
+        '0x1': 'Ethereum Mainnet',
+        '0xaa36a7': 'Sepolia Testnet',
+        '0x89': 'Polygon Mainnet',
+        '0x13881': 'Mumbai Testnet'
+      }
+      
+      const networkName = networkNames[chainId] || `Chain ${chainId}`
+      
+      const walletInfo = {
+        address: accounts[0],
+        network: networkName,
+        balance: balanceInEth,
+        symbol: networkName.includes('Polygon') || networkName.includes('Mumbai') ? 'MATIC' : 'ETH',
+        walletName: wallet.name
+      }
+      
+      setConnectedWallet(walletInfo)
+      setConnectionState('connected')
+      
+      onConnectionSuccess({
+        ...walletInfo,
+        successful: true,
+        message: `✅ Conectado exitosamente con ${wallet.name} en ${networkName}. Project ID: ${process.env.REACT_APP_WALLETCONNECT_PROJECT_ID?.slice(0, 8)}...`
+      })
+      
+    } catch (error) {
+      console.error('Connection error:', error)
+      setConnectionState('error')
+      setTimeout(() => setConnectionState('disconnected'), 3000)
+      
+      if (error.code === 4001) {
         onConnectionSuccess({
-          address,
-          network: chain?.name || 'Unknown',
-          balance: balance.formatted,
-          symbol: balance.symbol,
-          successful: true,
-          message: `Retiro procesado correctamente usando WalletConnect en ${chain?.name || 'testnet'}.`
+          successful: false,
+          message: '❌ Conexión rechazada por el usuario'
         })
       } else {
         onConnectionSuccess({
-          address,
-          network: chain?.name || 'Unknown', 
-          balance: '0',
-          symbol: balance.symbol,
           successful: false,
-          message: `Wallet conectada correctamente pero sin fondos en ${chain?.name || 'testnet'}.`
+          message: `❌ Error de conexión: ${error.message}`
         })
       }
     }
   }
 
-  if (isConnected && address) {
+  const handleDisconnect = () => {
+    setConnectedWallet(null)
+    setConnectionState('disconnected')
+  }
+
+  const handleProcessWithWallet = () => {
+    if (connectedWallet) {
+      const hasBalance = parseFloat(connectedWallet.balance) > 0
+      
+      onConnectionSuccess({
+        ...connectedWallet,
+        successful: true,
+        message: hasBalance 
+          ? `✅ Retiro procesado correctamente usando ${connectedWallet.walletName} (${connectedWallet.balance} ${connectedWallet.symbol})`
+          : `⚠️ Wallet conectada pero sin fondos (${connectedWallet.balance} ${connectedWallet.symbol})`
+      })
+    }
+  }
+
+  if (connectionState === 'connected' && connectedWallet) {
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-center p-3 bg-slate-900/50 border border-green-400/30 rounded">
           <div className="flex items-center">
             <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-            <span className="text-green-400 font-mono text-sm">WALLET CONECTADA</span>
+            <span className="text-green-400 font-mono text-sm">
+              {connectedWallet.walletName.toUpperCase()} CONECTADA
+            </span>
           </div>
         </div>
 
@@ -85,19 +159,15 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           <div className="space-y-2 text-xs font-mono">
             <div className="flex justify-between">
               <span className="text-slate-400">&gt; Dirección:</span>
-              <span className="text-green-300">{address?.slice(0, 6)}...{address?.slice(-4)}</span>
+              <span className="text-green-300">{connectedWallet.address?.slice(0, 6)}...{connectedWallet.address?.slice(-4)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">&gt; Red:</span>
-              <span className="text-blue-300">{chain?.name || 'Unknown'}</span>
+              <span className="text-blue-300">{connectedWallet.network}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">&gt; Balance:</span>
-              <span className="text-green-300">
-                {isLoading ? 'Cargando...' : 
-                 isError ? 'Error' : 
-                 `${parseFloat(balance?.formatted || '0').toFixed(4)} ${balance?.symbol}`}
-              </span>
+              <span className="text-green-300">{connectedWallet.balance} {connectedWallet.symbol}</span>
             </div>
           </div>
         </div>
@@ -106,13 +176,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           <Button
             onClick={handleProcessWithWallet}
             className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-mono font-bold py-2"
-            disabled={isLoading}
           >
             <Zap className="h-4 w-4 mr-2" />
             PROCESAR RETIRO RÁPIDO
           </Button>
           <Button
-            onClick={disconnect}
+            onClick={handleDisconnect}
             variant="ghost"
             size="sm"
             className="text-slate-400 hover:text-white font-mono border border-slate-600 px-3"
@@ -146,7 +215,50 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         <p className="text-slate-500 font-mono text-xs">
           &gt; Project ID: {process.env.REACT_APP_WALLETCONNECT_PROJECT_ID?.slice(0, 8)}...configurado
         </p>
+        {availableWallets.length > 0 && (
+          <p className="text-slate-400 font-mono text-xs mt-1">
+            &gt; {availableWallets.length} wallet(s) detectada(s)
+          </p>
+        )}
       </div>
+
+      {/* Modal de selección de wallets */}
+      {showWalletModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 border border-blue-400/30 rounded-lg p-6 max-w-sm w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-blue-400 font-mono text-lg">&gt; SELECCIONAR WALLET</h3>
+              <Button
+                onClick={() => setShowWalletModal(false)}
+                variant="ghost"
+                size="sm"
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="space-y-3">
+              {availableWallets.map((wallet, index) => (
+                <Button
+                  key={index}
+                  onClick={() => connectToWallet(wallet)}
+                  className="w-full justify-start bg-slate-700 hover:bg-slate-600 text-white font-mono p-4"
+                >
+                  <span className="text-2xl mr-3">{wallet.icon}</span>
+                  <span>{wallet.name}</span>
+                </Button>
+              ))}
+            </div>
+            
+            <div className="mt-4 text-center">
+              <p className="text-slate-400 font-mono text-xs">
+                &gt; Selecciona tu wallet preferida
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
