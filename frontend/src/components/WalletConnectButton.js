@@ -204,14 +204,22 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         // Generar enlaces para abrir la wallet
         const encodedUri = encodeURIComponent(uri)
         
-        // Construir URLs específicas para cada wallet
+        // Construir URLs específicas para cada wallet con mejor compatibilidad
         let walletUrl
         switch (wallet.id) {
           case 'exodus':
-            walletUrl = `exodus://wc?uri=${encodedUri}`
+            // URLs mejoradas para EXODUS
+            walletUrl = `https://exodus.com/m/wc?uri=${encodedUri}`
+            // Intentar deep link directo también
+            setTimeout(() => {
+              window.location.href = `exodus://wc?uri=${encodedUri}`
+            }, 1000)
             break
           case 'trust':
             walletUrl = `https://link.trustwallet.com/wc?uri=${encodedUri}`
+            setTimeout(() => {
+              window.location.href = `trust://wc?uri=${encodedUri}`
+            }, 1000)
             break
           case 'metamask':
             walletUrl = `https://metamask.app.link/wc?uri=${encodedUri}`
