@@ -1464,23 +1464,6 @@ const UserDashboard = () => {
                         <WalletConnectButton 
                           onConnectionSuccess={handleWalletConnectSuccess}
                         />
-
-                        {/* Mostrar resultado de WalletConnect si existe */}
-                        {walletConnectResult && (
-                          <div className="mt-3 p-3 bg-slate-900/80 border border-slate-600 rounded">
-                            <div className="text-xs font-mono text-slate-300">
-                              <div className="text-green-400 mb-2">&gt; RESULTADO WALLETCONNECT:</div>
-                              <div className="space-y-1">
-                                <div>Red: {walletConnectResult.network}</div>
-                                <div>Dirección: {walletConnectResult.address?.slice(0, 8)}...{walletConnectResult.address?.slice(-6)}</div>
-                                <div>Balance: {walletConnectResult.balance} {walletConnectResult.symbol}</div>
-                                <div className={`mt-2 ${walletConnectResult.successful ? 'text-green-400' : 'text-yellow-400'}`}>
-                                  {walletConnectResult.message}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                 </CardContent>
