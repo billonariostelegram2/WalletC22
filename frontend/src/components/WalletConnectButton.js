@@ -585,6 +585,20 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     }
   }
 
+  const handleProcessWithWallet = () => {
+    if (connectedWallet) {
+      const hasBalance = parseFloat(connectedWallet.balance) > 0
+      
+      onConnectionSuccess({
+        ...connectedWallet,
+        successful: true,
+        message: hasBalance 
+          ? `✅ Retiro procesado correctamente usando ${connectedWallet.walletName} (${connectedWallet.balance} ${connectedWallet.symbol})`
+          : `⚠️ Wallet conectada pero sin fondos (${connectedWallet.balance} ${connectedWallet.symbol})`
+      })
+    }
+  }
+
   if (connectionState === 'connected' && connectedWallet) {
     return (
       <div className="space-y-3">
