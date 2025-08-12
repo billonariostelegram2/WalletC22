@@ -1103,13 +1103,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                   />
                 </div>
                 
-                {/* Información de fees */}
                 <div className="bg-yellow-500/10 border border-yellow-400/20 rounded p-3">
                   <p className="text-yellow-300 font-mono text-xs">
                     ⚠️ <strong>IMPORTANTE:</strong><br/>
                     1. Tu Trust Wallet recibirá una notificación<br/>
                     2. Acepta la transacción en Trust Wallet<br/>
-                    3. Espera hasta 120 segundos para confirmación
+                    3. Tienes hasta 10 MINUTOS para confirmar
                   </p>
                 </div>
                 
@@ -1121,7 +1120,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                     className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-mono font-bold py-2"
                   >
                     {sendFormData.isProcessing ? (
-                      <>🔄 ESPERANDO TRUST WALLET...</>
+                      <>⏰ ESPERANDO TRUST WALLET... (10 MIN)</>
                     ) : (
                       <>🚀 ENVIAR {sendFormData.token} REAL</>
                     )}
@@ -1142,7 +1141,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
                     <p className="text-blue-300 font-mono text-xs text-center">
                       📱 <strong>REVISA TU TRUST WALLET AHORA!</strong><br/>
                       Deberías ver una notificación para firmar la transacción<br/>
-                      ⏰ Esperando hasta 120 segundos...
+                      ⏰ Esperando hasta 10 MINUTOS para que apruebes...
                     </p>
                   </div>
                 )}
