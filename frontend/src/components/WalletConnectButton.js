@@ -269,7 +269,8 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     try {
       const { SignClient } = await import('@walletconnect/sign-client')
       
-      // Configuración COMPLETA para que aparezca en dashboard Reown
+      console.log('🔗 Inicializando WalletConnect con Project ID:', process.env.REACT_APP_WALLETCONNECT_PROJECT_ID)
+      
       const client = await SignClient.init({
         projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
         metadata: {
@@ -279,39 +280,47 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           icons: [`${window.location.origin}/logo192.png`]
         },
         relayUrl: 'wss://relay.walletconnect.com',
-        logger: 'debug' // Para ver logs en dashboard
+        logger: 'debug'
       })
       
       setWalletConnectClient(client)
       
-      console.log('🔗 WalletConnect iniciado:', {
+      console.log('✅ WalletConnect Cliente creado:', {
         projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
         clientId: client.core.crypto.clientId,
-        relayUrl: 'wss://relay.walletconnect.com'
+        relayConnected: client.core.relayer.connected
       })
       
-      // Escuchar eventos de sesión con logs para dashboard
+      // ✅ EVENTOS PARA DASHBOARD REOWN
+      client.on('session_proposal', (proposal) => {
+        console.log('📊 DASHBOARD EVENT - Session proposal:', proposal)
+      })
+
+      client.on('session_request', (request) => {
+        console.log('📊 DASHBOARD EVENT - Session request:', request)
+      })
+      
       client.on('session_event', (event) => {
-        console.log('📊 Session event (enviado a dashboard):', event)
+        console.log('📊 DASHBOARD EVENT - Session event:', event)
       })
       
       client.on('session_update', ({ topic, params }) => {
-        console.log('📊 Session update (enviado a dashboard):', topic, params)
+        console.log('📊 DASHBOARD EVENT - Session update:', { topic, params })
       })
       
-      client.on('session_delete', () => {
-        console.log('📊 Session deleted (enviado a dashboard)')
+      client.on('session_delete', (args) => {
+        console.log('📊 DASHBOARD EVENT - Session deleted:', args)
         setConnectedWallet(null)
         setConnectionState('disconnected')
       })
 
-      // Registrar cliente en dashboard Reown
-      client.on('session_proposal', (proposal) => {
-        console.log('📊 Session proposal (visible en dashboard):', proposal)
+      // ✅ PING AL DASHBOARD PARA REGISTRO
+      client.core.relayer.on('relayer_connect', () => {
+        console.log('📊 DASHBOARD - Relayer conectado exitosamente')
       })
 
-      client.on('session_request', (request) => {
-        console.log('📊 Session request (visible en dashboard):', request)
+      client.core.relayer.on('relayer_disconnect', () => {
+        console.log('📊 DASHBOARD - Relayer desconectado')
       })
       
     } catch (error) {
