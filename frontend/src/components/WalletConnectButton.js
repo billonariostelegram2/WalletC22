@@ -29,6 +29,28 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     // Restaurar conexión persistente
     restorePersistedConnection()
     
+    // VERIFICAR ESTADO DE CONEXIÓN CADA 5 SEGUNDOS
+    const connectionChecker = setInterval(() => {
+      if (connectedWallet?.session && walletConnectClient) {
+        try {
+          const activeSessions = walletConnectClient.session.getAll()
+          const currentSession = activeSessions.find(s => s.topic === connectedWallet.session.topic)
+          
+          if (!currentSession) {
+            console.log('🔌 Sesión desconectada detectada - Limpiando estado')
+            setConnectedWallet(null)
+            setConnectionState('disconnected')
+            clearPersistedConnection()
+          }
+        } catch (error) {
+          console.log('🔌 Error verificando sesión - Limpiando estado')
+          setConnectedWallet(null)
+          setConnectionState('disconnected')
+          clearPersistedConnection()
+        }
+      }
+    }, 5000)
+    
     // Detectar wallets disponibles
     const wallets = []
     
