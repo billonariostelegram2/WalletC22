@@ -610,7 +610,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             </span>
             {connectedWallet.isReal && (
               <span className="ml-2 px-2 py-1 bg-green-500/20 text-green-300 text-xs font-mono rounded border border-green-400/30">
-                REAL
+                {connectedWallet.isRestored ? 'RESTAURADA' : 'REAL'}
               </span>
             )}
           </div>
@@ -626,17 +626,39 @@ export function WalletConnectButton({ onConnectionSuccess }) {
               <span className="text-slate-400">&gt; Red:</span>
               <span className="text-blue-300">{connectedWallet.network}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">&gt; Balance:</span>
-              <span className="text-green-300">{connectedWallet.balance} {connectedWallet.symbol}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400">&gt; Balance REAL:</span>
+              <div className="flex items-center">
+                <span className="text-green-300 font-bold">{connectedWallet.balance} {connectedWallet.symbol}</span>
+                <button 
+                  onClick={handleRefreshBalance}
+                  className="ml-2 text-blue-400 hover:text-blue-300 text-xs"
+                  disabled={connectionState === 'refreshing'}
+                >
+                  {connectionState === 'refreshing' ? '🔄' : '↻'}
+                </button>
+              </div>
             </div>
             {connectedWallet.isReal && (
               <div className="flex justify-between">
                 <span className="text-slate-400">&gt; Tipo:</span>
-                <span className="text-green-300">🔗 CONEXIÓN REAL</span>
+                <span className="text-green-300">🔗 CONEXIÓN PERSISTENTE</span>
+              </div>
+            )}
+            {connectedWallet.lastUpdated && (
+              <div className="flex justify-between">
+                <span className="text-slate-400">&gt; Actualizado:</span>
+                <span className="text-slate-300">{new Date(connectedWallet.lastUpdated).toLocaleTimeString()}</span>
               </div>
             )}
           </div>
+        </div>
+
+        <div className="bg-blue-500/10 border border-blue-400/20 rounded p-2">
+          <p className="text-blue-300 font-mono text-xs text-center">
+            💾 <strong>Conexión Persistente Activa</strong><br/>
+            Tu wallet permanecerá conectada aunque cierres sesión
+          </p>
         </div>
 
         <div className="flex space-x-2">
