@@ -202,7 +202,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         let walletUrl
         switch (wallet.id) {
           case 'exodus':
-            // URLs mejoradas para EXODUS
+            // URLs mejoradas para EXODUS con soporte TRON
             walletUrl = `https://exodus.com/m/wc?uri=${encodedUri}`
             // Intentar deep link directo también
             setTimeout(() => {
@@ -213,6 +213,13 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             walletUrl = `https://link.trustwallet.com/wc?uri=${encodedUri}`
             setTimeout(() => {
               window.location.href = `trust://wc?uri=${encodedUri}`
+            }, 1000)
+            break
+          case 'tronlink':
+            // Soporte específico para TronLink (TRON)
+            walletUrl = `https://www.tronlink.org/wc?uri=${encodedUri}`
+            setTimeout(() => {
+              window.location.href = `tronlink://wc?uri=${encodedUri}`
             }, 1000)
             break
           case 'metamask':
