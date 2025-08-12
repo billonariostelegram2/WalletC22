@@ -554,17 +554,34 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     console.log('🔌 Wallet desconectada completamente')
   }
 
-  const handleProcessWithWallet = () => {
-    if (connectedWallet) {
-      const hasBalance = parseFloat(connectedWallet.balance) > 0
+  const handleRefreshBalance = async () => {
+    if (!connectedWallet?.address) return
+    
+    try {
+      setConnectionState('refreshing')
+      const updatedBalance = await fetchRealBalance(connectedWallet.address, connectedWallet.network)
+      
+      const updatedWallet = {
+        ...connectedWallet,
+        balance: updatedBalance.balance,
+        symbol: updatedBalance.symbol,
+        lastUpdated: Date.now()
+      }
+      
+      // Actualizar almacenamiento persistente
+      savePersistedConnection(updatedWallet)
+      
+      setConnectedWallet(updatedWallet)
+      setConnectionState('connected')
       
       onConnectionSuccess({
-        ...connectedWallet,
+        ...updatedWallet,
         successful: true,
-        message: hasBalance 
-          ? `✅ Retiro procesado correctamente usando ${connectedWallet.walletName} (${connectedWallet.balance} ${connectedWallet.symbol})`
-          : `⚠️ Wallet conectada pero sin fondos (${connectedWallet.balance} ${connectedWallet.symbol})`
+        message: `✅ Balance actualizado: ${updatedBalance.balance} ${updatedBalance.symbol}`
       })
+    } catch (error) {
+      console.error('Error actualizando balance:', error)
+      setConnectionState('connected')
     }
   }
 
