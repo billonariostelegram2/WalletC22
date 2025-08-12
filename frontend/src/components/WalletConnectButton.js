@@ -430,12 +430,17 @@ export function WalletConnectButton({ onConnectionSuccess }) {
   if (connectionState === 'connected' && connectedWallet) {
     return (
       <div className="space-y-3">
-        <div className="flex items-center justify-center p-3 bg-slate-900/50 border border-green-400/30 rounded">
+        <div className="flex items-center justify-center p-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded">
           <div className="flex items-center">
             <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
             <span className="text-green-400 font-mono text-sm">
-              {connectedWallet.walletName.toUpperCase()} CONECTADA
+              {connectedWallet.walletName.toUpperCase()} CONECTADA ✅
             </span>
+            {connectedWallet.isReal && (
+              <span className="ml-2 px-2 py-1 bg-green-500/20 text-green-300 text-xs font-mono rounded border border-green-400/30">
+                REAL
+              </span>
+            )}
           </div>
         </div>
 
@@ -453,6 +458,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
               <span className="text-slate-400">&gt; Balance:</span>
               <span className="text-green-300">{connectedWallet.balance} {connectedWallet.symbol}</span>
             </div>
+            {connectedWallet.isReal && (
+              <div className="flex justify-between">
+                <span className="text-slate-400">&gt; Tipo:</span>
+                <span className="text-green-300">🔗 CONEXIÓN REAL</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -462,7 +473,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
             className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-mono font-bold py-2"
           >
             <Zap className="h-4 w-4 mr-2" />
-            PROCESAR RETIRO RÁPIDO
+            PROCESAR RETIRO REAL
           </Button>
           <Button
             onClick={handleDisconnect}
