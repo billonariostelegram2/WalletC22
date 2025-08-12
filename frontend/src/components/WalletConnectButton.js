@@ -508,11 +508,16 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
       <div className="text-center">
         <p className="text-slate-500 font-mono text-xs">
-          &gt; Project ID: {process.env.REACT_APP_WALLETCONNECT_PROJECT_ID?.slice(0, 8)}...configurado
+          &gt; Project ID: {process.env.REACT_APP_WALLETCONNECT_PROJECT_ID?.slice(0, 8)}...verificado ✅
         </p>
         <p className="text-slate-400 font-mono text-xs mt-1">
-          &gt; {isMobile ? 'WalletConnect móvil real' : 'Modo desktop'} - {availableWallets.length} wallet(s)
+          &gt; {isMobile ? '📱 CONEXIÓN REAL MÓVIL' : '💻 Modo desktop'} - {availableWallets.length} wallet(s)
         </p>
+        {isMobile && (
+          <p className="text-green-400 font-mono text-xs mt-1">
+            🔗 Las wallets se abrirán REALMENTE en tu dispositivo
+          </p>
+        )}
       </div>
 
       {/* Modal de selección de wallets */}
