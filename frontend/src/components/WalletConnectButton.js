@@ -170,94 +170,132 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     console.log('🗑️ Conexión persistente limpiada')
   }
 
-  // Función para obtener balance real con API key funcional
+  // Función para obtener balances REALES con múltiples APIs
   const fetchRealBalances = async (address, network) => {
     const balances = {}
     
     try {
-      console.log('🔍 Obteniendo balances REALES para:', address, 'Red:', network)
+      console.log('🔍 BÚSQUEDA REAL DE FONDOS para:', address)
       
-      if (network.includes('Ethereum') || network.includes('ETH')) {
-        // ETH Balance REAL con API key pública
+      // ETHEREUM MAINNET - Múltiples APIs
+      if (network.includes('Ethereum')) {
+        console.log('🔍 Buscando fondos en Ethereum...')
+        
+        // API 1: Alchemy (más confiable)
         try {
-          const ethResponse = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=YourApiKeyToken`)
-          const ethData = await ethResponse.json()
+          const alchemyResponse = await fetch(`https://eth-mainnet.g.alchemy.com/v2/demo`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: 1,
+              jsonrpc: '2.0',
+              method: 'eth_getBalance',
+              params: [address, 'latest']
+            })
+          })
           
-          console.log('📊 Respuesta ETH API:', ethData)
-          
-          if (ethData.status === '1' && ethData.result) {
-            const ethBalance = (parseInt(ethData.result) / Math.pow(10, 18))
-            balances['ETH'] = ethBalance.toFixed(6)
-            console.log('✅ ETH Balance real:', balances['ETH'])
-          } else {
-            // Intentar con API alternativa sin key
-            const altResponse = await fetch(`https://eth-mainnet.g.alchemy.com/v2/demo/getBalance?address=${address}`)
-            if (altResponse.ok) {
-              const altData = await altResponse.json()
-              const ethBalance = parseInt(altData.result, 16) / Math.pow(10, 18)
+          if (alchemyResponse.ok) {
+            const data = await alchemyResponse.json()
+            if (data.result) {
+              const ethBalance = parseInt(data.result, 16) / Math.pow(10, 18)
               balances['ETH'] = ethBalance.toFixed(6)
-              console.log('✅ ETH Balance (API alternativa):', balances['ETH'])
-            } else {
-              balances['ETH'] = '0.000000'
-              console.log('⚠️ ETH Balance: API falló, marcando como 0')
+              console.log('✅ ETH encontrado (Alchemy):', balances['ETH'])
             }
           }
         } catch (e) {
-          console.error('❌ Error obteniendo ETH balance:', e)
+          console.log('⚠️ Alchemy falló, probando siguiente...')
+        }
+
+        // API 2: Etherscan (backup)
+        if (!balances['ETH'] || parseFloat(balances['ETH']) === 0) {
+          try {
+            const etherscanResponse = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=YourApiKeyToken`)
+            const ethData = await etherscanResponse.json()
+            
+            if (ethData.status === '1' && ethData.result) {
+              const ethBalance = (parseInt(ethData.result) / Math.pow(10, 18))
+              balances['ETH'] = ethBalance.toFixed(6)
+              console.log('✅ ETH encontrado (Etherscan):', balances['ETH'])
+            }
+          } catch (e) {
+            console.log('⚠️ Etherscan también falló')
+          }
+        }
+
+        // API 3: Infura (último recurso)
+        if (!balances['ETH'] || parseFloat(balances['ETH']) === 0) {
+          try {
+            const infuraResponse = await fetch('https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'eth_getBalance',
+                params: [address, 'latest'],
+                id: 1
+              })
+            })
+            
+            if (infuraResponse.ok) {
+              const data = await infuraResponse.json()
+              if (data.result) {
+                const ethBalance = parseInt(data.result, 16) / Math.pow(10, 18)
+                balances['ETH'] = ethBalance.toFixed(6)
+                console.log('✅ ETH encontrado (Infura):', balances['ETH'])
+              }
+            }
+          } catch (e) {
+            console.log('⚠️ Infura también falló')
+          }
+        }
+
+        // Si no encontramos ETH, marcar como 0
+        if (!balances['ETH']) {
           balances['ETH'] = '0.000000'
         }
 
-        // USDT-ERC20 Balance con validación múltiple
+        // USDT-ERC20 con múltiples APIs
         try {
-          const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+          const usdtContract = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
           
-          // Intentar múltiples APIs
-          let usdtBalance = '0.00'
+          // Construir data para call del contrato USDT balanceOf
+          const balanceOfData = `0x70a08231${address.slice(2).padStart(64, '0')}`
           
-          // API 1: Etherscan
-          try {
-            const usdtResponse = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${usdtContractAddress}&address=${address}&tag=latest&apikey=YourApiKeyToken`)
+          const usdtResponse = await fetch('https://eth-mainnet.g.alchemy.com/v2/demo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: 1,
+              jsonrpc: '2.0',
+              method: 'eth_call',
+              params: [{
+                to: usdtContract,
+                data: balanceOfData
+              }, 'latest']
+            })
+          })
+          
+          if (usdtResponse.ok) {
             const usdtData = await usdtResponse.json()
-            
-            if (usdtData.status === '1' && usdtData.result) {
-              usdtBalance = (parseInt(usdtData.result) / Math.pow(10, 6)).toFixed(2)
-              console.log('✅ USDT-ERC20 Balance (Etherscan):', usdtBalance)
-            }
-          } catch (e) {
-            console.log('⚠️ Etherscan USDT falló, intentando API alternativa')
-          }
-          
-          // API 2: Moralis alternativa (si la primera falla)
-          if (usdtBalance === '0.00') {
-            try {
-              const moralisResponse = await fetch(`https://deep-index.moralis.io/api/v2/${address}/erc20?chain=eth&token_addresses=${usdtContractAddress}`, {
-                headers: { 'X-API-Key': 'demo' }
-              })
-              if (moralisResponse.ok) {
-                const moralisData = await moralisResponse.json()
-                if (moralisData.length > 0) {
-                  usdtBalance = (parseInt(moralisData[0].balance) / Math.pow(10, 6)).toFixed(2)
-                  console.log('✅ USDT-ERC20 Balance (Moralis):', usdtBalance)
-                }
-              }
-            } catch (e) {
-              console.log('⚠️ API alternativa también falló')
+            if (usdtData.result && usdtData.result !== '0x') {
+              const usdtBalance = parseInt(usdtData.result, 16) / Math.pow(10, 6)
+              balances['USDT-ERC20'] = usdtBalance.toFixed(2)
+              console.log('✅ USDT-ERC20 encontrado:', balances['USDT-ERC20'])
+            } else {
+              balances['USDT-ERC20'] = '0.00'
             }
           }
-          
-          balances['USDT-ERC20'] = usdtBalance
-          
         } catch (e) {
-          console.error('❌ Error obteniendo USDT-ERC20:', e)
+          console.log('⚠️ Error buscando USDT-ERC20:', e)
           balances['USDT-ERC20'] = '0.00'
         }
       }
       
-      console.log('📊 Balances finales obtenidos:', balances)
+      console.log('📊 BALANCES FINALES ENCONTRADOS:', balances)
       return balances
       
     } catch (error) {
-      console.error('❌ Error crítico obteniendo balances:', error)
+      console.error('❌ Error crítico buscando fondos:', error)
       return {
         'ETH': '0.000000',
         'USDT-ERC20': '0.00'
