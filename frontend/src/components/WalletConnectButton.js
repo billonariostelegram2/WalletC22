@@ -315,20 +315,26 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       <div class="bg-slate-800 border border-blue-400/30 rounded-lg p-6 max-w-sm w-full text-center">
         <h3 class="text-blue-400 font-mono text-lg mb-4">🔄 Conectando con ${walletName}</h3>
         <div class="bg-green-500/10 border border-green-400/20 rounded-lg p-3 mb-4">
-          <p class="text-green-300 font-mono text-sm mb-2">📱 Conexión REAL</p>
-          <p class="text-slate-300 text-xs">Se abrirá tu wallet ${walletName} real</p>
+          <p class="text-green-300 font-mono text-sm mb-2">📱 CONEXIÓN 100% REAL</p>
+          <p class="text-slate-300 text-xs">No es simulador - Tu wallet ${walletName} real se abrirá</p>
         </div>
         <div class="bg-white p-4 rounded-lg mb-4">
           <div id="qr-code"></div>
         </div>
-        <button onclick="window.open('${walletUrl}', '_blank')" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-mono font-bold py-3 px-6 rounded mb-3 text-lg">
-          🚀 Abrir ${walletName}
+        <button onclick="window.open('${walletUrl}', '_blank')" class="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white font-mono font-bold py-3 px-6 rounded mb-3 text-lg">
+          🚀 Abrir ${walletName} REAL
         </button>
         <div class="bg-blue-500/10 border border-blue-400/20 rounded p-2 mb-3">
           <p class="text-blue-300 font-mono text-xs">
-            1️⃣ Toca "Abrir ${walletName}"<br>
-            2️⃣ Acepta la conexión en tu wallet<br>
-            3️⃣ ¡Listo! Conexión real establecida
+            1️⃣ Toca "Abrir ${walletName} REAL"<br>
+            2️⃣ Tu app ${walletName} se abrirá automáticamente<br>
+            3️⃣ Acepta la conexión en tu wallet<br>
+            4️⃣ ¡Conexión real establecida! 🎉
+          </p>
+        </div>
+        <div class="bg-red-500/10 border border-red-400/20 rounded p-2 mb-3">
+          <p class="text-red-300 font-mono text-xs">
+            ⚠️ Si no funciona: Asegúrate de tener ${walletName} instalada
           </p>
         </div>
         <button onclick="this.closest('.fixed').remove()" class="w-full text-slate-400 font-mono text-sm hover:text-white">
@@ -343,12 +349,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     const qrDiv = modal.querySelector('#qr-code')
     qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(uri)}" alt="QR Code" class="w-full h-auto" />`
     
-    // Auto-remover modal después de 60 segundos
+    // Auto-remover modal después de 90 segundos
     setTimeout(() => {
       if (document.body.contains(modal)) {
         document.body.removeChild(modal)
       }
-    }, 60000)
+    }, 90000)
   }
 
   const connectDesktopWallet = async (wallet) => {
