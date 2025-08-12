@@ -435,16 +435,32 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           const accounts = session.namespaces.eip155.accounts
           const address = accounts[0].split(':')[2] // Formato: eip155:1:0x...
           
-          // Obtener balance real de la blockchain
-          let realBalances = await fetchRealBalances(address, 'Ethereum Mainnet')
+          // Determinar red según wallet conectada
+          let networkType = 'Ethereum Mainnet'
+          if (wallet.id === 'tronlink') {
+            networkType = 'TRON Mainnet'
+          }
+          
+          console.log('🔗 Conexión establecida:', {
+            wallet: wallet.name,
+            address: address,
+            network: networkType
+          })
+          
+          // Obtener balances REALES según la red
+          let realBalances = await fetchRealBalances(address, networkType)
+          
+          // Validar que hay balances antes de continuar
+          const hasAnyBalance = Object.values(realBalances).some(balance => parseFloat(balance) > 0)
           
           const walletInfo = {
             address: address,
-            network: 'Ethereum Mainnet',
-            balances: realBalances, // Múltiples balances
+            network: networkType,
+            balances: realBalances,
             walletName: wallet.name,
             session: session,
             isReal: true,
+            hasRealFunds: hasAnyBalance,
             connectedAt: Date.now()
           }
           
@@ -454,10 +470,15 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           setConnectedWallet(walletInfo)
           setConnectionState('connected')
           
+          const balanceText = Object.entries(realBalances)
+            .filter(([_, balance]) => parseFloat(balance) > 0)
+            .map(([token, balance]) => `${balance} ${token}`)
+            .join(', ') || 'Sin fondos'
+          
           onConnectionSuccess({
             ...walletInfo,
             successful: true,
-            message: `✅ ¡CONEXIÓN REAL EXITOSA Y PERSISTENTE! ${wallet.name} conectada. Balance: ${Object.entries(realBalances).map(([token, balance]) => `${balance} ${token}`).join(', ')}`
+            message: `✅ CONEXIÓN REAL: ${wallet.name} en ${networkType}. Fondos: ${balanceText}`
           })
         }
       }
