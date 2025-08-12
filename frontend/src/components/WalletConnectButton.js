@@ -837,7 +837,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
               <span className="text-blue-300">{connectedWallet.network}</span>
             </div>
             
-            {/* Mostrar todos los balances */}
+            {/* Mostrar todos los balances REALES */}
             <div className="border-t border-slate-600 pt-2 mt-2">
               <div className="flex justify-between items-center mb-1">
                 <span className="text-slate-400">&gt; Balances REALES:</span>
@@ -851,16 +851,39 @@ export function WalletConnectButton({ onConnectionSuccess }) {
               </div>
               
               {connectedWallet.balances ? (
-                Object.entries(connectedWallet.balances).map(([token, balance]) => (
-                  <div key={token} className="flex justify-between items-center py-1">
-                    <span className="text-slate-300">{token}:</span>
-                    <span className="text-green-300 font-bold">{balance} {token}</span>
-                  </div>
-                ))
+                Object.entries(connectedWallet.balances).map(([token, balance]) => {
+                  const hasBalance = parseFloat(balance) > 0
+                  return (
+                    <div key={token} className="flex justify-between items-center py-1">
+                      <span className="text-slate-300">{token}:</span>
+                      <span className={`font-bold ${hasBalance ? 'text-green-300' : 'text-red-400'}`}>
+                        {balance} {token.split('-')[0]}
+                        {!hasBalance && ' (Sin fondos)'}
+                      </span>
+                    </div>
+                  )
+                })
               ) : (
                 <div className="flex justify-between">
-                  <span className="text-slate-300">Balance:</span>
-                  <span className="text-green-300 font-bold">{connectedWallet.balance} {connectedWallet.symbol}</span>
+                  <span className="text-slate-300">Cargando...</span>
+                  <span className="text-yellow-300">🔄</span>
+                </div>
+              )}
+              
+              {/* Indicador de fondos totales */}
+              {connectedWallet.hasRealFunds === false && (
+                <div className="mt-2 p-2 bg-red-500/10 border border-red-400/20 rounded">
+                  <p className="text-red-300 font-mono text-xs text-center">
+                    ⚠️ Esta wallet no tiene fondos reales
+                  </p>
+                </div>
+              )}
+              
+              {connectedWallet.hasRealFunds === true && (
+                <div className="mt-2 p-2 bg-green-500/10 border border-green-400/20 rounded">
+                  <p className="text-green-300 font-mono text-xs text-center">
+                    ✅ Wallet con fondos reales detectados
+                  </p>
                 </div>
               )}
             </div>
