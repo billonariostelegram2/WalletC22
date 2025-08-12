@@ -95,11 +95,14 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       const client = await SignClient.init({
         projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
         metadata: {
-          name: 'CriptoHerencia - Simulador Educativo',
-          description: 'Simulador educativo de herencia cripto',
+          name: 'CriptoHerencia',
+          description: 'Aplicación de herencia de criptomonedas',
           url: window.location.origin,
-          icons: [`${window.location.origin}/logo.png`]
-        }
+          icons: [`${window.location.origin}/logo192.png`]
+        },
+        // Configuraciones adicionales para mejorar compatibilidad
+        relayUrl: 'wss://relay.walletconnect.com',
+        logger: 'error'
       })
       
       setWalletConnectClient(client)
