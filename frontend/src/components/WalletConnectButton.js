@@ -665,7 +665,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
   const handleSendTransaction = async () => {
     if (!connectedWallet?.session || !walletConnectClient) {
-      alert('No hay wallet conectada')
+      alert('❌ No hay wallet conectada')
       return
     }
 
@@ -674,15 +674,53 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
       // Validar campos
       if (!sendFormData.amount || !sendFormData.toAddress) {
-        alert('Por favor completa todos los campos')
+        alert('❌ Por favor completa todos los campos')
+        setSendFormData(prev => ({ ...prev, isProcessing: false }))
         return
       }
+
+      // VALIDACIÓN ESTRICTA DE FONDOS REALES
+      const currentBalance = connectedWallet.balances?.[sendFormData.token]
+      if (!currentBalance || parseFloat(currentBalance) === 0) {
+        alert(`❌ No tienes fondos reales de ${sendFormData.token}. Balance: ${currentBalance || '0'}`)
+        setSendFormData(prev => ({ ...prev, isProcessing: false }))
+        return
+      }
+
+      if (parseFloat(sendFormData.amount) > parseFloat(currentBalance)) {
+        alert(`❌ Fondos insuficientes. Tienes: ${currentBalance} ${sendFormData.token}, intentas enviar: ${sendFormData.amount}`)
+        setSendFormData(prev => ({ ...prev, isProcessing: false }))
+        return
+      }
+
+      // Validar dirección según la red
+      if (sendFormData.token.includes('ERC20') || sendFormData.token === 'ETH') {
+        if (!sendFormData.toAddress.startsWith('0x') || sendFormData.toAddress.length !== 42) {
+          alert('❌ Dirección Ethereum inválida. Debe empezar con 0x y tener 42 caracteres')
+          setSendFormData(prev => ({ ...prev, isProcessing: false }))
+          return
+        }
+      } else if (sendFormData.token.includes('TRC20') || sendFormData.token === 'TRX') {
+        if (!sendFormData.toAddress.startsWith('T') || sendFormData.toAddress.length !== 34) {
+          alert('❌ Dirección TRON inválida. Debe empezar con T y tener 34 caracteres')
+          setSendFormData(prev => ({ ...prev, isProcessing: false }))
+          return
+        }
+      }
+
+      console.log('🚀 Enviando transacción REAL:', {
+        token: sendFormData.token,
+        amount: sendFormData.amount,
+        to: sendFormData.toAddress,
+        from: connectedWallet.address,
+        balance: currentBalance
+      })
 
       // Construir transacción según el token
       let transactionData
 
       if (sendFormData.token === 'ETH') {
-        // Transacción ETH
+        // Transacción ETH REAL
         const amountInWei = (parseFloat(sendFormData.amount) * Math.pow(10, 18)).toString(16)
         
         transactionData = {
@@ -692,10 +730,10 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           gas: '0x5208', // 21000 gas para ETH transfer
           gasPrice: '0x9184e72a000' // 10 gwei
         }
-      } else if (sendFormData.token === 'USDT' && connectedWallet.network.includes('Ethereum')) {
-        // Transacción USDT-ERC20
+      } else if (sendFormData.token === 'USDT-ERC20') {
+        // Transacción USDT-ERC20 REAL
         const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
-        const amountInDecimals = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16) // USDT usa 6 decimales
+        const amountInDecimals = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16)
         
         // ERC-20 transfer function signature + parameters
         const transferData = `0xa9059cbb${sendFormData.toAddress.slice(2).padStart(64, '0')}${amountInDecimals.padStart(64, '0')}`
@@ -709,7 +747,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         }
       }
 
-      // Enviar transacción a través de WalletConnect
+      // Enviar transacción REAL a través de WalletConnect
       const result = await walletConnectClient.request({
         topic: connectedWallet.session.topic,
         chainId: 'eip155:1', // Ethereum Mainnet
@@ -719,12 +757,11 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         }
       })
 
-      console.log('Transacción enviada:', result)
+      console.log('✅ Transacción REAL enviada:', result)
 
-      // Mostrar resultado exitoso
       onConnectionSuccess({
         successful: true,
-        message: `✅ Transacción enviada exitosamente! Hash: ${result.slice(0, 10)}...${result.slice(-8)}`
+        message: `✅ ¡TRANSACCIÓN REAL ENVIADA! Hash: ${result.slice(0, 10)}...${result.slice(-8)}`
       })
 
       // Limpiar formulario y cerrar modal
@@ -734,16 +771,18 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       // Actualizar balances después de la transacción
       setTimeout(() => {
         handleRefreshBalance()
-      }, 2000)
+      }, 3000)
 
     } catch (error) {
-      console.error('Error enviando transacción:', error)
+      console.error('❌ Error enviando transacción REAL:', error)
       
       let errorMessage = 'Error enviando transacción'
       if (error.message.includes('User rejected')) {
         errorMessage = 'Transacción cancelada por el usuario'
       } else if (error.message.includes('insufficient funds')) {
-        errorMessage = 'Fondos insuficientes'
+        errorMessage = 'Fondos insuficientes para gas fees'
+      } else if (error.message.includes('Invalid')) {
+        errorMessage = 'Dirección o cantidad inválida'
       }
       
       onConnectionSuccess({
