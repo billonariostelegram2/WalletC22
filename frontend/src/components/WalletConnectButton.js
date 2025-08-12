@@ -860,7 +860,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       console.log('📝 Datos de transacción:', transactionData)
       console.log('📱 ENVIANDO A TRUST WALLET PARA FIRMA...')
 
-      // ENVIAR CON TIMEOUT EXTENDIDO Y MEJOR MANEJO
+      // ENVIAR CON TIMEOUT DE 10 MINUTOS (600 segundos)
       const requestPromise = walletConnectClient.request({
         topic: currentSession.topic,
         chainId: 'eip155:1',
@@ -870,12 +870,12 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         }
       })
 
-      // Timeout de 120 segundos (más tiempo para que veas la notificación)
+      // Timeout de 10 MINUTOS (600 segundos)
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('TIMEOUT: Trust Wallet no respondió en 120 segundos')), 120000)
+        setTimeout(() => reject(new Error('TIMEOUT: Trust Wallet no respondió en 10 minutos')), 600000)
       )
 
-      console.log('⏰ Esperando respuesta de Trust Wallet (120 segundos)...')
+      console.log('⏰ Esperando respuesta de Trust Wallet (10 MINUTOS)...')
       console.log('📱 ¡REVISA TU TRUST WALLET AHORA!')
 
       const result = await Promise.race([requestPromise, timeoutPromise])
