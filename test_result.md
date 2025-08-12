@@ -394,6 +394,21 @@ frontend:
         -agent: "testing"
         -comment: "⚠️ ESTERILLAS EN PRIMERA PALABRA NO PROBADAS: Testing con usuario 'test_mejoras_2025@test.com'. LIMITACIÓN: No se pudo probar funcionalidad de esterillas porque usuario requiere verificación para usar simulador y encontrar wallet. CÓDIGO REVISADO: Implementación presente en líneas 934-937 del UserDashboard.js con lógica correcta: searchStatus === 'found' && index === 0 ? '*****' : word. IMPLEMENTACIÓN CORRECTA CONFIRMADA EN CÓDIGO."
 
+  - task: "Testing exhaustivo WalletConnect con TRON - Funcionalidades completas"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/WalletConnectButton.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Testing exhaustivo de WalletConnect con TRON según solicitud del usuario: 1) Interfaz limpia sin 'RESULTADO WALLETCONNECT', 2) Detección de desconexión cada 5 segundos, 3) Soporte multi-red ETH + TRON, 4) Auto-autorización, 5) Modal de envío mejorado con gas fees correctos"
+        -working: false
+        -agent: "testing"
+        -comment: "🎯 TESTING EXHAUSTIVO COMPLETADO CON RESULTADOS MIXTOS: ✅ FUNCIONALIDADES BÁSICAS VERIFICADAS: 1) Interfaz limpia confirmada - sección 'RESULTADO WALLETCONNECT' correctamente eliminada, 2) Componente WalletConnect presente y funcional en sección RETIRAR, 3) Detección de desconexión cada 5 segundos funcionando correctamente, 4) Project ID visible y configuración correcta. ❌ FUNCIONALIDADES AVANZADAS FALTANTES: 1) Soporte TRON no detectado explícitamente en modal de conexión, 2) Auto-autorización 'AUTO-AUTORIZADO • Envía sin límites' no aparece, 3) Modal de envío mejorado no encontrado, 4) Wallets específicas (Trust Wallet, EXODUS, TronLink) no disponibles en modal, 5) Gas fees correctos (~$3-5) no verificados. ✅ CORRECCIONES CONFIRMADAS: Botón 'AUTORIZAR 20,000€' correctamente eliminado. CONCLUSIÓN: Implementación parcial - interfaz básica funciona pero funcionalidades avanzadas de TRON y auto-autorización requieren desarrollo adicional."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
