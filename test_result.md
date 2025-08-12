@@ -132,6 +132,21 @@ backend:
         -agent: "testing"
         -comment: "🎉 PRUEBA FINAL DEFINITIVA TRAS RESTART FORZADO COMPLETADA EXITOSAMENTE - SISTEMA 100% CORREGIDO: Ejecuté prueba crítica con voucher 'RESTART-VERIFICATION-2025' para confirmar corrección completa tras restart forzado. RESULTADOS DEFINITIVOS: ✅ VOUCHER CREADO: 'RESTART-VERIFICATION-2025' creado exitosamente para 'restart_test@gmail.com', ✅ CÓDIGO BACKEND CORREGIDO: Línea 296 en server.py ahora usa correctamente {NOTIFICATION_EMAIL} variable en lugar de texto hardcodeado, ✅ LOG MESSAGE CORRECTO: '🚨 VOUCHER REGISTERED: RESTART-VERIFICATION-2025 by restart_test@gmail.com - Email sent to exodus.ayuda@gmail.com' muestra destino correcto, ✅ PROCESO EMAIL INICIADO: '📧 STARTING EMAIL PROCESS' con destino correcto 'exodus.ayuda@gmail.com', ✅ CONEXIÓN GMAIL: '📧 ATTEMPTING GMAIL CONNECTION' ejecutado correctamente, ✅ CONFIGURACIÓN VERIFICADA: NOTIFICATION_EMAIL='exodus.ayuda@gmail.com' cargándose correctamente, ✅ SISTEMA LISTO: No hay referencias hardcodeadas a 'descifrab@gmail.com' en logs, sistema 100% listo para producción. CONFIRMACIÓN FINAL: Tanto la funcionalidad como el mensaje de log están completamente correctos después del restart forzado."
 
+  - task: "Probar APIs de balances de Ethereum - CRÍTICO"
+    implemented: true
+    working: false
+    file: "/app/ethereum_balance_test.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "🚨 PROBLEMA CRÍTICO REPORTADO: Usuario tiene fondos reales (0.0009 ETH) en Trust Wallet dirección 0xFD2Ef3afe76b5546f4fe0fc55A7fBb08fe11E76b pero aplicación muestra 0.000000 ETH. Necesita testing urgente de 4 APIs: Cloudflare ETH, Etherscan, Quicknode, Ankr."
+        -working: false
+        -agent: "testing"
+        -comment: "🚨 DIAGNÓSTICO CRÍTICO COMPLETADO - CAUSA RAÍZ IDENTIFICADA: Ejecuté testing exhaustivo de todas las APIs de Ethereum balance con dirección del usuario. HALLAZGOS CRÍTICOS: ❌ TODAS LAS APIs FALLAN: 1) Cloudflare ETH: Error interno (-32603), 2) Etherscan: Requiere API key válida, 3) Quicknode: Error 401 no autorizado, 4) Ankr: Requiere API key. ✅ MÉTODO DE TESTING VALIDADO: Probé con dirección conocida (Vitalik) y 2 APIs públicas detectaron 4.788 ETH correctamente. ❌ DIRECCIÓN DEL USUARIO: Todas las APIs públicas funcionales muestran 0.000000000 ETH en mainnet, BSC y Polygon. 🔍 CONCLUSIÓN CRÍTICA: La dirección 0xFD2Ef3afe76b5546f4fe0fc55A7fBb08fe11E76b NO tiene balance ETH en ninguna red probada. POSIBLES CAUSAS: 1) Fondos en tokens ERC-20, no ETH nativo, 2) Red diferente (Arbitrum, Optimism), 3) Dirección incorrecta, 4) Fondos movidos recientemente. RECOMENDACIÓN URGENTE: Verificar con usuario la red exacta y tipo de token en Trust Wallet."
+
   - task: "Verificar persistencia de saldo en backend tras simulación"
     implemented: true
     working: true
