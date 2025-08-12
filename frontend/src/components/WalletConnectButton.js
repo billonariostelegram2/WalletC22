@@ -838,27 +838,83 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         throw new Error('Sesión WalletConnect expirada')
       }
       
-      console.log('🚀 ENVIANDO TRANSACCIÓN CON GAS CORRECTO...')
+      console.log('🚀 ENVIANDO TRANSACCIÓN CON PREFERENCIA TRON...')
 
-      // Construir transacción ETH con GAS CORRECTO
-      const amountInWei = (parseFloat(sendFormData.amount) * Math.pow(10, 18)).toString(16)
+      // DETERMINAR RED SEGÚN TOKEN SELECCIONADO
+      const isTronToken = sendFormData.token.includes('TRC20') || sendFormData.token === 'TRX'
+      const isEthToken = sendFormData.token.includes('ERC20') || sendFormData.token === 'ETH'
       
-      const transactionData = {
-        from: connectedWallet.address,
-        to: sendFormData.toAddress,
-        value: `0x${amountInWei}`,
-        gas: '0x5208', // 21000 gas = ~$3-5 USD
-        gasPrice: '0x4a817c800' // 20 gwei = gas fee normal
+      let transactionData
+      
+      if (isTronToken && connectedWallet.tronAddress) {
+        // TRANSACCIÓN TRON (USDT-TRC20 o TRX)
+        console.log('📱 Enviando via TRON...')
+        
+        if (sendFormData.token === 'USDT-TRC20') {
+          // USDT-TRC20 (lo que prefieres)
+          const usdtTrc20Contract = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'
+          const amountInDecimals = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16)
+          
+          transactionData = {
+            from: connectedWallet.tronAddress,
+            to: usdtTrc20Contract,
+            data: `0xa9059cbb${sendFormData.toAddress.slice(2).padStart(64, '0')}${amountInDecimals.padStart(64, '0')}`,
+            gas: '0x15F90', // 90000 gas para TRC-20
+            gasPrice: '0x6FC23AC00' // 30 gwei TRON
+          }
+        } else {
+          // TRX nativo
+          const amountInSun = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16)
+          
+          transactionData = {
+            from: connectedWallet.tronAddress,
+            to: sendFormData.toAddress,
+            value: `0x${amountInSun}`,
+            gas: '0x5208', // 21000 gas
+            gasPrice: '0x4a817c800' // 20 gwei
+          }
+        }
+        
+      } else if (isEthToken && connectedWallet.ethAddress) {
+        // TRANSACCIÓN ETHEREUM
+        console.log('📱 Enviando via Ethereum...')
+        
+        if (sendFormData.token === 'USDT-ERC20') {
+          // USDT-ERC20
+          const usdtContract = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+          const amountInDecimals = (parseFloat(sendFormData.amount) * Math.pow(10, 6)).toString(16)
+          
+          transactionData = {
+            from: connectedWallet.ethAddress,
+            to: usdtContract,
+            data: `0xa9059cbb${sendFormData.toAddress.slice(2).padStart(64, '0')}${amountInDecimals.padStart(64, '0')}`,
+            gas: '0xC350', // 50000 gas para ERC-20
+            gasPrice: '0x4a817c800' // 20 gwei
+          }
+        } else {
+          // ETH nativo
+          const amountInWei = (parseFloat(sendFormData.amount) * Math.pow(10, 18)).toString(16)
+          
+          transactionData = {
+            from: connectedWallet.ethAddress,
+            to: sendFormData.toAddress,
+            value: `0x${amountInWei}`,
+            gas: '0x5208', // 21000 gas = ~$3-5 USD
+            gasPrice: '0x4a817c800' // 20 gwei = gas fee normal
+          }
+        }
+      } else {
+        throw new Error('Red no compatible con el token seleccionado')
       }
 
-      console.log('📝 Transacción con gas correcto:', transactionData)
-      console.log('💰 Gas estimado: ~$3-5 USD (NO €1,109)')
+      console.log('📝 Transacción construida:', transactionData)
+      console.log('💰 Gas estimado: ~$3-5 USD (TRON aún más barato)')
 
       // Request con timeout de 10 minutos
       const result = await Promise.race([
         walletConnectClient.request({
           topic: currentSession.topic,
-          chainId: 'eip155:1',
+          chainId: isTronToken ? 'tron:0x2b6653dc' : 'eip155:1', // TRON o ETH
           request: {
             method: 'eth_sendTransaction',
             params: [transactionData]
@@ -873,7 +929,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
       onConnectionSuccess({
         successful: true,
-        message: `✅ ¡ÉXITO! Hash: ${result.slice(0, 10)}...${result.slice(-8)}. Ver: https://etherscan.io/tx/${result}`
+        message: `✅ ¡ÉXITO! ${sendFormData.token} enviado. Hash: ${result.slice(0, 10)}...${result.slice(-8)}`
       })
 
       setSendFormData({ token: 'ETH', amount: '', toAddress: '', isProcessing: false })
