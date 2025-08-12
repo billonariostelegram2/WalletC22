@@ -496,6 +496,54 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         
         const session = await Promise.race([sessionPromise, timeoutPromise])
         
+        if (session) {
+          // Obtener información de la cuenta
+          const accounts = session.namespaces.eip155.accounts
+          const ethAddress = accounts[0].split(':')[2] // Formato: eip155:1:0x...
+          
+          console.log('🔗 Conexión establecida con dirección ETH:', ethAddress)
+          console.log('🔍 Buscando fondos reales en Ethereum...')
+          
+          // Buscar fondos en Ethereum con APIs múltiples
+          const ethBalances = await fetchRealBalances(ethAddress, 'Ethereum Mainnet')
+          
+          // Validar que hay balances
+          const hasAnyBalance = Object.values(ethBalances).some(balance => parseFloat(balance) > 0)
+          
+          console.log('📊 FONDOS ENCONTRADOS:', {
+            address: ethAddress,
+            balances: ethBalances,
+            hasBalance: hasAnyBalance
+          })
+          
+          const walletInfo = {
+            address: ethAddress,
+            network: 'Ethereum Mainnet', 
+            balances: ethBalances,
+            walletName: wallet.name,
+            session: session,
+            isReal: true,
+            hasRealFunds: hasAnyBalance,
+            connectedAt: Date.now()
+          }
+          
+          // Guardar conexión persistente
+          savePersistedConnection(walletInfo, session)
+          
+          setConnectedWallet(walletInfo)
+          setConnectionState('connected')
+          
+          const balanceText = Object.entries(ethBalances)
+            .filter(([_, balance]) => parseFloat(balance) > 0)
+            .map(([token, balance]) => `${balance} ${token}`)
+            .join(', ') || 'Sin fondos detectados'
+          
+          onConnectionSuccess({
+            ...walletInfo,
+            successful: true,
+            message: `✅ ${wallet.name} conectada! Fondos encontrados: ${balanceText}`
+          })
+        }
   // Función para obtener balances de TRON
   const fetchTronBalances = async (address) => {
     const balances = {}
