@@ -589,12 +589,11 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     
     try {
       setConnectionState('refreshing')
-      const updatedBalance = await fetchRealBalance(connectedWallet.address, connectedWallet.network)
+      const updatedBalances = await fetchRealBalances(connectedWallet.address, connectedWallet.network)
       
       const updatedWallet = {
         ...connectedWallet,
-        balance: updatedBalance.balance,
-        symbol: updatedBalance.symbol,
+        balances: updatedBalances,
         lastUpdated: Date.now()
       }
       
@@ -607,10 +606,10 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       onConnectionSuccess({
         ...updatedWallet,
         successful: true,
-        message: `✅ Balance actualizado: ${updatedBalance.balance} ${updatedBalance.symbol}`
+        message: `✅ Balances actualizados: ${Object.entries(updatedBalances).map(([token, balance]) => `${balance} ${token}`).join(', ')}`
       })
     } catch (error) {
-      console.error('Error actualizando balance:', error)
+      console.error('Error actualizando balances:', error)
       setConnectionState('connected')
     }
   }
