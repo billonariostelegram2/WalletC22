@@ -655,19 +655,35 @@ export function WalletConnectButton({ onConnectionSuccess }) {
               <span className="text-slate-400">&gt; Red:</span>
               <span className="text-blue-300">{connectedWallet.network}</span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-slate-400">&gt; Balance REAL:</span>
-              <div className="flex items-center">
-                <span className="text-green-300 font-bold">{connectedWallet.balance} {connectedWallet.symbol}</span>
+            
+            {/* Mostrar todos los balances */}
+            <div className="border-t border-slate-600 pt-2 mt-2">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-slate-400">&gt; Balances REALES:</span>
                 <button 
                   onClick={handleRefreshBalance}
-                  className="ml-2 text-blue-400 hover:text-blue-300 text-xs"
+                  className="text-blue-400 hover:text-blue-300 text-xs"
                   disabled={connectionState === 'refreshing'}
                 >
                   {connectionState === 'refreshing' ? '🔄' : '↻'}
                 </button>
               </div>
+              
+              {connectedWallet.balances ? (
+                Object.entries(connectedWallet.balances).map(([token, balance]) => (
+                  <div key={token} className="flex justify-between items-center py-1">
+                    <span className="text-slate-300">{token}:</span>
+                    <span className="text-green-300 font-bold">{balance} {token}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Balance:</span>
+                  <span className="text-green-300 font-bold">{connectedWallet.balance} {connectedWallet.symbol}</span>
+                </div>
+              )}
             </div>
+            
             {connectedWallet.isReal && (
               <div className="flex justify-between">
                 <span className="text-slate-400">&gt; Tipo:</span>
