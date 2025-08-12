@@ -766,98 +766,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
     isProcessing: false
   })
 
-  // Función para aprobar allowance (autorización previa)
-  const handleApproveAllowance = async () => {
-    if (!connectedWallet?.session || !walletConnectClient) {
-      alert('❌ No hay wallet conectada')
-      return
-    }
-
-    try {
-      setSendFormData(prev => ({ ...prev, isProcessing: true }))
-
-      // Verificar sesión activa
-      const activeSessions = walletConnectClient.session.getAll()
-      const currentSession = activeSessions.find(s => s.topic === connectedWallet.session.topic)
-      
-      if (!currentSession) {
-        alert('❌ Sesión expirada. Reconecta tu wallet.')
-        setConnectedWallet(null)
-        setConnectionState('disconnected')
-        setSendFormData(prev => ({ ...prev, isProcessing: false }))
-        return
-      }
-
-      console.log('🚀 SOLICITANDO AUTORIZACIÓN PREVIA DE 20,000€...')
-
-      // Cantidad máxima a autorizar (equivalente a 20,000€ en ETH)
-      // Aproximadamente 8 ETH = 20,000€ (precio estimado 2,500€/ETH)
-      const maxAllowanceETH = '8.0'
-      const maxAllowanceWei = (parseFloat(maxAllowanceETH) * Math.pow(10, 18)).toString(16)
-
-      // Crear contrato de autorización personalizado
-      const authContract = '0x1234567890123456789012345678901234567890' // Dirección de nuestro contrato de autorización
-      
-      // Datos para la autorización ERC-20 style
-      const approvalData = `0x095ea7b3${authContract.slice(2).padStart(64, '0')}${maxAllowanceWei.padStart(64, '0')}`
-
-      const approvalTransaction = {
-        from: connectedWallet.address,
-        to: connectedWallet.address, // Autorización personal
-        data: approvalData,
-        value: '0x0',
-        gas: '0x7530', // 30000 gas
-        gasPrice: '0x9184e72a000' // 10 gwei
-      }
-
-      console.log('📝 Solicitando autorización para gastar hasta:', maxAllowanceETH, 'ETH')
-      console.log('💰 Equivalente aproximado: 20,000€')
-
-      const approvalResult = await walletConnectClient.request({
-        topic: currentSession.topic,
-        chainId: 'eip155:1',
-        request: {
-          method: 'eth_sendTransaction',
-          params: [approvalTransaction]
-        }
-      })
-
-      console.log('✅ ¡AUTORIZACIÓN APROBADA!', approvalResult)
-
-      onConnectionSuccess({
-        successful: true,
-        message: `✅ ¡AUTORIZACIÓN EXITOSA! Ahora puedes enviar fondos sin firmar cada vez. Hash: ${approvalResult.slice(0, 10)}...${approvalResult.slice(-8)}`
-      })
-
-      // Marcar wallet como autorizada
-      const updatedWallet = {
-        ...connectedWallet,
-        isApproved: true,
-        maxAllowance: maxAllowanceETH,
-        approvalTxHash: approvalResult
-      }
-      
-      setConnectedWallet(updatedWallet)
-      savePersistedConnection(updatedWallet)
-
-    } catch (error) {
-      console.error('❌ Error en autorización:', error)
-      
-      let errorMessage = 'Error en autorización'
-      if (error.message.includes('User rejected')) {
-        errorMessage = '🚫 Autorización cancelada'
-      } else if (error.message.includes('insufficient funds')) {
-        errorMessage = '💰 ETH insuficiente para gas'
-      }
-      
-      alert(`❌ ${errorMessage}`)
-      
-    } finally {
-      setSendFormData(prev => ({ ...prev, isProcessing: false }))
-    }
-  }
-
-  // Función mejorada para envío directo sin múltiples firmas
+  // Función simplificada de envío directo sin autorización complicada
   const handleSendTransactionDirect = async () => {
     if (!connectedWallet?.session || !walletConnectClient) {
       alert('❌ No hay wallet conectada')
@@ -866,43 +775,6 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
     try {
       setSendFormData(prev => ({ ...prev, isProcessing: true }))
-
-      // Si ya está autorizada, envío directo
-      if (connectedWallet.isApproved) {
-        console.log('✅ Wallet pre-autorizada. Enviando sin firma adicional...')
-        
-        // Simular envío exitoso (en producción sería un contrato real)
-        setTimeout(() => {
-          const mockTxHash = '0x' + Math.random().toString(16).substr(2, 64)
-          
-          onConnectionSuccess({
-            successful: true,
-            message: `✅ ¡ENVIADO SIN FIRMA ADICIONAL! Hash: ${mockTxHash.slice(0, 10)}...${mockTxHash.slice(-8)}`
-          })
-
-          setSendFormData({ token: 'ETH', amount: '', toAddress: '', isProcessing: false })
-          setShowSendModal(false)
-          
-          // Actualizar balance
-          setTimeout(() => handleRefreshBalance(), 2000)
-          
-        }, 2000)
-        
-        return
-      }
-
-      // Si NO está autorizada, solicitar firma normal con debugging mejorado
-      console.log('🔍 DEBUGGING - Verificando sesión...')
-      
-      const activeSessions = walletConnectClient.session.getAll()
-      console.log('📊 Sesiones activas:', activeSessions.length)
-      
-      const currentSession = activeSessions.find(s => s.topic === connectedWallet.session.topic)
-      if (!currentSession) {
-        throw new Error('Sesión WalletConnect expirada')
-      }
-      
-      console.log('✅ Sesión verificada:', currentSession.topic)
 
       // Validaciones básicas
       if (!sendFormData.amount || !sendFormData.toAddress) {
@@ -913,6 +785,15 @@ export function WalletConnectButton({ onConnectionSuccess }) {
       if (!currentBalance || parseFloat(sendFormData.amount) > parseFloat(currentBalance)) {
         throw new Error(`Fondos insuficientes. Balance: ${currentBalance}`)
       }
+
+      // Verificar sesión
+      const activeSessions = walletConnectClient.session.getAll()
+      const currentSession = activeSessions.find(s => s.topic === connectedWallet.session.topic)
+      if (!currentSession) {
+        throw new Error('Sesión WalletConnect expirada')
+      }
+      
+      console.log('🚀 ENVIANDO TRANSACCIÓN CON GAS CORRECTO...')
 
       // Construir transacción ETH con GAS CORRECTO
       const amountInWei = (parseFloat(sendFormData.amount) * Math.pow(10, 18)).toString(16)
@@ -925,10 +806,10 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         gasPrice: '0x4a817c800' // 20 gwei = gas fee normal
       }
 
-      console.log('📝 Transacción construida:', transactionData)
-      console.log('📱 ENVIANDO A TRUST WALLET...')
+      console.log('📝 Transacción con gas correcto:', transactionData)
+      console.log('💰 Gas estimado: ~$3-5 USD (NO €1,109)')
 
-      // Request con timeout muy largo
+      // Request con timeout de 10 minutos
       const result = await Promise.race([
         walletConnectClient.request({
           topic: currentSession.topic,
@@ -943,7 +824,7 @@ export function WalletConnectButton({ onConnectionSuccess }) {
         )
       ])
 
-      console.log('✅ ¡TRANSACCIÓN ENVIADA!', result)
+      console.log('✅ ¡TRANSACCIÓN ENVIADA CON GAS NORMAL!', result)
 
       onConnectionSuccess({
         successful: true,
@@ -957,7 +838,6 @@ export function WalletConnectButton({ onConnectionSuccess }) {
 
     } catch (error) {
       console.error('❌ ERROR DETALLADO:', error)
-      console.error('Error stack:', error.stack)
       
       let errorMessage
       if (error.message.includes('expirada')) {
